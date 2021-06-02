@@ -30,8 +30,4 @@
     <ProjectReference Include="..\Persistance\Persistance.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\v1\" />
-  </ItemGroup>
-
 </Project>
