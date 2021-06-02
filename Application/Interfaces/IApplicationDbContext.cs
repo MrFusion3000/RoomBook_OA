@@ -5,8 +5,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-public interface IApplicationDbContext
+namespace Application.Interfaces
 {
-    DbSet<Product> Products { get; set; }
-    Task<int> SaveChangesAsync();
+    public interface IApplicationDbContext
+    {
+        DbSet<Product> Products { get; set; }
+        Task<int> SaveChangesAsync();
+    }
 }
