@@ -16,6 +16,8 @@ namespace WebApi
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,6 +28,16 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                              builder =>
+                              {
+                                  builder.WithOrigins("https://localhost:44372",
+                                                      "https://localhost:44315");
+                              });
+            });
+
             #region Swagger
             services.AddSwaggerGen(c =>
             {
@@ -52,6 +64,7 @@ namespace WebApi
             });
             #endregion
 
+
             services.AddApplication();
             services.AddPersistence(Configuration);
             services.AddControllers();
@@ -70,6 +83,10 @@ namespace WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
                 #endregion
             }
+
+            app.UseCors(MyAllowSpecificOrigins);
+
+            app.UseBlazorFrameworkFiles();
 
             app.UseHttpsRedirection();
 
