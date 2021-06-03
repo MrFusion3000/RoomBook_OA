@@ -82,12 +82,6 @@ namespace WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                #region Swagger
-
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
-                #endregion
             }
 
             app.UseCors(MyAllowSpecificOrigins);
@@ -99,6 +93,12 @@ namespace WebApi
             app.UseRouting();
 
             app.UseAuthorization();
+
+            #region Swagger
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
+            #endregion
 
             app.UseEndpoints(endpoints =>
             {

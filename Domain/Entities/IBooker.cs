@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RoomBook.Domain
+namespace Domain.Entities
 {
     interface IBooker : IDataEntitybase
     {

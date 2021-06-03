@@ -18,11 +18,13 @@ namespace Persistance.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().Property(p => p.Rate).HasColumnType("decimal(10, 2)");
+            //modelBuilder.Entity<TimeSlot>().ToTable("TimeSlots");
 
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<TimeSlot> TimeSlots { get; set; }
         public async Task<int> SaveChangesAsync()
         {
             return await base.SaveChangesAsync();

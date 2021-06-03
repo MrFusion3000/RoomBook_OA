@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RoomBook.Domain
+namespace Domain.Entities
 {
     public interface IRoom : IDataEntitybase
     {

@@ -39,5 +39,40 @@
             <param name="command"></param>
             <returns></returns>
         </member>
+        <member name="M:WebApi.Controllers.v1.TimeSlotController.Create(Application.Features.ScheduleFeatures.Commands.CreateTimeSlotCommand)">
+            <summary>
+            Creates a New TimeSlot.
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.TimeSlotController.GetAll">
+            <summary>
+            Gets all TimeSlots.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.TimeSlotController.GetById(System.Guid)">
+            <summary>
+            Gets TimeSlot Entity by Id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.TimeSlotController.Delete(System.Guid)">
+            <summary>
+            Deletes TimeSlot Entity based on Id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.TimeSlotController.Update(System.Guid,Application.Features.ScheduleFeatures.Commands.UpdateTimeSlotCommand)">
+            <summary>
+            Updates the TimeSlot Entity based on Id.   
+            </summary>
+            <param name="id"></param>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>
