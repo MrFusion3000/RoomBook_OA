@@ -9,6 +9,7 @@ using MediatR;
 using Persistance;
 using Application;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 //using Persistence;
 
@@ -36,6 +37,11 @@ namespace WebApi
                                   builder.WithOrigins("https://localhost:44372",
                                                       "https://localhost:44315");
                               });
+            });
+
+            services.AddControllers(options =>
+            {
+                options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
             });
 
             #region Swagger

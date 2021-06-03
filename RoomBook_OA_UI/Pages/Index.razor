@@ -8,9 +8,9 @@
 @*<input @bind="newItemName" placeholder="New Todo Item" />*@
 
 
-@foreach (var item in productItems)
+@foreach (var item in products)
 {
-    <div>@item.Name"></div>
+    <div>@item.Id @item.Name</div>
 }
 
 @code {
@@ -18,8 +18,12 @@
     private string newItemName;
 
     private Product[] productItems;
+    public List<Product> products = new();
+
 
     protected override async Task OnInitializedAsync() =>
-        productItems = await Http.GetFromJsonAsync<Product[]>("https://localhost:44315/api/v1/Product");
+        products = await Http.GetFromJsonAsync<List<Product>>("https://localhost:44315/api/v1/Product");
+
+
 
 }
