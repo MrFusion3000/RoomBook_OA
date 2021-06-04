@@ -1,30 +1,47 @@
 ﻿@page "/"
 @using System.Net.Http
 @using Domain.Entities
+@using MudBlazor
 @inject HttpClient Http
-
 @*<input @bind="newItemName" placeholder="New Todo Item" />*@
 
 
+<h3>Todays Schedule (Mockup)</h3>
+<hr />
+
 @foreach (var item in timeSlots)
 {
-    <h3>Todays Schedule</h3>
-    <div>Booker Id: @item.BookerId</div>
-    <div>Timeslot: @item.TimeSlotStart -- @item.TimeSlotEnd</div>
+<tr>
+    <td>Booker Id: @item.BookerId</td>
+    <td>Timeslot: @item.TimeSlotStart -- @item.TimeSlotEnd</td>
+    <td> Title: @item.Title</td>
+</tr>
 }
+
+<hr />
+@*<div>Vacant TimeSlot: @DateTime.Now - @DateTime.Now.AddMinutes(15)</div>*@
+<input @bind="newItemTitle" placeholder="Add Title" />
+<MudButton Variant="Variant.Filled" @onclick="@AddTimeSlot">Add</MudButton>
+
 
 @code {
 
-    private string newItemName;
+    private string newItemTitle;
 
-    private Product[] productItems;
-    public List<Product> products = new();
-    public List<TimeSlot> timeSlots = new();
+    private List<Product> products = new();
+    private List<TimeSlot> timeSlots = new();
 
+    //Read TimeSlots from Db
+    protected override async Task OnInitializedAsync() {
+        timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot");
+        StateHasChanged();
+    }
 
-    protected override async Task OnInitializedAsync() =>
-    timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot");
-
-
+    private async Task AddTimeSlot()
+    {
+        var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 1, CreatedUTC = DateTime.Now };
+        await Http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", addTimeSlot);
+        StateHasChanged();
+    }
 
 }

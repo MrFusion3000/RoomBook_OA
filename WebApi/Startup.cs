@@ -10,6 +10,7 @@ using Persistance;
 using Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Http;
 
 //using Persistence;
 
@@ -35,7 +36,9 @@ namespace WebApi
                               builder =>
                               {
                                   builder.WithOrigins("https://localhost:44372",
-                                                      "https://localhost:44315");
+                                                      "https://localhost:44315")
+                                  .AllowAnyHeader()
+                                  .AllowAnyMethod();
                               });
             });
 
@@ -102,6 +105,10 @@ namespace WebApi
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/echo",
+                context => context.Response.WriteAsync("echo"))
+                .RequireCors(MyAllowSpecificOrigins);
+
                 endpoints.MapControllers();
             });
         }

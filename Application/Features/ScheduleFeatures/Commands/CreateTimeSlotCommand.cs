@@ -30,7 +30,9 @@ namespace Application.Features.ScheduleFeatures.Commands
                 timeslot.TimeSlotStart = command.TimeSlotStart;
                 timeslot.TimeSlotEnd = command.TimeSlotEnd;
                 timeslot.Title = command.Title;
+                timeslot.IsVacant = command.IsVacant;
                 timeslot.BookerId = command.BookerId;
+                timeslot.CreatedUTC = command.CreatedUTC;
                 _context.TimeSlots.Add(timeslot);
                 await _context.SaveChangesAsync();
                 return timeslot.ID;
