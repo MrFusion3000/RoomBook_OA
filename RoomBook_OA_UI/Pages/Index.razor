@@ -9,14 +9,35 @@
 <h3>Todays Schedule (Mockup)</h3>
 <hr />
 
-@foreach (var item in timeSlots)
+@*@foreach (var item in timeSlots)
 {
-<tr>
+<tr class="">
     <td>Booker Id: @item.BookerId</td>
     <td>Timeslot: @item.TimeSlotStart -- @item.TimeSlotEnd</td>
     <td> Title: @item.Title</td>
 </tr>
-}
+}*@
+
+<MudTable Items="@timeSlots" Dense="true" Hover="true" Striped="true" Bordered="true" SortLabel="Sort By">
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<TimeSlot, object>(x=>x.TimeSlotStart)">Nr</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TimeSlot, object>(x=>x.TimeSlotEnd)">Sign</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<TimeSlot, object>(x=>x.Title)">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TimeSlot, object>(x=>x.IsVacant)">Position</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<TimeSlot, object>(x=>x.BookerId)">Mass</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="ID">@context.ID</MudTd>
+        <MudTd DataLabel="Start">@context.TimeSlotStart</MudTd>
+        <MudTd DataLabel="End">@context.TimeSlotEnd</MudTd>
+        <MudTd DataLabel="Title">@context.Title</MudTd>
+        <MudTd DataLabel="Booker Id">@context.BookerId</MudTd>
+        <MudTd DataLabel="Vacant">@context.IsVacant</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+    </PagerContent>
+</MudTable>
 
 <hr />
 <input @bind="newItemTitle" placeholder="Add Title" />
@@ -28,19 +49,30 @@
     private string newItemTitle;
 
     private List<Product> products = new();
-    private List<TimeSlot> timeSlots = new();
+    //private List<TimeSlot> timeSlots = new();
+
+    private IEnumerable<TimeSlot> timeSlots = new List<TimeSlot>();
 
     //Read TimeSlots from Db
     protected override async Task OnInitializedAsync() {
-        timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot");
+
+        await RefreshDb();
     }
 
     private async Task AddTimeSlot()
     {
         var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 1, CreatedUTC = DateTime.Now };
         await Http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", addTimeSlot);
-        timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot");
+
+        await RefreshDb();
     }
 
+    private async Task RefreshDb()
+    {
+        //timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot");
+
+        timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot");
+
+    }
 
 }
