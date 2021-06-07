@@ -35,6 +35,16 @@ namespace WebApi.Controllers.v1
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetAllByDate()
+        {
+            return Ok(await Mediator.Send(new GetAllTimeSlotsByDateQuery()));
+        }
+        /// <summary>
+        /// Gets TimeSlot Entity by Date.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {

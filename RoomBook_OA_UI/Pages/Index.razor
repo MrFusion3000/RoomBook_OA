@@ -2,6 +2,7 @@
 @using System.Net.Http
 @using Domain.Entities
 @using MudBlazor
+@using System.Net.Http.Json
 @inject HttpClient Http
 @*<input @bind="newItemName" placeholder="New Todo Item" />*@
 
@@ -10,38 +11,54 @@
 <hr />
 
 @*@foreach (var item in timeSlots)
-{
-<tr class="">
-    <td>Booker Id: @item.BookerId</td>
-    <td>Timeslot: @item.TimeSlotStart -- @item.TimeSlotEnd</td>
-    <td> Title: @item.Title</td>
-</tr>
-}*@
+    {
+    <tr class="">
+        <td>Booker Id: @item.BookerId</td>
+        <td>Timeslot: @item.TimeSlotStart -- @item.TimeSlotEnd</td>
+        <td> Title: @item.Title</td>
+    </tr>
+    }*@
 
-<MudTable Items="@timeSlots" Dense="true" Hover="true" Striped="true" Bordered="true" SortLabel="Sort By">
+<MudTable Items="@timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" @bind-SelectedItem="selectedItem">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Periodic timeSlots</MudText>
+        <MudToolBarSpacer />
+        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
     <HeaderContent>
-        <MudTh><MudTableSortLabel SortBy="new Func<TimeSlot, object>(x=>x.TimeSlotStart)">Nr</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TimeSlot, object>(x=>x.TimeSlotEnd)">Sign</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<TimeSlot, object>(x=>x.Title)">Name</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TimeSlot, object>(x=>x.IsVacant)">Position</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<TimeSlot, object>(x=>x.BookerId)">Mass</MudTableSortLabel></MudTh>
+        <MudTh>Id</MudTh>
+        <MudTh>Start</MudTh>
+        <MudTh>End</MudTh>
+        <MudTh>Title</MudTh>
+        <MudTh>vacant</MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="ID">@context.ID</MudTd>
-        <MudTd DataLabel="Start">@context.TimeSlotStart</MudTd>
-        <MudTd DataLabel="End">@context.TimeSlotEnd</MudTd>
-        <MudTd DataLabel="Title">@context.Title</MudTd>
-        <MudTd DataLabel="Booker Id">@context.BookerId</MudTd>
-        <MudTd DataLabel="Vacant">@context.IsVacant</MudTd>
+        <MudTd DataLabel="Nr">@context.ID</MudTd>
+        <MudTd DataLabel="Sign">@context.TimeSlotStart</MudTd>
+        <MudTd DataLabel="Name">@context.TimeSlotEnd</MudTd>
+        <MudTd DataLabel="Position">@context.Title</MudTd>
+        <MudTd DataLabel="Molar mass">@context.IsVacant</MudTd>
     </RowTemplate>
     <PagerContent>
-        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        <MudTablePager />
     </PagerContent>
 </MudTable>
+<div class="d-flex flex-wrap mt-4">
+
+    <MudToolBarSpacer />
+    <MudText Inline="true" Class="align-self-center" Style="min-width:200px;">Selected: @selectedItem?.Title</MudText>
+</div>
 
 <hr />
-<input @bind="newItemTitle" placeholder="Add Title" />
-<MudButton Variant="Variant.Filled" @onclick="@AddTimeSlot">Add</MudButton>
+
+<MudGrid>
+    <MudItem xs="12" sm="6" md="3">
+        <MudTextField @bind-Value="newItemTitle" Label="Add Title" Variant="Variant.Outlined" Margin="Margin.Dense" Class="d-flex align-center justify-center mud-width-full py-8" />
+    </MudItem>
+    <MudItem xs="12" sm="3" md="3" Class="d-flex align-center justify-center mud-width-full py-8">
+        <MudButton Variant="Variant.Filled" @onclick="@AddTimeSlot">Add</MudButton>
+    </MudItem>
+</MudGrid>
 
 
 @code {
@@ -53,8 +70,24 @@
 
     private IEnumerable<TimeSlot> timeSlots = new List<TimeSlot>();
 
+    private string searchString = "";
+    private TimeSlot selectedItem = null;
+    private HashSet<TimeSlot> selectedItems = new HashSet<TimeSlot>();
+
+    private bool FilterFunc(TimeSlot timeSlot)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+
+        if (timeSlot.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return false;
+    }
+
     //Read TimeSlots from Db
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync()
+    {
 
         await RefreshDb();
     }
@@ -63,6 +96,8 @@
     {
         var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 1, CreatedUTC = DateTime.Now };
         await Http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", addTimeSlot);
+
+        newItemTitle = "";
 
         await RefreshDb();
     }
@@ -74,5 +109,4 @@
         timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot");
 
     }
-
 }

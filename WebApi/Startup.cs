@@ -98,10 +98,11 @@ namespace WebApi
             app.UseAuthorization();
 
             #region Swagger
-
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             #endregion
+
+            app.UseDeveloperExceptionPage();
 
             app.UseEndpoints(endpoints =>
             {
