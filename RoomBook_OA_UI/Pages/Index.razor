@@ -19,7 +19,6 @@
 }
 
 <hr />
-@*<div>Vacant TimeSlot: @DateTime.Now - @DateTime.Now.AddMinutes(15)</div>*@
 <input @bind="newItemTitle" placeholder="Add Title" />
 <MudButton Variant="Variant.Filled" @onclick="@AddTimeSlot">Add</MudButton>
 
@@ -34,14 +33,14 @@
     //Read TimeSlots from Db
     protected override async Task OnInitializedAsync() {
         timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot");
-        StateHasChanged();
     }
 
     private async Task AddTimeSlot()
     {
         var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 1, CreatedUTC = DateTime.Now };
         await Http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", addTimeSlot);
-        StateHasChanged();
+        timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot");
     }
+
 
 }
