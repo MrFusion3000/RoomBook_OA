@@ -52,6 +52,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:WebApi.Controllers.v1.TimeSlotController.GetAllTimeSlotsByDate(System.DateTime)">
+            <summary>
+            Gets all TimeSlots by date.
+            </summary>
+            <param name="today"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebApi.Controllers.v1.TimeSlotController.GetById(System.Guid)">
             <summary>
             Gets TimeSlot Entity by Id.

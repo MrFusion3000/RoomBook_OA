@@ -23,9 +23,11 @@ namespace Application.Features.ScheduleFeatures.Queries
             }
             public async Task<IEnumerable<TimeSlot>> Handle(GetAllTimeSlotsByDateQuery query, CancellationToken cancellationToken)
             {
+                var today = query.Today.Date;
+
                 var timeSlotsList = await _context.TimeSlots
-                    .Where(t => t.TimeSlotStart.Date == (DateTime.Today))
-                    .ToListAsync();
+                    .Where(t => t.TimeSlotStart.Date == today)
+                    .ToListAsync(cancellationToken);
 
                 if (timeSlotsList == null)
                 {
