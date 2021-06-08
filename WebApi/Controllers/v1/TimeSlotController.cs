@@ -30,22 +30,22 @@ namespace WebApi.Controllers.v1
         {
             return Ok(await Mediator.Send(new GetAllTimeSlotsQuery()));
         }
+        ///// <summary>
+        ///// Gets all TimeSlots by date.
+        ///// </summary>
+        ///// <param name="today"></param>
+        ///// <returns></returns>
+        //[HttpGet("{today}", Name = "GetAllTimeSlotsByDate")]
+        //public async Task<IActionResult> GetAllTimeSlotsByDate(DateTime today)
+        //{
+        //    return Ok(await Mediator.Send(new GetAllTimeSlotsByDateQuery { Today = today } ));
+        //}
         /// <summary>
         /// Gets TimeSlot Entity by Id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> GetAllByDate()
-        {
-            return Ok(await Mediator.Send(new GetAllTimeSlotsByDateQuery()));
-        }
-        /// <summary>
-        /// Gets TimeSlot Entity by Date.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetTimeSlotsById")]
         public async Task<IActionResult> GetById(Guid id)
         {
             return Ok(await Mediator.Send(new GetTimeSlotByIdQuery { ID = id }));

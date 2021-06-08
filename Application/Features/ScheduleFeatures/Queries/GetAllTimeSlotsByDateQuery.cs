@@ -13,7 +13,7 @@ namespace Application.Features.ScheduleFeatures.Queries
 {
     public class GetAllTimeSlotsByDateQuery : IRequest<IEnumerable<TimeSlot>>
     {
-
+        public DateTime Today { get; set; }
         public class GetAllTimeSlotsByDateQueryHandler : IRequestHandler<GetAllTimeSlotsByDateQuery, IEnumerable<TimeSlot>>
         {
             private readonly IApplicationDbContext _context;
@@ -26,6 +26,7 @@ namespace Application.Features.ScheduleFeatures.Queries
                 var timeSlotsList = await _context.TimeSlots
                     .Where(t => t.TimeSlotStart.Date == (DateTime.Today))
                     .ToListAsync();
+
                 if (timeSlotsList == null)
                 {
                     return null;
