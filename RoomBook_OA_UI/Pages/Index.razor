@@ -7,8 +7,8 @@
 @*<input @bind="newItemName" placeholder="New Todo Item" />*@
 
 
-<h3>Todays Schedule (Mockup)</h3>
-<hr />
+@*<h3>Todays Schedule (Mockup)</h3>
+<hr />*@
 
 @*@foreach (var item in timeSlots)
     {
@@ -21,7 +21,7 @@
 
 <MudTable Items="@timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" @bind-SelectedItem="selectedItem">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">Periodic timeSlots</MudText>
+        <MudText Typo="Typo.h6">Schedule</MudText>
         <MudToolBarSpacer />
         <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
@@ -97,6 +97,9 @@
         var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 1, CreatedUTC = DateTime.Now };
         await Http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", addTimeSlot);
 
+        //var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 1, CreatedUTC = DateTime.Now };
+        //await Http.PostAsJsonAsync("https://localhost:81/api/v1/TimeSlot", addTimeSlot);
+
         newItemTitle = "";
 
         await RefreshDb();
@@ -107,6 +110,9 @@
         //timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot");
 
         timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot");
+
+        //timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:81/api/v1/TimeSlot");
+
 
     }
 }
