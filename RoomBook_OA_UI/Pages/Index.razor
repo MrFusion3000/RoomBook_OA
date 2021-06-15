@@ -8,11 +8,7 @@
 
 
 @*<h3>Todays Schedule (Mockup)</h3>
-<<<<<<< HEAD
     <hr />*@
-=======
-<hr />*@
->>>>>>> master
 
 @*@foreach (var item in timeSlots)
     {
@@ -108,10 +104,7 @@
         var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 1, CreatedUTC = DateTime.Now };
         await Http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", addTimeSlot);
 
-<<<<<<< HEAD
         //Testing localhost server IIS
-=======
->>>>>>> master
         //var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 1, CreatedUTC = DateTime.Now };
         //await Http.PostAsJsonAsync("https://localhost:81/api/v1/TimeSlot", addTimeSlot);
 
@@ -134,7 +127,6 @@
         //timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:81/api/v1/TimeSlot");
     }
 
-<<<<<<< HEAD
     // Init empty daily schedule
     // rewrite to check Db for IsVacant = false
     private void InitDailySchedule()
@@ -158,10 +150,5 @@
 
             }
         }
-=======
-        //timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:81/api/v1/TimeSlot");
-
-
->>>>>>> master
     }
 }
