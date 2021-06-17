@@ -12,8 +12,7 @@
 
     @if (firstVacantSlot != null)
     {
-        firstVacantSlot.IsVacant = false;
-        <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="() => UpdateTimeSlot(firstVacantSlot)" @bind-value="firstVacantSlot.IsVacant">InstaBook &trade; @firstVacantSlot.TimeSlotStart - @firstVacantSlot.TimeSlotEnd.TimeOfDay</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(firstVacantSlot, false, "InstaBooked", 999))">InstaBook&trade; @firstVacantSlot.TimeSlotStart - @firstVacantSlot.TimeSlotEnd.TimeOfDay</MudButton>
 
     }
 
@@ -28,7 +27,7 @@
     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
 }*@
 
-<MudTable Items="@timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" @bind-SelectedItem="selectedItem">
+<MudTable Items="@timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" @bind-SelectedItem="selectedItem" RowsPerPage="12">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Schedule</MudText>
         <MudToolBarSpacer />
@@ -60,14 +59,14 @@
 
 <hr />
 
-<MudGrid>
+@*<MudGrid>
     <MudItem xs="12" sm="6" md="3">
         <MudTextField @bind-Value="newItemTitle" Label="Add Title" Variant="Variant.Outlined" Margin="Margin.Dense" Class="d-flex align-center justify-center mud-width-full py-8" />
     </MudItem>
     <MudItem xs="12" sm="3" md="3" Class="d-flex align-center justify-center mud-width-full py-8">
         <MudButton Variant="Variant.Filled" @onclick="@AddTimeSlot">Add</MudButton>
     </MudItem>
-</MudGrid>
+</MudGrid>*@
 
 
 @code {
@@ -130,12 +129,14 @@
     }
 
 
-    // Which format to send 
-    private async Task UpdateTimeSlot(TimeSlot firstVacantSlot)
+    // *** Only updates the table in webpage, not the DB ?!?!
+    private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, int booker)
     {
         var UpdateTimeSlot = firstVacantSlot;
-        UpdateTimeSlot.IsVacant = false;
-        await Http.PutAsJsonAsync("https://localhost:44315/api/v1/TimeSlot/Update?id={timeSlot.ID}", UpdateTimeSlot);
+        UpdateTimeSlot.IsVacant = notVacantSlot;
+        UpdateTimeSlot.Title = title;
+        UpdateTimeSlot.BookerId = booker;
+        await Http.PutAsJsonAsync($"https://localhost:44315/api/v1/TimeSlot/Update?id={UpdateTimeSlot.ID}", UpdateTimeSlot);
 
         await RefreshDb();
     }
