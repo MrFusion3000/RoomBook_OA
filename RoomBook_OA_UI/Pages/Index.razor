@@ -22,10 +22,6 @@
     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
 }
 
-@*@if (item.isVacant == false)
-{
-    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
-}*@
 
 <MudTable Items="@timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" @bind-SelectedItem="selectedItem" RowsPerPage="12">
     <ToolBarContent>
@@ -73,10 +69,6 @@
 
     private string newItemTitle;
 
-    //private List<Product> products = new();
-    //private List<TimeSlot> timeSlots = new();
-
-    //private IEnumerable<TimeSlot> timeSlots = new List<TimeSlot>();
     private IList<TimeSlot> timeSlots = new List<TimeSlot>();
     private IList<TimeSlot> timeSlotsTemp = new List<TimeSlot>();
 
@@ -89,6 +81,9 @@
     private TimeSlot selectedItem = null;
     private HashSet<TimeSlot> selectedItems = new HashSet<TimeSlot>();
 
+    public DateTime dtToday = DateTime.UtcNow;
+
+
     private bool FilterFunc(TimeSlot timeSlot)
     {
         if (string.IsNullOrWhiteSpace(searchString))
@@ -100,14 +95,14 @@
         return false;
     }
 
-    //Read TimeSlots from Db
+    //Read TimeSlots from Db at start
     protected override async Task OnInitializedAsync()
     {
         await RefreshDb();
 
         hasItems = timeSlots.Count();
 
-        // Filter legit Timeslots
+        // Create empty Timeslots if none for the day
         if (hasItems == 0)
         {
             await InitDailySchedule();
@@ -116,7 +111,9 @@
 
     private async Task AddTimeSlot()
     {
-        var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 999, CreatedUTC = DateTime.UtcNow };
+        //var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 999, CreatedUTC = DateTime.UtcNow };
+        var addTimeSlot = new TimeSlot { TimeSlotStart = dtToday, TimeSlotEnd = dtToday.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 999, CreatedUTC = DateTime.UtcNow };
+
         await Http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", addTimeSlot);
 
         //Testing localhost server IIS
@@ -128,8 +125,7 @@
         await RefreshDb();
     }
 
-
-    // *** Only updates the table in webpage, not the DB ?!?!
+    //Add check if timeSlot.isVacant = true else message to user
     private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, int booker)
     {
         var UpdateTimeSlot = firstVacantSlot;
@@ -143,10 +139,10 @@
 
     private async Task RefreshDb()
     {
-        DateTime dtToday = DateTime.Now;
+        //DateTime dtToday = DateTime.UtcNow;
         timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + dtToday);
 
-        // If present Timeslot is vacant
+        // check for next vacant Timeslot
         firstVacantSlot = timeSlots.FirstOrDefault(f => f.IsVacant);
 
         // Testing localhost server IIS
@@ -154,11 +150,10 @@
     }
 
     // Init empty daily schedule
-    // rewrite to check Db for IsVacant = false
     private async Task InitDailySchedule()
     {
         TimeSpan duration = new TimeSpan(0, 0, 15, 0);
-        DateTime initDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 6, 0, 0);
+        DateTime initDate = new DateTime(dtToday.Year, dtToday.Month, dtToday.Day, 6, 0, 0);
 
         for (int i = 0; i < 80; i++)
         {
@@ -168,9 +163,7 @@
             timeSlot.TimeSlotEnd = timeSlot.TimeSlotStart.Add(duration);
             timeSlot.Title = "Vacant";
             timeSlot.IsVacant = true;
-            timeSlot.CreatedUTC = DateTime.UtcNow;
-
-            //timeSlots.Add(timeSlot);
+            timeSlot.CreatedUTC = dtToday;
 
             await Http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", timeSlot);
 
