@@ -3,7 +3,13 @@
 @using Domain.Entities
 @using MudBlazor
 @using System.Net.Http.Json
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
 @inject HttpClient Http
+
+
 @*<input @bind="newItemName" placeholder="New Todo Item" />*@
 
 
@@ -76,6 +82,7 @@
     public int hasItems { get; set; }
     [Parameter]
     public TimeSlot firstVacantSlot { get; set; }
+
 
     private string searchString = "";
     private TimeSlot selectedItem = null;
