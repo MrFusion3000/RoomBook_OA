@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31321.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31410.414
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{09C8DFC3-AB9C-41E0-B6DA-A749B3C0F8B2}"
 EndProject
@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistance", "Persistance\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{FDD3A237-29A6-43F1-8EF6-062BF0CF9944}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomBook_OA_UI", "RoomBook_OA_UI\RoomBook_OA_UI.csproj", "{EFB5B608-41BE-47E2-BDA1-D9FA2A020B4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoomBook_OA_UI", "RoomBook_OA_UI\RoomBook_OA_UI.csproj", "{EFB5B608-41BE-47E2-BDA1-D9FA2A020B4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

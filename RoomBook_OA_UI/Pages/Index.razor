@@ -3,7 +3,13 @@
 @using Domain.Entities
 @using MudBlazor
 @using System.Net.Http.Json
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
 @inject HttpClient Http
+
+
 @*<input @bind="newItemName" placeholder="New Todo Item" />*@
 
 
@@ -12,18 +18,27 @@
 
     @if (firstVacantSlot != null)
     {
-        <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(firstVacantSlot, false, "InstaBooked", 999))">InstaBook&trade; @firstVacantSlot.TimeSlotStart - @firstVacantSlot.TimeSlotEnd.TimeOfDay</MudButton>
-
-    }
-
+    <tr class="">
+        <td>Booker Id: @item.BookerId</td>
+        <td>Timeslot: @item.TimeSlotStart -- @item.TimeSlotEnd</td>
+        <td> Title: @item.Title</td>
+    </tr>
+    }*@
+    <AuthorizeView Roles="Administrator">
+        <Authorized>
+            The user @context.User.FindFirst(ClaimTypes.Name).Value is authorized as: @context.User.FindFirst(ClaimTypes.Role)
+        </Authorized>
+        <NotAuthorized>
+         The User is not authorized
+        </NotAuthorized>
+    </AuthorizeView>
 
 @if (hasItems == 0)
 {
     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
 }
 
-
-<MudTable Items="@timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" @bind-SelectedItem="selectedItem" RowsPerPage="12">
+<MudTable Items="@timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" @bind-SelectedItem="selectedItem">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Schedule</MudText>
         <MudToolBarSpacer />
@@ -34,14 +49,14 @@
         <MudTh>Start</MudTh>
         <MudTh>End</MudTh>
         <MudTh>Title</MudTh>
-        <MudTh>Booker</MudTh>
+        <MudTh>Vacant</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.ID</MudTd>
         <MudTd DataLabel="Start">@context.TimeSlotStart</MudTd>
         <MudTd DataLabel="End">@context.TimeSlotEnd</MudTd>
         <MudTd DataLabel="Title">@context.Title</MudTd>
-        <MudTd DataLabel="Vacant">@context.BookerId</MudTd>
+        <MudTd DataLabel="Vacant">@context.IsVacant</MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager PageSizeOptions="new int[] { 12, 24, 36, 48, 60 }" />
@@ -69,13 +84,10 @@
 
     private string newItemTitle;
 
-    private IList<TimeSlot> timeSlots = new List<TimeSlot>();
-    private IList<TimeSlot> timeSlotsTemp = new List<TimeSlot>();
+    //private List<Product> products = new();
+    //private List<TimeSlot> timeSlots = new();
 
-    [Parameter]
-    public int hasItems { get; set; }
-    [Parameter]
-    public TimeSlot firstVacantSlot { get; set; }
+
 
     private string searchString = "";
     private TimeSlot selectedItem = null;
@@ -125,52 +137,43 @@
         await RefreshDb();
     }
 
-    //Add check if timeSlot.isVacant = true else message to user
-    private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, int booker)
-    {
-        var UpdateTimeSlot = firstVacantSlot;
-        UpdateTimeSlot.IsVacant = notVacantSlot;
-        UpdateTimeSlot.Title = title;
-        UpdateTimeSlot.BookerId = booker;
-        await Http.PutAsJsonAsync($"https://localhost:44315/api/v1/TimeSlot/Update?id={UpdateTimeSlot.ID}", UpdateTimeSlot);
-
-        await RefreshDb();
-    }
+    [Parameter]
+    public int hasItems { get; set; }
 
     private async Task RefreshDb()
     {
-        //DateTime dtToday = DateTime.UtcNow;
-        timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + dtToday);
+        timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/2021-06-15");
+        hasItems = timeSlots.Count();
 
-        // check for next vacant Timeslot
-        firstVacantSlot = timeSlots.FirstOrDefault(f => f.IsVacant);
+        InitDailySchedule();
 
         // Testing localhost server IIS
         //timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:81/api/v1/TimeSlot");
     }
 
     // Init empty daily schedule
-    private async Task InitDailySchedule()
+    // rewrite to check Db for IsVacant = false
+    private void InitDailySchedule()
     {
-        TimeSpan duration = new TimeSpan(0, 0, 15, 0);
-        DateTime initDate = new DateTime(dtToday.Year, dtToday.Month, dtToday.Day, 6, 0, 0);
-
-        for (int i = 0; i < 80; i++)
+        if (hasItems == 0)
         {
-            var timeSlot = new TimeSlot();
-            timeSlot.ID = Guid.NewGuid();
-            timeSlot.TimeSlotStart = initDate;
-            timeSlot.TimeSlotEnd = timeSlot.TimeSlotStart.Add(duration);
-            timeSlot.Title = "Vacant";
-            timeSlot.IsVacant = true;
-            timeSlot.CreatedUTC = dtToday;
+            TimeSpan duration = new TimeSpan(0, 0, 15, 0);
+            DateTime initDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 6, 0, 0);
 
-            await Http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", timeSlot);
+            for (int i = 0; i < 12; i++)
+            {
+                var timeSlot = new TimeSlot();
+                timeSlot.ID = Guid.NewGuid();
+                timeSlot.TimeSlotStart = initDate;
+                timeSlot.TimeSlotEnd = timeSlot.TimeSlotStart.Add(duration);
+                timeSlot.Title = "Vacant";
+                timeSlot.IsVacant = true;
+                timeSlots.Add(timeSlot);
 
-            initDate = initDate.Add(duration);
+                initDate = initDate.Add(duration);
+
+            }
         }
-
-        await RefreshDb();
     }
 
 }
