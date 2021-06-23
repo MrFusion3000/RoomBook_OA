@@ -18,8 +18,8 @@ namespace RoomBook_OA_UI.AuthProviders
                 new Claim(ClaimTypes.Role, "Administrator")
             };
 
-            //var anonymous = new ClaimsIdentity(claims, "testAuthType");
-            var anonymous = new ClaimsIdentity();
+            var anonymous = new ClaimsIdentity(claims, "testAuthType");
+            //var anonymous = new ClaimsIdentity();
 
             return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(anonymous)));
         }
