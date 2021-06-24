@@ -11,6 +11,9 @@ using Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Http;
+using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Persistance.Context;
 
 //using Persistence;
 
@@ -30,6 +33,7 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region AddCors
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
@@ -43,6 +47,7 @@ namespace WebApi
                                   .AllowAnyMethod();
                               });
             });
+            #endregion
 
             services.AddControllers(options =>
             {
@@ -75,6 +80,12 @@ namespace WebApi
             });
             #endregion
 
+            #region Identity
+            services.AddIdentity<User, UserRole>()
+                .AddDefaultTokenProviders();
+            services.AddTransient<IUserStore<User>, UserStore>();
+            services.AddTransient<IRoleStore<UserRole>, RoleStore>();
+            #endregion
 
             services.AddApplication();
             services.AddPersistence(Configuration);
