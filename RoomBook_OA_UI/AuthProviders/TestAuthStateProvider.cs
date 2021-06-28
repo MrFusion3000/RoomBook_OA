@@ -11,20 +11,15 @@ namespace RoomBook_OA_UI.AuthProviders
     {
         public async override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            await Task.Delay(1500);
+            await Task.Delay(500);
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, "John Doe"),
                 new Claim(ClaimTypes.Role, "Administrator")
             };
 
-<<<<<<< HEAD
             var anonymous = new ClaimsIdentity(claims, "testAuthType");
             //var anonymous = new ClaimsIdentity();
-=======
-            //var anonymous = new ClaimsIdentity(claims, "testAuthType");
-            var anonymous = new ClaimsIdentity();
->>>>>>> master
 
             return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(anonymous)));
         }
