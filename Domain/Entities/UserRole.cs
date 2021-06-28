@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
+    [Table("UserRole")]
     public class UserRole
     {
         [Key, Required]

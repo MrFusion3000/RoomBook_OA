@@ -1,10 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Persistance.Context
@@ -14,10 +10,6 @@ namespace Persistance.Context
             : base(options)
         {
         }
-
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +23,9 @@ namespace Persistance.Context
         public DbSet<Product> Products { get; set; }
         public DbSet<TimeSlot> TimeSlots { get; set; }
         public DbSet<User> ApplicationUsers { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
         public async Task<int> SaveChangesAsync()
         {

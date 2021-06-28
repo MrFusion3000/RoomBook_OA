@@ -94,9 +94,8 @@ namespace Persistance.Context
 
         public async Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            return await db.Users
-                .AsAsyncEnumerable()
-                .SingleOrDefault(p => p.UserName.Equals(normalizedUserName, StringComparison.OrdinalIgnoreCase), cancellationToken);
+            return await db.Users                
+                .SingleOrDefaultAsync(p => p.UserName.Equals("dev"), cancellationToken);
         }
 
         public Task SetPasswordHashAsync(User user, string passwordHash, CancellationToken cancellationToken)

@@ -33,6 +33,8 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddPersistence(Configuration);
+
             #region AddCors
             services.AddCors(options =>
             {
@@ -81,19 +83,25 @@ namespace WebApi
             #endregion
 
             #region Identity
-            services.AddIdentity<User, UserRole>()
-                .AddDefaultTokenProviders();
-            services.AddTransient<IUserStore<User>, UserStore>();
-            services.AddTransient<IRoleStore<UserRole>, RoleStore>();
+            //services.AddMvc();
+            //services.AddIdentity<User, UserRole>()
+            //    .AddDefaultTokenProviders();
+            //services.AddTransient<IUserStore<User>, UserStore>();
+            //services.AddTransient<IRoleStore<UserRole>, RoleStore>();
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    options.Cookie.HttpOnly = true;
+            //    options.LoginPath = "/Login";
+            //    options.LogoutPath = "/Logout";
+            //});
             #endregion
 
             services.AddApplication();
-            services.AddPersistence(Configuration);
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SignInManager<User> s)
         {
             if (env.IsDevelopment())
             {
@@ -109,6 +117,22 @@ namespace WebApi
             app.UseRouting();
 
             app.UseAuthorization();
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+
+                if (s.UserManager.FindByNameAsync("dev").Result == null)
+                {
+                    var result = s.UserManager.CreateAsync(new User
+                    {
+                        UserName = "dev",
+                        Email = "dev@app.com"
+                    }, "Aut94L#G-a").Result;
+                }
+            }
+            app.UseAuthentication();
 
             #region Swagger
             app.UseSwagger();
