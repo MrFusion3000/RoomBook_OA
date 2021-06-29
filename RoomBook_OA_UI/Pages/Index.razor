@@ -124,7 +124,6 @@
 
     private async Task AddTimeSlot()
     {
-        //var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 999, CreatedUTC = DateTime.UtcNow };
         var addTimeSlot = new TimeSlot { TimeSlotStart = dtToday, TimeSlotEnd = dtToday.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 999, CreatedUTC = DateTime.UtcNow };
 
         await Http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", addTimeSlot);
