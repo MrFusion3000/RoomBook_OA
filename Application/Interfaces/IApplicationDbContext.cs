@@ -11,6 +11,7 @@ namespace Application.Interfaces
     {
         DbSet<Product> Products { get; set; }
         DbSet<TimeSlot> TimeSlots { get; set; }
+        DbSet<User> ApplicationUsers { get; set; }
 
         Task<int> SaveChangesAsync();
     }
