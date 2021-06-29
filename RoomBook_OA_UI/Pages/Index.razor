@@ -18,12 +18,8 @@
 
     @if (firstVacantSlot != null)
     {
-    <tr class="">
-        <td>Booker Id: @item.BookerId</td>
-        <td>Timeslot: @item.TimeSlotStart -- @item.TimeSlotEnd</td>
-        <td> Title: @item.Title</td>
-    </tr>
-    }*@
+        <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(firstVacantSlot, false, "InstaBooked", 999))">InstaBook&trade; @firstVacantSlot.TimeSlotStart - @firstVacantSlot.TimeSlotEnd.TimeOfDay</MudButton>
+    }
     <AuthorizeView Roles="Administrator">
         <Authorized>
             The user @context.User.FindFirst(ClaimTypes.Name).Value is authorized as: @context.User.FindFirst(ClaimTypes.Role)
@@ -38,7 +34,7 @@
     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
 }
 
-<MudTable Items="@timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" @bind-SelectedItem="selectedItem">
+<MudTable Items="@timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" @bind-SelectedItem="selectedItem" RowsPerPage="12">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Schedule</MudText>
         <MudToolBarSpacer />
@@ -49,14 +45,14 @@
         <MudTh>Start</MudTh>
         <MudTh>End</MudTh>
         <MudTh>Title</MudTh>
-        <MudTh>Vacant</MudTh>
+        <MudTh>Booker</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.ID</MudTd>
         <MudTd DataLabel="Start">@context.TimeSlotStart</MudTd>
         <MudTd DataLabel="End">@context.TimeSlotEnd</MudTd>
         <MudTd DataLabel="Title">@context.Title</MudTd>
-        <MudTd DataLabel="Vacant">@context.IsVacant</MudTd>
+        <MudTd DataLabel="Vacant">@context.BookerId</MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager PageSizeOptions="new int[] { 12, 24, 36, 48, 60 }" />
@@ -86,8 +82,13 @@
 
     //private List<Product> products = new();
     //private List<TimeSlot> timeSlots = new();
+    private IList<TimeSlot> timeSlots = new List<TimeSlot>();
+    private IList<TimeSlot> timeSlotsTemp = new List<TimeSlot>();
 
-
+    [Parameter]
+    public int hasItems { get; set; }
+    [Parameter]
+    public TimeSlot firstVacantSlot { get; set; }
 
     private string searchString = "";
     private TimeSlot selectedItem = null;
@@ -137,13 +138,24 @@
         await RefreshDb();
     }
 
-    [Parameter]
-    public int hasItems { get; set; }
+    //Add check if timeSlot.isVacant = true else message to user
+    private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, int booker)
+    {
+        var UpdateTimeSlot = firstVacantSlot;
+        UpdateTimeSlot.IsVacant = notVacantSlot;
+        UpdateTimeSlot.Title = title;
+        UpdateTimeSlot.BookerId = booker;
+        await Http.PutAsJsonAsync($"https://localhost:44315/api/v1/TimeSlot/Update?id={UpdateTimeSlot.ID}", UpdateTimeSlot);
+
+        await RefreshDb();
+    }
 
     private async Task RefreshDb()
     {
-        timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/2021-06-15");
-        hasItems = timeSlots.Count();
+        //DateTime dtToday = DateTime.UtcNow;
+        timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + dtToday);
+
+        firstVacantSlot = timeSlots.FirstOrDefault(f => f.IsVacant);
 
         InitDailySchedule();
 
@@ -153,27 +165,31 @@
 
     // Init empty daily schedule
     // rewrite to check Db for IsVacant = false
-    private void InitDailySchedule()
+    private async Task InitDailySchedule()
     {
+        TimeSpan duration = new TimeSpan(0, 0, 15, 0);
+        DateTime initDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 6, 0, 0);
+
         if (hasItems == 0)
-        {
-            TimeSpan duration = new TimeSpan(0, 0, 15, 0);
-            DateTime initDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 6, 0, 0);
-
-            for (int i = 0; i < 12; i++)
             {
-                var timeSlot = new TimeSlot();
-                timeSlot.ID = Guid.NewGuid();
-                timeSlot.TimeSlotStart = initDate;
-                timeSlot.TimeSlotEnd = timeSlot.TimeSlotStart.Add(duration);
-                timeSlot.Title = "Vacant";
-                timeSlot.IsVacant = true;
-                timeSlots.Add(timeSlot);
+                for (int i = 0; i < 12; i++)
+                {
+                    var timeSlot = new TimeSlot();
+                    timeSlot.ID = Guid.NewGuid();
+                    timeSlot.TimeSlotStart = initDate;
+                    timeSlot.TimeSlotEnd = timeSlot.TimeSlotStart.Add(duration);
+                    timeSlot.Title = "Vacant";
+                    timeSlot.IsVacant = true;
+                    timeSlot.CreatedUTC = dtToday;
 
-                initDate = initDate.Add(duration);
+                    await Http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", timeSlot);
+                    //timeSlots.Add(timeSlot);
 
-            }
+                    initDate = initDate.Add(duration);
+
+                }
         }
+        await RefreshDb();
     }
 
 }
