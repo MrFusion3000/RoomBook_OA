@@ -27,7 +27,7 @@ namespace Application.Features.ScheduleFeatures.Commands
             }
             public async Task<Guid> Handle(UpdateTimeSlotCommand command, CancellationToken cancellationToken)
             {
-                var timeSlot = _context.TimeSlots.Where(a => a.ID == command.ID).FirstOrDefault();
+                var timeSlot = _context.TimeSlots.FirstOrDefault(a => a.ID == command.ID);
 
                 if (timeSlot == null)
                 {
