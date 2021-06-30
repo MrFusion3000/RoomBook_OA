@@ -15,7 +15,6 @@ namespace Persistance.Context
         {
             modelBuilder.Entity<Product>().Property(p => p.Rate).HasColumnType("decimal(10, 2)");
             //modelBuilder.Entity<TimeSlot>().ToTable("TimeSlots");
-            
 
             base.OnModelCreating(modelBuilder);
         }

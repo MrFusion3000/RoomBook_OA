@@ -9,7 +9,7 @@ namespace RoomBook_OA_UI.AuthProviders
 {
     public class TestAuthStateProvider : AuthenticationStateProvider
     {
-        public async override Task<AuthenticationState> GetAuthenticationStateAsync()
+        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             await Task.Delay(500);
             var claims = new List<Claim>

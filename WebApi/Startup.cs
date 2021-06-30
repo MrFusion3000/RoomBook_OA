@@ -12,9 +12,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Http;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Persistance.Context;
-
+using RoomBook_OA_UI.AuthProviders;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Routing;
 
 
 //using Persistence;
@@ -96,6 +99,15 @@ namespace WebApi
             //    options.LoginPath = "/Login";
             //    options.LogoutPath = "/Logout";
             //});
+
+            //ADD AUTHORIZATION POLICY START
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("LoggedIn", policy =>
+                    policy.Requirements.Add(new AuthorizeLoggedInController()));
+            });
+            services.AddSingleton<IAuthorizationHandler, LoggedIn>();
+            //ADD AUTHORIZATION POLICY END
             #endregion
 
             services.AddApplication();
@@ -118,22 +130,42 @@ namespace WebApi
 
             app.UseRouting();
 
+            //SET REDIRECTION BASED ON AUTHORIZATION POLICY START
+            app.Use(async (ctx, next) =>
+            {
+                var ep = ctx.Features.Get<IEndpointFeature>()?.Endpoint;
+                var authAttr = ep?.Metadata?.GetMetadata<AuthorizeAttribute>();
+                if (authAttr != null && authAttr.Policy == "LoggedIn")
+                {
+                    var authService = ctx.RequestServices.GetRequiredService<IAuthorizationService>();
+                    var result = await authService.AuthorizeAsync(ctx.User, ctx.GetRouteData(), authAttr.Policy);
+                    if (!result.Succeeded)
+                    {
+                        var path = $"/login";
+                        ctx.Response.Redirect(path);
+                        return;
+                    }
+                }
+                await next();
+            });
+            //SET REDIRECTION BASED ON AUTHORIZATION POLICY END
+
             app.UseAuthorization();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //    app.UseBrowserLink();
 
-                if (s.UserManager.FindByNameAsync("dev").Result == null)
-                {
-                    var result = s.UserManager.CreateAsync(new User
-                    {
-                        UserName = "dev",
-                        Email = "dev@app.com"
-                    }, "Aut94L#G-a").Result;
-                }
-            }
+            //    if (s.UserManager.FindByNameAsync("dev").Result == null)
+            //    {
+            //        var result = s.UserManager.CreateAsync(new User
+            //        {
+            //            UserName = "dev",
+            //            Email = "dev@app.com"
+            //        }, "Aut94L#G-a").Result;
+            //    }
+            //}
             app.UseAuthentication();
 
             #region Swagger

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace RoomBook_OA_UI.Authentication
+namespace RoomBook_OA_UI.AuthProviders
 {
     public class JwtParser
     {

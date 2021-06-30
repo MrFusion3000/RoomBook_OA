@@ -14,19 +14,21 @@
 
 @*<h3>Todays Schedule (Mockup)</h3>
     <hr />*@
+<AuthorizeView Roles="Administrator">
+    <Authorized>
+        The user @context.User.FindFirst(ClaimTypes.Name).Value is authorized as: @context.User.FindFirst(ClaimTypes.Role).Value
+    </Authorized>
+    <NotAuthorized>
+        The User is not authorized
+    </NotAuthorized>
+</AuthorizeView>
+<hr/>
 
-    @if (firstVacantSlot != null)
+@if (firstVacantSlot != null)
     {
         <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(firstVacantSlot, false, "InstaBooked", 999))">InstaBook&trade; @firstVacantSlot.TimeSlotStart - @firstVacantSlot.TimeSlotEnd.TimeOfDay</MudButton>
     }
-    <AuthorizeView Roles="Administrator">
-        <Authorized>
-            The user @context.User.FindFirst(ClaimTypes.Name).Value is authorized as: @context.User.FindFirst(ClaimTypes.Role)
-        </Authorized>
-        <NotAuthorized>
-         The User is not authorized
-        </NotAuthorized>
-    </AuthorizeView>
+
 
 @if (hasItems == 0)
 {
