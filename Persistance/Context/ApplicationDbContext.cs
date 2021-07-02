@@ -2,9 +2,11 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using Persistance.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Persistance.Context
-{    public class ApplicationDbContext : DbContext, IApplicationDbContext
+{    public class ApplicationDbContext : DbContext ,IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

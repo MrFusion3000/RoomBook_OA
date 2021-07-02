@@ -26,10 +26,12 @@ namespace WebApi
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        //private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        private readonly IWebHostEnvironment _env;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
+            _env = env;
             Configuration = configuration;
         }
 
@@ -41,19 +43,20 @@ namespace WebApi
             services.AddPersistence(Configuration);
 
             #region AddCors
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                              builder =>
-                              {
-                                  builder.WithOrigins("https://localhost:44372",
-                                                      "https://localhost:44315",
-                                                      "https://localhost:81",
-                                                      "https://localhost:82")
-                                  .AllowAnyHeader()
-                                  .AllowAnyMethod();
-                              });
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(name: MyAllowSpecificOrigins,
+            //                  builder =>
+            //                  {
+            //                      builder.WithOrigins("https://localhost:44372",
+            //                                          "https://localhost:44315",
+            //                                          "https://localhost:81",
+            //                                          "https://localhost:82")
+            //                      .AllowAnyHeader()
+            //                      .AllowAnyMethod();
+            //                  });
+            //});
+            services.AddCors();
             #endregion
 
             services.AddControllers(options =>
@@ -88,6 +91,8 @@ namespace WebApi
             #endregion
 
             #region Identity
+            //Placed in Persistance/DependencyInjection.cs
+
             //services.AddMvc();
             //services.AddIdentity<User, UserRole>()
             //    .AddDefaultTokenProviders();
@@ -101,12 +106,12 @@ namespace WebApi
             //});
 
             //ADD AUTHORIZATION POLICY START
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("LoggedIn", policy =>
-                    policy.Requirements.Add(new AuthorizeLoggedInController()));
-            });
-            services.AddSingleton<IAuthorizationHandler, LoggedIn>();
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("LoggedIn", policy =>
+            //        policy.Requirements.Add(new AuthorizeLoggedInController()));
+            //});
+            //services.AddSingleton<IAuthorizationHandler, LoggedIn>();
             //ADD AUTHORIZATION POLICY END
             #endregion
 
@@ -122,7 +127,11 @@ namespace WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(MyAllowSpecificOrigins);
+            //app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseBlazorFrameworkFiles();
 
@@ -130,28 +139,10 @@ namespace WebApi
 
             app.UseRouting();
 
-            //SET REDIRECTION BASED ON AUTHORIZATION POLICY START
-            app.Use(async (ctx, next) =>
-            {
-                var ep = ctx.Features.Get<IEndpointFeature>()?.Endpoint;
-                var authAttr = ep?.Metadata?.GetMetadata<AuthorizeAttribute>();
-                if (authAttr != null && authAttr.Policy == "LoggedIn")
-                {
-                    var authService = ctx.RequestServices.GetRequiredService<IAuthorizationService>();
-                    var result = await authService.AuthorizeAsync(ctx.User, ctx.GetRouteData(), authAttr.Policy);
-                    if (!result.Succeeded)
-                    {
-                        var path = $"/login";
-                        ctx.Response.Redirect(path);
-                        return;
-                    }
-                }
-                await next();
-            });
-            //SET REDIRECTION BASED ON AUTHORIZATION POLICY END
 
             app.UseAuthorization();
 
+            #region Seed user
             //if (env.IsDevelopment())
             //{
             //    app.UseDeveloperExceptionPage();
@@ -166,6 +157,8 @@ namespace WebApi
             //        }, "Aut94L#G-a").Result;
             //    }
             //}
+            #endregion
+
             app.UseAuthentication();
 
             #region Swagger
@@ -175,14 +168,16 @@ namespace WebApi
 
             app.UseDeveloperExceptionPage();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/echo",
-                context => context.Response.WriteAsync("echo"))
-                .RequireCors(MyAllowSpecificOrigins);
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapGet("/echo",
+            //    context => context.Response.WriteAsync("echo"))
+            //    .RequireCors(MyAllowSpecificOrigins);
 
-                endpoints.MapControllers();
-            });
+            //    endpoints.MapControllers();
+            //});
+
+            app.UseEndpoints(x => x.MapControllers());
         }
     }
 }

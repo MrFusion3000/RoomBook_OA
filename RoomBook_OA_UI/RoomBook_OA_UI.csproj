@@ -12,6 +12,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.7" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="MudBlazor" Version="5.0.15" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />

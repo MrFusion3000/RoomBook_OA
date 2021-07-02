@@ -18,7 +18,7 @@ namespace RoomBook_OA_UI.AuthProviders
     public class LoggedIn : AuthorizationHandler<AuthorizeLoggedInController>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private ISession _session => _httpContextAccessor.HttpContext.Session;
+        private ISession Session => _httpContextAccessor.HttpContext.Session;
         public LoggedIn(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -28,8 +28,8 @@ namespace RoomBook_OA_UI.AuthProviders
             AuthorizeLoggedInController requirement)
         {
 
-            var UserID = _session.GetString("userID");
-            if (!string.IsNullOrEmpty(UserID))
+            var timeUserId = Session.GetString("userID");
+            if (!string.IsNullOrEmpty(timeUserId))
             {
                 context.Succeed(requirement);
             }
