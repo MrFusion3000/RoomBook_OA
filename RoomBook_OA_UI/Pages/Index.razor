@@ -6,19 +6,19 @@
 
 @inject HttpClient _http
 
-<AuthorizeView Roles="Administrator">
+@*<AuthorizeView Roles="Administrator">
     <Authorized>
         The user @context.User.FindFirst(ClaimTypes.Name)?.Value is authorized as: @context.User.FindFirst(ClaimTypes.Role)?.Value
     </Authorized>
     <NotAuthorized>
         The User is not authorized
     </NotAuthorized>
-</AuthorizeView>
+</AuthorizeView>*@
 <hr/>
 
 @if (FirstVacantSlot != null)
     {
-        <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(FirstVacantSlot, false, "InstaBooked", 999))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart - @FirstVacantSlot.TimeSlotEnd.TimeOfDay</MudButton>
+<MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(FirstVacantSlot, false, "InstaBooked", 999))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart.ToShortDateString() @FirstVacantSlot.TimeSlotStart.ToLocalTime().ToShortTimeString() - @FirstVacantSlot.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
     }
 
 

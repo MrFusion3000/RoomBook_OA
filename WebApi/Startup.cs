@@ -15,7 +15,7 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Persistance.Context;
-using RoomBook_OA_UI.AuthProviders;
+//using RoomBook_OA_UI.AuthProviders;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Routing;
 

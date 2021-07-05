@@ -1,7 +1,21 @@
-<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+@inject NavigationManager NavigationManager
+
+<Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
-        <!--<RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />-->
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+        <AppRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+    </Found>
+    <NotFound>
+        @{
+            // redirect to home page if not found
+            NavigationManager.NavigateTo("");
+        }
+    </NotFound>
+</Router>
+
+<!--<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+    <Found Context="routeData">-->
+<!--<RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />-->
+<!--<AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
             <Authorizing>
                 <text>Please wait, we are authorizing the user.</text>
             </Authorizing>
@@ -15,7 +29,7 @@
             <p>Sorry, there's nothing at this address.</p>
         </LayoutView>
     </NotFound>
-</Router>
+</Router>-->
 
 <MudThemeProvider />
 <MudDialogProvider />
