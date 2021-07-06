@@ -22,9 +22,9 @@ namespace Application.Features.ScheduleFeatures.Queries
             }
             public async Task<TimeSlot> Handle(GetTimeSlotByIdQuery query, CancellationToken cancellationToken)
             {
-                var timeSlot = _context.TimeSlots.Where(a => a.ID == query.ID).FirstOrDefault();
+                var timeSlot = _context.TimeSlots.FirstOrDefault(a => a.ID == query.ID);
                 if (timeSlot == null) return null;
-                return timeSlot;
+                return await Task.FromResult(timeSlot);
             }
         }
     }

@@ -27,10 +27,10 @@ namespace RoomBook_OA_UI.Services
 
     public class HttpService : IHttpService
     {
-        private HttpClient _httpClient;
-        private NavigationManager _navigationManager;
-        private ILocalStorageService _localStorageService;
-        private IConfiguration _configuration;
+        private readonly HttpClient _httpClient;
+        private readonly NavigationManager _navigationManager;
+        private readonly ILocalStorageService _localStorageService;
+        private readonly IConfiguration _configuration;
 
         public HttpService(
             HttpClient httpClient,
@@ -88,7 +88,7 @@ namespace RoomBook_OA_UI.Services
 
         // helper methods
 
-        private HttpRequestMessage createRequest(HttpMethod method, string uri, object value = null)
+        private static HttpRequestMessage createRequest(HttpMethod method, string uri, object value = null)
         {
             var request = new HttpRequestMessage(method, uri);
             if (value != null)
@@ -129,8 +129,10 @@ namespace RoomBook_OA_UI.Services
 
             await handleErrors(response);
 
-            var options = new JsonSerializerOptions();
-            options.PropertyNameCaseInsensitive = true;
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
             options.Converters.Add(new StringConverter());
             return await response.Content.ReadFromJsonAsync<T>(options);
         }

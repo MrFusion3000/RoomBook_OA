@@ -65,7 +65,7 @@ namespace RoomBook_OA_UI.Services
 
         public void Alert(Alert alert)
         {
-            alert.Id = alert.Id ?? _defaultId;
+            alert.Id ??= _defaultId;
             this.OnAlert?.Invoke(alert);
         }
 

@@ -13,7 +13,7 @@ namespace RoomBook_OA_UI.Services
 
     public class LocalStorageService : ILocalStorageService
     {
-        private IJSRuntime _jsRuntime;
+        private readonly IJSRuntime _jsRuntime;
 
         public LocalStorageService(IJSRuntime jsRuntime)
         {

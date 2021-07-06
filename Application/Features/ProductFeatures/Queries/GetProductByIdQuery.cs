@@ -24,7 +24,7 @@ namespace Application.Features.ProductFeatures.Queries
             {
                 var product = _context.Products.Where(a => a.Id == query.Id).FirstOrDefault();
                 if (product == null) return null;
-                return product;
+                return await Task.FromResult(product);
             }
         }
     }

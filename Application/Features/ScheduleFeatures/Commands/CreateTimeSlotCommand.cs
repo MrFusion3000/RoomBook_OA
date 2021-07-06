@@ -2,8 +2,6 @@
 using Domain.Entities;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,13 +24,15 @@ namespace Application.Features.ScheduleFeatures.Commands
             }
             public async Task<Guid> Handle(CreateTimeSlotCommand command, CancellationToken cancellationToken)
             {
-                var timeslot = new TimeSlot();
-                timeslot.TimeSlotStart = command.TimeSlotStart;
-                timeslot.TimeSlotEnd = command.TimeSlotEnd;
-                timeslot.Title = command.Title;
-                timeslot.IsVacant = command.IsVacant;
-                timeslot.BookerId = command.BookerId;
-                timeslot.CreatedUTC = command.CreatedUTC;
+                var timeslot = new TimeSlot
+                {
+                    TimeSlotStart = command.TimeSlotStart,
+                    TimeSlotEnd = command.TimeSlotEnd,
+                    Title = command.Title,
+                    IsVacant = command.IsVacant,
+                    BookerId = command.BookerId,
+                    CreatedUTC = command.CreatedUTC
+                };
                 _context.TimeSlots.Add(timeslot);
                 await _context.SaveChangesAsync();
                 return timeslot.ID;

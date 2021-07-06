@@ -21,10 +21,10 @@ namespace RoomBook_OA_UI.Services
 
     public class AccountService : IAccountService
     {
-        private IHttpService _httpService;
-        private NavigationManager _navigationManager;
-        private ILocalStorageService _localStorageService;
-        private string _userKey = "user";
+        private readonly IHttpService _httpService;
+        private readonly NavigationManager _navigationManager;
+        private readonly ILocalStorageService _localStorageService;
+        private readonly string _userKey = "user";
 
         public User User { get; private set; }
 
