@@ -4,42 +4,7 @@
         <name>WebApi</name>
     </assembly>
     <members>
-        <member name="M:WebApi.Controllers.v1.ProductController.Create(Application.Features.ProductFeatures.Commands.CreateProductCommand)">
-            <summary>
-            Creates a New Product.
-            </summary>
-            <param name="command"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.ProductController.GetAll">
-            <summary>
-            Gets all Products.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.ProductController.GetById(System.Int32)">
-            <summary>
-            Gets Product Entity by Id.
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.ProductController.Delete(System.Int32)">
-            <summary>
-            Deletes Product Entity based on Id.
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.ProductController.Update(System.Int32,Application.Features.ProductFeatures.Commands.UpdateProductCommand)">
-            <summary>
-            Updates the Product Entity based on Id.   
-            </summary>
-            <param name="id"></param>
-            <param name="command"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.TimeSlotController.Create(Application.Features.ScheduleFeatures.Commands.CreateTimeSlotCommand)">
+        <member name="M:WebApi.Controllers.v1.TimeSlotController.Create(Persistance.Features.ScheduleFeatures.Commands.CreateTimeSlotCommand)">
             <summary>
             Creates a New TimeSlot.
             </summary>
@@ -73,7 +38,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:WebApi.Controllers.v1.TimeSlotController.Update(System.Guid,Application.Features.ScheduleFeatures.Commands.UpdateTimeSlotCommand)">
+        <member name="M:WebApi.Controllers.v1.TimeSlotController.Update(System.Guid,Persistance.Features.ScheduleFeatures.Commands.UpdateTimeSlotCommand)">
             <summary>
             Updates the TimeSlot Entity based on Id.   
             </summary>

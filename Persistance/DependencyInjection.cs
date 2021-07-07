@@ -1,10 +1,12 @@
-﻿using Application.Interfaces;
-using Domain.Entities;
+﻿using System.Reflection;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistance.Context;
+using Persistance.Interfaces;
+using Domain.Entities.Auth;
 
 namespace Persistance
 {
@@ -12,15 +14,17 @@ namespace Persistance
     {
         public static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
-            services.AddIdentity<User, UserRole>()
-                .AddDefaultTokenProviders();
-            services.AddScoped<IUserStore<User>, UserStore>();
-            services.AddScoped<IRoleStore<UserRole>, RoleStore>();
+            //services.AddIdentity<APIUser, UserRole>()
+            //    .AddDefaultTokenProviders();
+            //services.AddScoped<IUserStore<APIUser>, UserStore>();
+            //services.AddScoped<IRoleStore<UserRole>, RoleStore>();
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
@@ -28,5 +32,12 @@ namespace Persistance
                 options.LogoutPath = "/Logout";
             });
         }
+
+        public static void AddApplication(this IServiceCollection services)
+        {
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+        }
     }
+
+    
 }

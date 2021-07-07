@@ -1,7 +1,3 @@
-using RoomBook_OA_UI.Helpers;
-using RoomBook_OA_UI.Models;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -11,6 +7,10 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Configuration;
+using RoomBook_OA_UI.Helpers;
+using Persistance.Models;
 
 namespace RoomBook_OA_UI.Services
 {

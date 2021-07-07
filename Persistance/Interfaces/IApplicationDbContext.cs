@@ -1,0 +1,17 @@
+﻿using System.Threading.Tasks;
+using Domain.Entities;
+using Domain.Entities.Auth;
+using Microsoft.EntityFrameworkCore;
+using Persistance.Models;
+
+namespace Persistance.Interfaces
+{
+    public interface IApplicationDbContext
+    {
+        //DbSet<Product> Products { get; set; }
+        DbSet<TimeSlot> TimeSlots { get; set; }
+        DbSet<User> ApplicationUsers { get; set; }
+
+        Task<int> SaveChangesAsync();
+    }
+}

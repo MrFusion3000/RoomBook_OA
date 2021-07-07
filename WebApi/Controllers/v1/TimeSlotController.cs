@@ -1,11 +1,9 @@
-﻿using Application.Features.ScheduleFeatures.Commands;
-using Application.Features.ScheduleFeatures.Queries;
+﻿using Application.Features.ScheduleFeatures.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Persistance.Features.ScheduleFeatures.Commands;
 
 namespace WebApi.Controllers.v1
 {

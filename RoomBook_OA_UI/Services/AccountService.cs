@@ -1,8 +1,8 @@
-using RoomBook_OA_UI.Models;
-using RoomBook_OA_UI.Models.Account;
-using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Persistance.Models;
+using Persistance.Models.Account;
+using Microsoft.AspNetCore.Components;
 
 namespace RoomBook_OA_UI.Services
 {

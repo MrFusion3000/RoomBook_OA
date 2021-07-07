@@ -1,23 +1,15 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MediatR;
 using Persistance;
-using Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.AspNetCore.Http;
-using Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
+using Persistance.Models;
 using Microsoft.AspNetCore.Identity;
-using Persistance.Context;
 //using RoomBook_OA_UI.AuthProviders;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Routing;
 
 
 //using Persistence;
@@ -35,7 +27,7 @@ namespace WebApi
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -91,36 +83,12 @@ namespace WebApi
             #endregion
 
             #region Identity
-            //Placed in Persistance/DependencyInjection.cs
-
-            //services.AddMvc();
-            //services.AddIdentity<User, UserRole>()
-            //    .AddDefaultTokenProviders();
-            //services.AddTransient<IUserStore<User>, UserStore>();
-            //services.AddTransient<IRoleStore<UserRole>, RoleStore>();
-            //services.ConfigureApplicationCookie(options =>
-            //{
-            //    options.Cookie.HttpOnly = true;
-            //    options.LoginPath = "/Login";
-            //    options.LogoutPath = "/Logout";
-            //});
-
-            //ADD AUTHORIZATION POLICY START
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("LoggedIn", policy =>
-            //        policy.Requirements.Add(new AuthorizeLoggedInController()));
-            //});
-            //services.AddSingleton<IAuthorizationHandler, LoggedIn>();
-            //ADD AUTHORIZATION POLICY END
+            //This section is placed in Persistance/DependencyInjection.cs
             #endregion
-
-            services.AddApplication();
-            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SignInManager<User> s)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env/*, SignInManager<User> s*/)
         {
             if (env.IsDevelopment())
             {
