@@ -1,6 +1,7 @@
 ﻿using System;
+using Domain.Common;
 
-namespace Domain.Entities
+namespace Domain.Interfaces
 {
     interface IBooker : IDataEntitybase
     {

@@ -1,4 +1,6 @@
 ﻿using System;
+using Domain.Common;
+using Domain.Interfaces;
 
 namespace Domain.Entities
 {
@@ -9,14 +11,11 @@ namespace Domain.Entities
         public DateTime TimeSlotEnd { get; set; }
         public string Title { get; set; }
         public bool IsVacant { get; set; }
-
-        //Change to Guid
         public int BookerId { get; set; }
         public DateTime CreatedUTC { get; set; }
+        public Guid RoomId { get; set; }
 
-        //public Guid IDataEntitybase.ID { get; set; }
-
-        public static ITimeSlot Create(Guid id, DateTime timeSlotStart, DateTime timeSlotEnd, string title, bool isVacant, int bookerId, DateTime createdUTC)
+        public static ITimeSlot Create(Guid id, DateTime timeSlotStart, DateTime timeSlotEnd, string title, bool isVacant, int bookerId, DateTime createdUTC, Guid roomId)
         {
             return new TimeSlot()
             {
@@ -26,7 +25,8 @@ namespace Domain.Entities
                 Title = title,
                 IsVacant = isVacant,
                 BookerId = bookerId,
-                CreatedUTC = createdUTC
+                CreatedUTC = createdUTC,
+                RoomId = roomId
             };
         }
     }
