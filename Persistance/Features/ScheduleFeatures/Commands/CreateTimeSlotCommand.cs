@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Persistance.Interfaces;
 using Domain.Entities;
 using MediatR;
-using Persistance.Interfaces;
 
 namespace Persistance.Features.ScheduleFeatures.Commands
 {
@@ -15,6 +15,8 @@ namespace Persistance.Features.ScheduleFeatures.Commands
         public bool IsVacant { get; set; }
         public int BookerId { get; set; }
         public DateTime CreatedUTC { get; set; }
+        public Guid RoomId { get; set; }
+
         public class CreateTimeSlotCommandHandler : IRequestHandler<CreateTimeSlotCommand, Guid>
         {
             private readonly IApplicationDbContext _context;
@@ -31,7 +33,8 @@ namespace Persistance.Features.ScheduleFeatures.Commands
                     Title = command.Title,
                     IsVacant = command.IsVacant,
                     BookerId = command.BookerId,
-                    CreatedUTC = command.CreatedUTC
+                    CreatedUTC = command.CreatedUTC,
+                    RoomId = command.RoomId
                 };
                 _context.TimeSlots.Add(timeslot);
                 await _context.SaveChangesAsync();

@@ -3,24 +3,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistance.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "Room",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Barcode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rate = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                    CreatedUTC = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Placement = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_Room", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -33,21 +31,33 @@ namespace Persistance.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsVacant = table.Column<bool>(type: "bit", nullable: false),
                     BookerId = table.Column<int>(type: "int", nullable: false),
-                    CreatedUTC = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedUTC = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RoomId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TimeSlots", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_TimeSlots_Room_RoomId",
+                        column: x => x.RoomId,
+                        principalTable: "Room",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeSlots_RoomId",
+                table: "TimeSlots",
+                column: "RoomId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "TimeSlots");
 
             migrationBuilder.DropTable(
-                name: "TimeSlots");
+                name: "Room");
         }
     }
 }

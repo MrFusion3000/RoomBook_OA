@@ -7,12 +7,7 @@ using Microsoft.OpenApi.Models;
 using Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Persistance.Models;
-using Microsoft.AspNetCore.Identity;
-//using RoomBook_OA_UI.AuthProviders;
-
-
-//using Persistence;
+//using Application;
 
 namespace WebApi
 {
@@ -32,7 +27,7 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddPersistence(Configuration);
+            //services.AddApplication();
 
             #region AddCors
             //services.AddCors(options =>
@@ -85,6 +80,8 @@ namespace WebApi
             #region Identity
             //This section is placed in Persistance/DependencyInjection.cs
             #endregion
+
+            services.AddPersistence(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

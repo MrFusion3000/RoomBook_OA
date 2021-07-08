@@ -1,5 +1,5 @@
-﻿using Persistance.Features.ScheduleFeatures.Commands;
-using Persistance.Features.ScheduleFeatures.Queries;
+﻿using Persistance.Features.RoomFeatures.Commands;
+using Persistance.Features.RoomFeatures.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -8,49 +8,49 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
-    public class TimeSlotController : BaseApiController
+    public class RoomController : BaseApiController
     {
         /// <summary>
-        /// Creates a New TimeSlot.
+        /// Creates a New Room.
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTimeSlotCommand command)
+        public async Task<IActionResult> Create(CreateRoomCommand command)
         {
             return Ok(await Mediator.Send(command));
         }
         /// <summary>
-        /// Gets all TimeSlots.
+        /// Gets all Rooms.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await Mediator.Send(new GetAllTimeSlotsQuery()));
+            return Ok(await Mediator.Send(new GetAllRoomsQuery()));
         }
         /// <summary>
-        /// Gets all TimeSlots by date.
+        /// Gets all Rooms by date.
         /// </summary>
         /// <param name="today"></param>
         /// <returns></returns>
-        [HttpGet("GetAllTimeSlotsByDate/{today}")]
-        public async Task<IActionResult> GetAllTimeSlotsByDate(DateTime today)
-        {
-            return Ok(await Mediator.Send(new GetAllTimeSlotsByDateQuery { Today = today }));
-        }
+        //[HttpGet("GetAllRoomsByDate/{today}")]
+        //public async Task<IActionResult> GetAllRoomsByDate(DateTime today)
+        //{
+        //    return Ok(await Mediator.Send(new GetAllRoomsByDateQuery { Today = today }));
+        //}
         /// <summary>
-        /// Gets TimeSlot Entity by Id.
+        /// Gets Room Entity by Id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(await Mediator.Send(new GetTimeSlotByIdQuery { ID = id }));
+            return Ok(await Mediator.Send(new GetRoomByIdQuery { ID = id }));
         }
         /// <summary>
-        /// Deletes TimeSlot Entity based on Id.
+        /// Deletes Room Entity based on Id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -58,16 +58,16 @@ namespace WebApi.Controllers.v1
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok(await Mediator.Send(new DeleteTimeSlotByIdCommand { ID = id }));
+            return Ok(await Mediator.Send(new DeleteRoomByIdCommand { ID = id }));
         }
         /// <summary>
-        /// Updates the TimeSlot Entity based on Id.   
+        /// Updates the Room Entity based on Id.   
         /// </summary>
         /// <param name="id"></param>
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut("[action]")]
-        public async Task<IActionResult> Update(Guid id, UpdateTimeSlotCommand command)
+        public async Task<IActionResult> Update(Guid id, UpdateRoomCommand command)
         {
             if (id != command.ID)
             {

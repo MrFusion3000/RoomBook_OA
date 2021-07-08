@@ -1,10 +1,11 @@
 ﻿using System;
-using Domain.Common;
+using System.ComponentModel.DataAnnotations.Schema;
+//using Domain.Common;
 using Domain.Interfaces;
 
 namespace Domain.Entities
 {
-    public class TimeSlot : ITimeSlot, IDataEntitybase
+    public class TimeSlot : ITimeSlot
     {
         public Guid ID { get; set; }
         public DateTime TimeSlotStart { get; set; }
@@ -14,6 +15,9 @@ namespace Domain.Entities
         public int BookerId { get; set; }
         public DateTime CreatedUTC { get; set; }
         public Guid RoomId { get; set; }
+
+        [NotMapped]
+        public Room Room { get; set; }
 
         public static ITimeSlot Create(Guid id, DateTime timeSlotStart, DateTime timeSlotEnd, string title, bool isVacant, int bookerId, DateTime createdUTC, Guid roomId)
         {

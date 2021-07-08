@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Domain.Entities;
-using Domain.Entities.Auth;
 using Microsoft.EntityFrameworkCore;
 using Persistance.Models;
 
@@ -10,6 +9,7 @@ namespace Persistance.Interfaces
     {
         //DbSet<Product> Products { get; set; }
         DbSet<TimeSlot> TimeSlots { get; set; }
+        DbSet<Room> Rooms { get; set; }
         DbSet<User> ApplicationUsers { get; set; }
 
         Task<int> SaveChangesAsync();

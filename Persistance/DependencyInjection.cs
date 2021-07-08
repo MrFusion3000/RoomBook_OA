@@ -1,12 +1,10 @@
 ﻿using System.Reflection;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistance.Context;
 using Persistance.Interfaces;
-using Domain.Entities.Auth;
 
 namespace Persistance
 {
@@ -33,10 +31,6 @@ namespace Persistance
             });
         }
 
-        public static void AddApplication(this IServiceCollection services)
-        {
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-        }
     }
 
     

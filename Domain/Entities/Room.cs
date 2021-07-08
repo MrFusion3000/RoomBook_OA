@@ -8,10 +8,20 @@ namespace Domain.Entities
     {
         public Guid ID { get; set; }
         public string Name { get; set; }
-        public List<Schedule> Schedules { get; set; }
-
-        // Floor + Room Number (i.e. Floor 1, Room 1: 101, Floor 2, Room 4: 204)
-        public int Placement { get; set; }
         public DateTime CreatedUTC { get; set; }
+        public int Placement { get; set; }
+        public List<TimeSlot> TimeSlots { get; set; }
+
+        public static IRoom Create(Guid id, string name, DateTime createdUTC, List<TimeSlot> timeSlots, int placement)
+        {
+            return new Room()
+            {
+                ID = id,
+                Name = name,
+                CreatedUTC = createdUTC,
+                TimeSlots = timeSlots,
+                Placement = placement
+            };
+        }
     }
 }
