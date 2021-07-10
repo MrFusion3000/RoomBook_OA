@@ -100,11 +100,13 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.TimeSlot", b =>
                 {
-                    b.HasOne("Domain.Entities.Room", null)
+                    b.HasOne("Domain.Entities.Room", "Room")
                         .WithMany("TimeSlots")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Domain.Entities.Room", b =>

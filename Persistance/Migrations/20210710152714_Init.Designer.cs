@@ -10,8 +10,8 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210708162250_ChangesToTimeSlot")]
-    partial class ChangesToTimeSlot
+    [Migration("20210710152714_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,11 +102,13 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.TimeSlot", b =>
                 {
-                    b.HasOne("Domain.Entities.Room", null)
+                    b.HasOne("Domain.Entities.Room", "Room")
                         .WithMany("TimeSlots")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Domain.Entities.Room", b =>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 //using Domain.Common;
 using Domain.Interfaces;
@@ -14,9 +15,8 @@ namespace Domain.Entities
         public bool IsVacant { get; set; }
         public int BookerId { get; set; }
         public DateTime CreatedUTC { get; set; }
+        
         public Guid RoomId { get; set; }
-
-        [NotMapped]
         public Room Room { get; set; }
 
         public static ITimeSlot Create(Guid id, DateTime timeSlotStart, DateTime timeSlotEnd, string title, bool isVacant, int bookerId, DateTime createdUTC, Guid roomId)

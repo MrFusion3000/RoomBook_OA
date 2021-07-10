@@ -29,21 +29,6 @@ namespace WebApi.Controllers.v1
         {
             return Ok(await Mediator.Send(new GetAllRoomsQuery()));
         }
-        /// <summary>
-        /// Gets all Rooms by date.
-        /// </summary>
-        /// <param name="today"></param>
-        /// <returns></returns>
-        //[HttpGet("GetAllRoomsByDate/{today}")]
-        //public async Task<IActionResult> GetAllRoomsByDate(DateTime today)
-        //{
-        //    return Ok(await Mediator.Send(new GetAllRoomsByDateQuery { Today = today }));
-        //}
-        /// <summary>
-        /// Gets Room Entity by Id.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {

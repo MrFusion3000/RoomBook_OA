@@ -17,13 +17,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:WebApi.Controllers.v1.RoomController.GetById(System.Guid)">
-            <summary>
-            Gets Room Entity by Id.
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
         <member name="M:WebApi.Controllers.v1.RoomController.Delete(System.Guid)">
             <summary>
             Deletes Room Entity based on Id.

@@ -7,6 +7,14 @@
 
 @inject HttpClient _http
 
+
+@*@_room.Name
+@foreach (var slot in _room.TimeSlots)
+{
+    <div>@slot.Title</div>
+}*@
+
+
 @*<AuthorizeView Roles="Administrator">
     <Authorized>
         The user @context.User.FindFirst(ClaimTypes.Name)?.Value is authorized as: @context.User.FindFirst(ClaimTypes.Role)?.Value
@@ -73,10 +81,12 @@
 @code {
 
     //private string newItemTitle;
-    private Guid RoomId { get; set; } = Guid.Parse("7D851008-01A3-4158-96E8-B5AA88C6D1D0");
+    private Guid ThisRoomId { get; } = Guid.Parse("dcfd177b-598f-425b-a7c1-08d9438d4eb6");
 
     private IList<TimeSlot> _timeSlots = new List<TimeSlot>();
-    //private IList<TimeSlot> timeSlotsTemp = new List<TimeSlot>();
+
+    private Room _room = new Room();
+    [Parameter] public Room ThisRoom { get; set; }
 
     [Parameter] public int HasItems { get; set; }
     [Parameter] public TimeSlot FirstVacantSlot { get; set; }
@@ -86,7 +96,7 @@
     private TimeSlot _selectedItem = null;
     //private HashSet<TimeSlot> _selectedItems = new HashSet<TimeSlot>();
 
-    public DateTime DtToday = DateTime.UtcNow;
+    private DateTime DtToday = DateTime.UtcNow;
 
     private bool FilterFunc(ITimeSlot slot)
     {
@@ -110,27 +120,11 @@
         // Create empty Timeslots if none for the day
         if (HasItems == 0)
         {
-            await InitDailySchedule(RoomId);
+            await InitDailySchedule();
         }
 
         //_firstVacantSlot = _timeSlots.FirstOrDefault(f => f.IsVacant);
     }
-
-    //private async Task AddTimeSlot()
-    //{
-    //var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 999, CreatedUTC = DateTime.UtcNow };
-    //var addTimeSlot = new TimeSlot { TimeSlotStart = dtToday, TimeSlotEnd = dtToday.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 999, CreatedUTC = DateTime.UtcNow };
-
-    //await Http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", addTimeSlot);
-
-    //Testing localhost server IIS
-    //var addTimeSlot = new TimeSlot { TimeSlotStart = DateTime.Now, TimeSlotEnd = DateTime.Now.AddMinutes(15), Title = newItemTitle, IsVacant = false, BookerId = 1, CreatedUTC = DateTime.Now };
-    //await Http.PostAsJsonAsync("https://localhost:81/api/v1/TimeSlot", addTimeSlot);
-
-    //newItemTitle = "";
-
-    //await RefreshDb();
-    //}
 
     //Add check if timeSlot.isVacant = true else message to user
     private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, int booker, Guid roomId)
@@ -145,20 +139,8 @@
         await RefreshDb();
     }
 
-    private async Task RefreshDb()
-    {
-        //DateTime dtToday = DateTime.UtcNow;
-        _timeSlots = await _http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + DtToday);
-
-        FirstVacantSlot = _timeSlots.FirstOrDefault(f => f.IsVacant);
-        AnyVacantSlot = _timeSlots.Count(f => f.IsVacant);
-
-        // Testing localhost server IIS
-        //_timeSlots = await Http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:81/api/v1/TimeSlot");
-    }
-
     // Init empty daily schedule
-    private async Task InitDailySchedule(Guid roomId)
+    private async Task InitDailySchedule()
     {
         TimeSpan duration = new TimeSpan(0, 0, 15, 0);
         DateTime initDate = new DateTime(DtToday.Year, DtToday.Month, DtToday.Day, 6, 0, 0);
@@ -166,15 +148,15 @@
 
         var room = new Room
         {
-            //ID = roomId,
+            ID = ThisRoomId,
             Name = "Moscow",
             Placement = 1,
             CreatedUTC = DtToday
         };
 
-        await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Room", room);
+        await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Room", ThisRoomId);
 
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < 4; i++)
         {
             var timeSlot = new TimeSlot
             {
@@ -185,7 +167,7 @@
                 IsVacant = true,
                 BookerId = 1,
                 CreatedUTC = DtToday,
-                RoomId = roomId
+                RoomId = ThisRoomId
             };
 
             await _http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", timeSlot);
@@ -194,6 +176,29 @@
         }
 
         await RefreshDb();
+
+    }
+
+    private async Task RefreshDb()
+    {
+    //Get current room
+        //_room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
+        //ThisRoom = _room;
+
+        _timeSlots = await _http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + DtToday);
+
+        FirstVacantSlot = _timeSlots.FirstOrDefault(f => f.IsVacant);
+        AnyVacantSlot = _timeSlots.Count(f => f.IsVacant);
+
+    //await ShowRoomAndTimeSlots();
+
+    }
+
+    private async Task ShowRoomAndTimeSlots()
+    {
+        _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
+
+        ThisRoom = _room;
 
     }
 

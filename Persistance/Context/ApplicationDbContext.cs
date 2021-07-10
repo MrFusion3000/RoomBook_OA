@@ -13,20 +13,27 @@ namespace Persistance.Context
         {
         }
 
+        public DbSet<TimeSlot> TimeSlots { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<User> ApplicationUsers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<Product>().Property(p => p.Rate).HasColumnType("decimal(10, 2)");
+            //modelBuilder.Entity<Room>()
+            //    .Property(r => r.ID)
+            //    .IsRequired();
 
-            modelBuilder.Entity<TimeSlot>().ToTable("TimeSlots");
-            modelBuilder.Entity<Room>().ToTable("Rooms");
+            modelBuilder.Entity<TimeSlot>()
+                .HasOne<Room>(r => r.Room)
+                .WithMany(r => r.TimeSlots)
+                .HasForeignKey(r => r.RoomId);
+
+            //modelBuilder.Entity<Room>().ToTable("Rooms");
             //modelBuilder.Entity<User>().ToTable("ApplicationUsers");
 
             base.OnModelCreating(modelBuilder);
         }
-
-        public DbSet<TimeSlot> TimeSlots { get; set; }
-        public DbSet<Room> Rooms { get; set; }
-        public DbSet<User> ApplicationUsers { get; set; }
 
         //public DbSet<Product> Products { get; set; }
 
