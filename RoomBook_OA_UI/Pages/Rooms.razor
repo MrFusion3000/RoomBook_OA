@@ -1,0 +1,81 @@
+﻿@page "/rooms"
+@using Domain.Entities
+@using System.Security.Claims
+@using Domain.Interfaces
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Logging
+
+@*@attribute [Authorize]*@
+
+@inject HttpClient _http
+@inject ILogger<Rooms> Logger
+@inject NavigationManager NavigationManager
+
+<MudGrid>
+    <MudItem xs="12" Class="d-flex align-center justify-center mud-width-full py-8">
+        <MudGrid Spacing="4" Justify="Justify.Center">
+
+        @foreach (var room in _rooms)
+        {
+            <MudItem>
+                <MudPaper Class="text-center" Style="height: 140px; width: 140px;" Justify="Justify.Center">
+                    <div class="card" style="width: 18rem;">
+                        @*<img src="@Trail.Image" class="card-img-top" alt="@Trail.Name">*@
+                        @*<div class="card-body">*@
+                            <h5 class="card-title"><span class="oi oi-map-marker"></span> @room.Name</h5>
+                            @*<h6 class="card-subtitle mb-3 text-muted"> @room.ID</h6>*@
+                        <div class="d-flex justify-content-between">
+                            <span>Floor @room.Placement</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span><span class="oi oi-clock mr-2"></span> @room.CreatedUTC.ToShortTimeString()</span>
+                        </div>
+                        @*<button class="btn btn-primary mt-3" @onclick="@(e => GotoRoom(room.ID))">@room.Name</button>*@
+                        <MudButton Variant="Variant.Filled" @onclick="@(e => GotoRoom(room.ID))">@room.Name</MudButton>
+                        @*</div>*@
+                    </div>
+                </MudPaper>
+            </MudItem>
+        }
+        </MudGrid>
+    </MudItem>
+</MudGrid>
+
+
+@code
+{
+    private List<Room> _rooms = new List<Room>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged;
+
+        _rooms = await _http.GetFromJsonAsync<List<Room>>("https://localhost:44315/api/v1/Room/");
+
+        await RefreshDb();
+
+    }
+
+    private async Task RefreshDb()
+    {
+        //Get current rooms
+        //_rooms = await _http.GetFromJsonAsync<List<Room>>("https://localhost:44315/api/v1/Room/");
+
+    }
+
+    private void GotoRoom(Guid room)
+    {
+        string navUri = "/" + room; 
+        NavigationManager.NavigateTo(navUri);
+    }
+
+    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        Logger.LogInformation("URL of new location: {Location}", e.Location);
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+}

@@ -23,8 +23,9 @@ namespace Persistance.Features.RoomFeatures.Queries
             }
             public async Task<Room> Handle(GetRoomByIdQuery query, CancellationToken cancellationToken)
             {
+                var dtToday = DateTime.UtcNow;
                 var room = _context.Rooms
-                    .Include(a => a.TimeSlots)
+                    .Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
                     .FirstOrDefault(a => a.ID == query.Id);
                 if (room == null) return null;
                 return await Task.FromResult(room);

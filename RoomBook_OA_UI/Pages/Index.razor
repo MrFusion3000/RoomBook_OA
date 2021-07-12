@@ -1,29 +1,37 @@
 ﻿@page "/"
+@page "/{thisroomid:guid}"
 @using Domain.Entities
 @using System.Security.Claims
 @using Domain.Interfaces
 @using Microsoft.AspNetCore.Authorization
-@attribute [Authorize]
+@using Microsoft.Extensions.Logging
 
+@inject NavigationManager NavigationManager
+@inject ILogger<Index> Logger
 @inject HttpClient _http
 
+@attribute [Authorize]
+
+
+<h1>RoomId : @ThisRoomId</h1>
+
 @*<AuthorizeView Roles="Administrator">
-    <Authorized>
-        The user @context.User.FindFirst(ClaimTypes.Name)?.Value is authorized as: @context.User.FindFirst(ClaimTypes.Role)?.Value
-    </Authorized>
-    <NotAuthorized>
-        The User is not authorized
-    </NotAuthorized>
-</AuthorizeView>*@
-<hr/>
+        <Authorized>
+            The user @context.User.FindFirst(ClaimTypes.Name)?.Value is authorized as: @context.User.FindFirst(ClaimTypes.Role)?.Value
+        </Authorized>
+        <NotAuthorized>
+            The User is not authorized
+        </NotAuthorized>
+    </AuthorizeView>*@
+<hr />
 
 @if (FirstVacantSlot != null)
-    {
-<MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(FirstVacantSlot, false, "InstaBooked", 999, Guid.Empty))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart.ToShortDateString() @FirstVacantSlot.TimeSlotStart.ToLocalTime().ToShortTimeString() - @FirstVacantSlot.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
-    }
+{
+    <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(FirstVacantSlot, false, "InstaBooked", InstaBookerGuid))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart.ToShortDateString() @FirstVacantSlot.TimeSlotStart.ToLocalTime().ToShortTimeString() - @FirstVacantSlot.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
+}
 
 
-@if (AnyVacantSlot < 1 )
+@if (AnyVacantSlot < 0)
 {
     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
 }
@@ -56,28 +64,31 @@
 
     <MudToolBarSpacer />
     <MudText Inline="true" Class="align-self-center" Style="min-width:200px;">Selected: @_selectedItem?.TimeSlotStart.ToLocalTime().ToShortTimeString() - @_selectedItem?.TimeSlotEnd.ToLocalTime().ToShortTimeString() : @_selectedItem?.Title</MudText>
-</div>
+    <MudToolBarSpacer />
+
+    </div>
 
 <hr />
 
 @*<MudGrid>
-    <MudItem xs="12" sm="6" md="3">
-        <MudTextField @bind-Value="newItemTitle" Label="Add Title" Variant="Variant.Outlined" Margin="Margin.Dense" Class="d-flex align-center justify-center mud-width-full py-8" />
-    </MudItem>
-    <MudItem xs="12" sm="3" md="3" Class="d-flex align-center justify-center mud-width-full py-8">
-        <MudButton Variant="Variant.Filled" @onclick="@AddTimeSlot">Add</MudButton>
-    </MudItem>
-</MudGrid>*@
+        <MudItem xs="12" sm="6" md="3">
+            <MudTextField @bind-Value="newItemTitle" Label="Add Title" Variant="Variant.Outlined" Margin="Margin.Dense" Class="d-flex align-center justify-center mud-width-full py-8" />
+        </MudItem>
+        <MudItem xs="12" sm="3" md="3" Class="d-flex align-center justify-center mud-width-full py-8">
+            <MudButton Variant="Variant.Filled" @onclick="@AddTimeSlot">Add</MudButton>
+        </MudItem>
+    </MudGrid>*@
 
 
 @code {
 
     //temp room set
-    private Guid ThisRoomId { get; } = Guid.Parse("dcfd177b-598f-425b-a7c1-08d9438d4eb6");
+    [Parameter] public Guid InstaBookerGuid { get; set; } = Guid.Parse("99999999-9999-9999-9999-999999999999");
+
 
     private Room _room = new Room();
     private IList<TimeSlot> _timeSlots = new List<TimeSlot>();
-
+    [Parameter] public Guid ThisRoomId { get; set; }
     [Parameter] public int HasItems { get; set; }
     [Parameter] public TimeSlot FirstVacantSlot { get; set; }
     [Parameter] public int AnyVacantSlot { get; set; }
@@ -86,7 +97,7 @@
     private TimeSlot _selectedItem = null;
     //private HashSet<TimeSlot> _selectedItems = new HashSet<TimeSlot>();
 
-    private DateTime DtToday = DateTime.UtcNow;
+    private DateTime _dtToday = DateTime.UtcNow;
 
     //private bool FilterFunc(ITimeSlot slot)
     //{
@@ -102,7 +113,7 @@
     //Read TimeSlots from Db at start
     protected override async Task OnInitializedAsync()
     {
-        _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
+        //_room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
 
         await RefreshDb();
 
@@ -110,7 +121,11 @@
         HasItems = _timeSlots.Count;
 
         // Create empty Timeslots if none for the day
-        if (HasItems == 0)
+        if (_room == null)
+        {
+            GotoRoom();
+        }
+        else if (HasItems == 0)
         {
             await InitDailySchedule();
         }
@@ -119,13 +134,13 @@
     }
 
     //Add check if timeSlot.isVacant = true else message to user
-    private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, int booker, Guid roomId)
+    private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, Guid bookerId)
     {
         var timeUpdateTimeSlot = firstVacantSlot;
         timeUpdateTimeSlot.IsVacant = notVacantSlot;
         timeUpdateTimeSlot.Title = title;
-        timeUpdateTimeSlot.BookerId = booker;
-        timeUpdateTimeSlot.RoomId = roomId;
+        timeUpdateTimeSlot.BookerId = bookerId;
+        timeUpdateTimeSlot.RoomId = ThisRoomId;
         await _http.PutAsJsonAsync($"https://localhost:44315/api/v1/TimeSlot/Update?id={timeUpdateTimeSlot.ID}", timeUpdateTimeSlot);
 
         await RefreshDb();
@@ -135,15 +150,14 @@
     private async Task InitDailySchedule()
     {
         TimeSpan duration = new TimeSpan(0, 0, 15, 0);
-        DateTime initDate = new DateTime(DtToday.Year, DtToday.Month, DtToday.Day, 6, 0, 0);
-        //Guid Gempty = Guid.NewGuid();
+        DateTime initDate = new DateTime(_dtToday.Year, _dtToday.Month, _dtToday.Day, 6, 0, 0);
 
         var room = new Room
         {
             ID = ThisRoomId,
             Name = "Moscow",
             Placement = 1,
-            CreatedUTC = DtToday
+            CreatedUTC = _dtToday
         };
 
         await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Room", room);
@@ -157,8 +171,8 @@
                 TimeSlotEnd = initDate.Add(duration),
                 Title = "Vacant",
                 IsVacant = true,
-                BookerId = 1,
-                CreatedUTC = DtToday,
+                BookerId = Guid.Empty,
+                CreatedUTC = _dtToday,
                 RoomId = ThisRoomId
             };
 
@@ -175,20 +189,44 @@
     {
         //Get current room
         _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
-        _timeSlots = _room.TimeSlots;
+
+        if (_room != null)
+        {
+            _timeSlots = _room.TimeSlots;
+        }
+        else
+        {
+        }
 
         //_timeSlots = await _http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + DtToday);
 
-        FirstVacantSlot = _timeSlots.FirstOrDefault(f => f.IsVacant);
+        FirstVacantSlot = _timeSlots
+            .Where(f => f.TimeSlotStart > _dtToday)
+            .FirstOrDefault(f => f.IsVacant);
         AnyVacantSlot = _timeSlots.Count(f => f.IsVacant);
 
         //await ShowRoomAndTimeSlots();
-
     }
 
-    private async Task ShowRoomAndTimeSlots()
+    //private async Task ShowRoomAndTimeSlots()
+    //{
+    //    _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
+    //}
+
+    private void GotoRoom()
     {
-        _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
+        string navUri = "/rooms";
+        NavigationManager.NavigateTo(navUri);
+    }
+
+    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        Logger.LogInformation("URL of new location: {Location}", e.Location);
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 
 }

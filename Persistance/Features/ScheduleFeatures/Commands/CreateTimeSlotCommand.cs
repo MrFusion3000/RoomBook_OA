@@ -13,7 +13,7 @@ namespace Persistance.Features.ScheduleFeatures.Commands
         public DateTime TimeSlotEnd { get; set; }
         public string Title { get; set; }
         public bool IsVacant { get; set; }
-        public int BookerId { get; set; }
+        public Guid BookerId { get; set; }
         public DateTime CreatedUTC { get; set; }
         public Guid RoomId { get; set; }
 

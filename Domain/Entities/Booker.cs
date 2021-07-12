@@ -15,11 +15,6 @@ namespace Domain.Entities
 
         public static Booker Create(string name)
         {
-            if (name.Length > 6)
-            {
-                name = name.Substring(0, 6);
-            }
-
             return new Booker()
             {
                 ID = Guid.NewGuid(),
