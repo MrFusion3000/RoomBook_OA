@@ -6,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Persistance.Interfaces;
 
 namespace Persistance.Features.RoomFeatures.Queries
 {
     public class GetRoomByIdQuery : IRequest<Room>
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; init; }
         public class GetRoomByIdQueryHandler : IRequestHandler<GetRoomByIdQuery, Room>
         {
             private readonly IApplicationDbContext _context;
@@ -22,9 +23,11 @@ namespace Persistance.Features.RoomFeatures.Queries
             }
             public async Task<Room> Handle(GetRoomByIdQuery query, CancellationToken cancellationToken)
             {
-                var Room = _context.Rooms.FirstOrDefault(a => a.ID == query.ID);
-                if (Room == null) return null;
-                return await Task.FromResult(Room);
+                var room = _context.Rooms
+                    .Include(a => a.TimeSlots)
+                    .FirstOrDefault(a => a.ID == query.Id);
+                if (room == null) return null;
+                return await Task.FromResult(room);
             }
         }
     }

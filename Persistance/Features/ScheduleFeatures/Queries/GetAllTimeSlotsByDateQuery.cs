@@ -31,7 +31,7 @@ namespace Persistance.Features.ScheduleFeatures.Queries
                 var timeSlotsList = await _context.TimeSlots
                     .Where(t => t.TimeSlotStart.Date == today)
                     .Where(t => t.TimeSlotStart.TimeOfDay >= presentTime)
-                    .Where(t => t.RoomId == query.ThisRoomId)
+                    //.Where(t => t.RoomId == thisRoomId)
                     .ToListAsync(cancellationToken);
 
                 if (timeSlotsList == null)

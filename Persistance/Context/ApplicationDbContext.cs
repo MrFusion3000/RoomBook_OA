@@ -24,10 +24,14 @@ namespace Persistance.Context
             //    .Property(r => r.ID)
             //    .IsRequired();
 
-            modelBuilder.Entity<TimeSlot>()
-                .HasOne<Room>(r => r.Room)
-                .WithMany(r => r.TimeSlots)
-                .HasForeignKey(r => r.RoomId);
+            modelBuilder.Entity<Room>()
+                .HasMany(r => r.TimeSlots)
+                .WithOne();
+                //.HasForeignKey(r => r.RoomId);
+
+                modelBuilder.Entity<Room>()
+                    .Navigation(r => r.TimeSlots)
+                    .UsePropertyAccessMode(PropertyAccessMode.Property);
 
             //modelBuilder.Entity<Room>().ToTable("Rooms");
             //modelBuilder.Entity<User>().ToTable("ApplicationUsers");

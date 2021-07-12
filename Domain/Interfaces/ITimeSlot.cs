@@ -14,7 +14,7 @@ namespace Domain.Interfaces
         public string Title { get; set; }
         public bool IsVacant { get; set; }
         public int BookerId { get; set; }
-        public Guid RoomId { get; set; }
+        //public Guid RoomId { get; set; }
 
         static readonly ITimeSlot Create;
     }

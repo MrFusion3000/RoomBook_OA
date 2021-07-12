@@ -29,10 +29,15 @@ namespace WebApi.Controllers.v1
         {
             return Ok(await Mediator.Send(new GetAllRoomsQuery()));
         }
+        /// <summary>
+        /// Gets all TimeSlots by date.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(await Mediator.Send(new GetRoomByIdQuery { ID = id }));
+            return Ok(await Mediator.Send(new GetRoomByIdQuery { Id = id }));
         }
         /// <summary>
         /// Deletes Room Entity based on Id.

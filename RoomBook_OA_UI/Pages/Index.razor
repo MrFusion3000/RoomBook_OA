@@ -7,14 +7,6 @@
 
 @inject HttpClient _http
 
-
-@*@_room.Name
-@foreach (var slot in _room.TimeSlots)
-{
-    <div>@slot.Title</div>
-}*@
-
-
 @*<AuthorizeView Roles="Administrator">
     <Authorized>
         The user @context.User.FindFirst(ClaimTypes.Name)?.Value is authorized as: @context.User.FindFirst(ClaimTypes.Role)?.Value
@@ -38,7 +30,7 @@
 
 <MudTable Items="@_timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" @bind-SelectedItem="_selectedItem" RowsPerPage="12">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">Schedule</MudText>
+        <MudText Typo="Typo.h6">Schedule for @_room.Name</MudText>
         <MudToolBarSpacer />
         <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
@@ -80,13 +72,11 @@
 
 @code {
 
-    //private string newItemTitle;
+    //temp room set
     private Guid ThisRoomId { get; } = Guid.Parse("dcfd177b-598f-425b-a7c1-08d9438d4eb6");
 
-    private IList<TimeSlot> _timeSlots = new List<TimeSlot>();
-
     private Room _room = new Room();
-    [Parameter] public Room ThisRoom { get; set; }
+    private IList<TimeSlot> _timeSlots = new List<TimeSlot>();
 
     [Parameter] public int HasItems { get; set; }
     [Parameter] public TimeSlot FirstVacantSlot { get; set; }
@@ -98,20 +88,22 @@
 
     private DateTime DtToday = DateTime.UtcNow;
 
-    private bool FilterFunc(ITimeSlot slot)
-    {
-        if (string.IsNullOrWhiteSpace(_searchString))
-            return true;
+    //private bool FilterFunc(ITimeSlot slot)
+    //{
+    //    if (string.IsNullOrWhiteSpace(_searchString))
+    //        return true;
 
-        if (slot.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
+    //    if (slot.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+    //        return true;
 
-        return false;
-    }
+    //    return false;
+    //}
 
     //Read TimeSlots from Db at start
     protected override async Task OnInitializedAsync()
     {
+        _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
+
         await RefreshDb();
 
         // Add check for isVacant = null, to display no scheduled meetings all day
@@ -154,9 +146,9 @@
             CreatedUTC = DtToday
         };
 
-        await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Room", ThisRoomId);
+        await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Room", room);
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 60; i++)
         {
             var timeSlot = new TimeSlot
             {
@@ -181,25 +173,22 @@
 
     private async Task RefreshDb()
     {
-    //Get current room
-        //_room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
-        //ThisRoom = _room;
+        //Get current room
+        _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
+        _timeSlots = _room.TimeSlots;
 
-        _timeSlots = await _http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + DtToday);
+        //_timeSlots = await _http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + DtToday);
 
         FirstVacantSlot = _timeSlots.FirstOrDefault(f => f.IsVacant);
         AnyVacantSlot = _timeSlots.Count(f => f.IsVacant);
 
-    //await ShowRoomAndTimeSlots();
+        //await ShowRoomAndTimeSlots();
 
     }
 
     private async Task ShowRoomAndTimeSlots()
     {
         _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
-
-        ThisRoom = _room;
-
     }
 
 }
