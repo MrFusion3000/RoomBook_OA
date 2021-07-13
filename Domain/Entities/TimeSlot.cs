@@ -13,11 +13,11 @@ namespace Domain.Entities
         public DateTime TimeSlotEnd { get; set; }
         public string Title { get; set; }
         public bool IsVacant { get; set; }
-        public Guid BookerId { get; set; }
         public DateTime CreatedUTC { get; set; }
         public Guid RoomId { get; set; }
-        
-        //public Room Room { get; set; }
+        public Guid TBookerID { get; set; }
+
+        public Booker Booker { get; }
 
         public static ITimeSlot Create(Guid id, DateTime timeSlotStart, DateTime timeSlotEnd, string title, bool isVacant, Guid bookerId, DateTime createdUTC, Guid roomId)
         {
@@ -28,7 +28,7 @@ namespace Domain.Entities
                 TimeSlotEnd = timeSlotEnd,
                 Title = title,
                 IsVacant = isVacant,
-                BookerId = bookerId,
+                TBookerID = bookerId,
                 CreatedUTC = createdUTC,
                 RoomId = roomId
             };

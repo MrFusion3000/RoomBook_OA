@@ -32,7 +32,7 @@ namespace Persistance.Features.ScheduleFeatures.Commands
                     TimeSlotEnd = command.TimeSlotEnd,
                     Title = command.Title,
                     IsVacant = command.IsVacant,
-                    BookerId = command.BookerId,
+                    TBookerID = command.BookerId,
                     CreatedUTC = command.CreatedUTC,
                     RoomId = command.RoomId
                 };

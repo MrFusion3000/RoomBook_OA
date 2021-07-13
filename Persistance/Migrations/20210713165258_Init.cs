@@ -24,6 +24,19 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bookers",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedUTC = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookers", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Rooms",
                 columns: table => new
                 {
@@ -46,13 +59,20 @@ namespace Persistance.Migrations
                     TimeSlotEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsVacant = table.Column<bool>(type: "bit", nullable: false),
-                    BookerId = table.Column<int>(type: "int", nullable: false),
                     CreatedUTC = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RoomId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RoomId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TBookerID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BookerID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TimeSlots", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_TimeSlots_Bookers_BookerID",
+                        column: x => x.BookerID,
+                        principalTable: "Bookers",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TimeSlots_Rooms_RoomId",
                         column: x => x.RoomId,
@@ -60,6 +80,11 @@ namespace Persistance.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeSlots_BookerID",
+                table: "TimeSlots",
+                column: "BookerID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TimeSlots_RoomId",
@@ -74,6 +99,9 @@ namespace Persistance.Migrations
 
             migrationBuilder.DropTable(
                 name: "TimeSlots");
+
+            migrationBuilder.DropTable(
+                name: "Bookers");
 
             migrationBuilder.DropTable(
                 name: "Rooms");

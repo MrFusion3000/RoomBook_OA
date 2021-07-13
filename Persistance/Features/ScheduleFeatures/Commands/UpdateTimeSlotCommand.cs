@@ -38,7 +38,7 @@ namespace Persistance.Features.ScheduleFeatures.Commands
                     timeSlot.TimeSlotEnd = command.TimeSlotEnd;
                     timeSlot.Title = command.Title;
                     timeSlot.IsVacant = command.IsVacant;
-                    timeSlot.BookerId = command.BookerId;
+                    timeSlot.TBookerID = command.BookerId;
                     timeSlot.CreatedUTC = command.CreatedUTC;
                     await _context.SaveChangesAsync();
                     return timeSlot.ID;

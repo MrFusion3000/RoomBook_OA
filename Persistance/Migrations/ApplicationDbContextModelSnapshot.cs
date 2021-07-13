@@ -19,6 +19,23 @@ namespace Persistance.Migrations
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Domain.Entities.Booker", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedUTC")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Bookers");
+                });
+
             modelBuilder.Entity("Domain.Entities.Room", b =>
                 {
                     b.Property<Guid>("ID")
@@ -45,8 +62,8 @@ namespace Persistance.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BookerId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("BookerID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedUTC")
                         .HasColumnType("datetime2");
@@ -55,6 +72,9 @@ namespace Persistance.Migrations
                         .HasColumnType("bit");
 
                     b.Property<Guid>("RoomId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TBookerID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("TimeSlotEnd")
@@ -67,6 +87,8 @@ namespace Persistance.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("BookerID");
 
                     b.HasIndex("RoomId");
 
@@ -100,13 +122,22 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.TimeSlot", b =>
                 {
-                    b.HasOne("Domain.Entities.Room", "Room")
+                    b.HasOne("Domain.Entities.Booker", "Booker")
+                        .WithMany("TimeSlots")
+                        .HasForeignKey("BookerID");
+
+                    b.HasOne("Domain.Entities.Room", null)
                         .WithMany("TimeSlots")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Room");
+                    b.Navigation("Booker");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Booker", b =>
+                {
+                    b.Navigation("TimeSlots");
                 });
 
             modelBuilder.Entity("Domain.Entities.Room", b =>

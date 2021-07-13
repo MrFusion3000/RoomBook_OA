@@ -23,7 +23,6 @@ namespace Domain.Entities
                 Name = name,
                 CreatedUTC = createdUTC,
                 Placement = placement,
-                //TimeSlots = timeSlots
             };
         }
     }
