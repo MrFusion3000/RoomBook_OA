@@ -54,7 +54,16 @@
         <MudTd DataLabel="Start">@context.TimeSlotStart.ToLocalTime().ToShortTimeString()</MudTd>
         <MudTd DataLabel="End">@context.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudTd>
         <MudTd DataLabel="Title">@context.Title</MudTd>
-        <MudTd DataLabel="Booker">@context.TBookerID</MudTd>   @*//Empty object error. Maybe do a if(TbookerId =...)*@
+        <MudTd DataLabel="Booker">
+            @foreach (var bookerItem in _booker)
+            {
+                @if (bookerItem.ID == context.TBookerID)
+                {
+                    @bookerItem.Name
+                }
+            }
+            
+        </MudTd>   @*//Empty object error. Maybe do a if(TbookerId =...)*@
     </RowTemplate>
     <PagerContent>
         <MudTablePager PageSizeOptions="new int[] { 12, 24, 36, 48, 60 }" />
@@ -87,6 +96,8 @@
 
     private Room _room = new Room();
     private IList<TimeSlot> _timeSlots = new List<TimeSlot>();
+    private IList<Booker> _booker = new List<Booker>();
+
     [Parameter] public Guid ThisRoomId { get; set; }
     [Parameter] public int HasItems { get; set; }
     [Parameter] public TimeSlot FirstVacantSlot { get; set; }
@@ -123,11 +134,14 @@
         {
             await InitRoom();
             GotoRoom();
+
         }
         else if (HasItems == 0)
         {
             await InitDailySchedule();
         }
+
+        //Redirect to Rooms page to choose room
     }
 
     //Add check if timeSlot.isVacant = true else message to user
@@ -155,7 +169,6 @@
         };
 
         await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Room", room);
-
     }
 
     private async Task InitBooker()
@@ -202,6 +215,9 @@
     {
         //Get current room
         _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
+        // Get Bookers List
+        _booker = await _http.GetFromJsonAsync<List<Booker>>("https://localhost:44315/api/v1/Booker/");
+
 
         if (_room is not null)
         {

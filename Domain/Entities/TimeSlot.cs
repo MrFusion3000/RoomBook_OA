@@ -17,7 +17,8 @@ namespace Domain.Entities
         public Guid RoomId { get; set; }
         public Guid TBookerID { get; set; }
 
-        public Booker Booker { get; }
+        //Navigation properties
+        public Booker Booker { get; set; }
 
         public static ITimeSlot Create(Guid id, DateTime timeSlotStart, DateTime timeSlotEnd, string title, bool isVacant, Guid bookerId, DateTime createdUTC, Guid roomId)
         {
@@ -28,9 +29,9 @@ namespace Domain.Entities
                 TimeSlotEnd = timeSlotEnd,
                 Title = title,
                 IsVacant = isVacant,
-                TBookerID = bookerId,
                 CreatedUTC = createdUTC,
-                RoomId = roomId
+                RoomId = roomId,
+                TBookerID = bookerId
             };
         }
     }

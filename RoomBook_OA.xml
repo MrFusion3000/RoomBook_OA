@@ -4,41 +4,6 @@
         <name>WebApi</name>
     </assembly>
     <members>
-        <member name="M:WebApi.Controllers.v1.RoomController.Create(Persistance.Features.RoomFeatures.Commands.CreateRoomCommand)">
-            <summary>
-            Creates a New Room.
-            </summary>
-            <param name="command"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.RoomController.GetAll">
-            <summary>
-            Gets all Rooms.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.RoomController.GetById(System.Guid)">
-            <summary>
-            Gets all TimeSlots by date.
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.RoomController.Delete(System.Guid)">
-            <summary>
-            Deletes Room Entity based on Id.
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.RoomController.Update(System.Guid,Persistance.Features.RoomFeatures.Commands.UpdateRoomCommand)">
-            <summary>
-            Updates the Room Entity based on Id.   
-            </summary>
-            <param name="id"></param>
-            <param name="command"></param>
-            <returns></returns>
-        </member>
         <member name="M:WebApi.Controllers.v1.BookerController.Create(Persistance.Features.BookerFeatures.Commands.CreateBookerCommand)">
             <summary>
             Creates a New Booker.
@@ -54,7 +19,7 @@
         </member>
         <member name="M:WebApi.Controllers.v1.BookerController.GetById(System.Guid)">
             <summary>
-            Gets all TimeSlots by date.
+            Gets Booker Entity by Id.
             </summary>
             <param name="id"></param>
             <returns></returns>
@@ -69,6 +34,41 @@
         <member name="M:WebApi.Controllers.v1.BookerController.Update(System.Guid,Persistance.Features.BookerFeatures.Commands.UpdateBookerCommand)">
             <summary>
             Updates the Booker Entity based on Id.   
+            </summary>
+            <param name="id"></param>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.RoomController.Create(Persistance.Features.RoomFeatures.Commands.CreateRoomCommand)">
+            <summary>
+            Creates a New Room.
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.RoomController.GetAll">
+            <summary>
+            Gets all Rooms.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.RoomController.GetById(System.Guid)">
+            <summary>
+            Gets Room Entity by Id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.RoomController.Delete(System.Guid)">
+            <summary>
+            Deletes Room Entity based on Id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.RoomController.Update(System.Guid,Persistance.Features.RoomFeatures.Commands.UpdateRoomCommand)">
+            <summary>
+            Updates the Room Entity based on Id.   
             </summary>
             <param name="id"></param>
             <param name="command"></param>

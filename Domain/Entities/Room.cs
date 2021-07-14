@@ -13,6 +13,7 @@ namespace Domain.Entities
         public DateTime CreatedUTC { get; set; }
         public int Placement { get; set; }
 
+        //Navigation properties
         public List<TimeSlot> TimeSlots { get; set; }
 
         public static IRoom Create(Guid id, string name, DateTime createdUTC, List<TimeSlot> timeSlots, int placement)

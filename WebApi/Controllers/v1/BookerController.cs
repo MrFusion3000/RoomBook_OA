@@ -1,5 +1,5 @@
-﻿using Persistance.Features.RoomFeatures.Commands;
-using Persistance.Features.RoomFeatures.Queries;
+﻿using Persistance.Features.BookerFeatures.Commands;
+using Persistance.Features.BookerFeatures.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -8,39 +8,39 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
-    public class RoomController : BaseApiController
+    public class BookerController : BaseApiController
     {
         /// <summary>
-        /// Creates a New Room.
+        /// Creates a New Booker.
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Create(CreateRoomCommand command)
+        public async Task<IActionResult> Create(CreateBookerCommand command)
         {
             return Ok(await Mediator.Send(command));
         }
         /// <summary>
-        /// Gets all Rooms.
+        /// Gets all Bookers.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await Mediator.Send(new GetAllRoomsQuery()));
+            return Ok(await Mediator.Send(new GetAllBookersQuery()));
         }
         /// <summary>
-        /// Gets all TimeSlots by date.
+        /// Gets Booker Entity by Id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(await Mediator.Send(new GetRoomByIdQuery { Id = id }));
+            return Ok(await Mediator.Send(new GetBookerByIdQuery { Id = id }));
         }
         /// <summary>
-        /// Deletes Room Entity based on Id.
+        /// Deletes Booker Entity based on Id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -48,16 +48,16 @@ namespace WebApi.Controllers.v1
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok(await Mediator.Send(new DeleteRoomByIdCommand { ID = id }));
+            return Ok(await Mediator.Send(new DeleteBookerByIdCommand { ID = id }));
         }
         /// <summary>
-        /// Updates the Room Entity based on Id.   
+        /// Updates the Booker Entity based on Id.   
         /// </summary>
         /// <param name="id"></param>
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut("[action]")]
-        public async Task<IActionResult> Update(Guid id, UpdateRoomCommand command)
+        public async Task<IActionResult> Update(Guid id, UpdateBookerCommand command)
         {
             if (id != command.ID)
             {
