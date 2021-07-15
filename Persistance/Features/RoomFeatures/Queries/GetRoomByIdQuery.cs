@@ -25,20 +25,21 @@ namespace Persistance.Features.RoomFeatures.Queries
             public async Task<Room> Handle(GetRoomByIdQuery query, CancellationToken cancellationToken)
             {
                 var dtToday = DateTime.UtcNow;
-                var room = _context.Rooms
-                    .Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
-                    .FirstOrDefault(a => a.ID == query.Id);
-
-                // försök 1
                 //var room = _context.Rooms
-                //    .Include(a => a.TimeSlots
-                //        .Where(t => t.TimeSlotStart > dtToday))
-                //    .ThenInclude(t => t.Booker)
+                //    .Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
                 //    .FirstOrDefault(a => a.ID == query.Id);
 
+                // försök 1
+                var room = _context.Rooms
+                    .Include(a => a.TimeSlots
+                        .Where(t => t.TimeSlotStart > dtToday))
+                    .ThenInclude(t => t.Booker)
+                    .FirstOrDefault(a => a.ID == query.Id);
+
                 //försök 2
-                //IQueryable<Room> room = this._context.Rooms;
-                //room = from p in _context.Rooms.Include(p => p.TimeSlots.Select(c => c.Booker)) select p;
+                //var room = this._context.Rooms.AsQueryable();
+                //room = _context.Rooms.Include(p => p.TimeSlots.Select(c => c.Booker));
+
 
                 if (room == null) return null;
 

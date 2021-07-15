@@ -1,8 +1,12 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Persistance.Models
 {
-    public class User : IUser
+    interface IUser
     {
         public string Id { get; set; }
         public string FirstName { get; set; }

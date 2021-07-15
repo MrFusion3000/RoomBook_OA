@@ -74,11 +74,11 @@
             <param name="command"></param>
             <returns></returns>
         </member>
-        <member name="M:WebApi.Controllers.v1.TimeSlotController.Create(Persistance.Features.ScheduleFeatures.Commands.CreateTimeSlotCommand)">
+        <member name="M:WebApi.Controllers.v1.TimeSlotController.Create(Domain.Entities.TimeSlot)">
             <summary>
             Creates a New TimeSlot.
             </summary>
-            <param name="command"></param>
+            <param name="timeSlot"></param>
             <returns></returns>
         </member>
         <member name="M:WebApi.Controllers.v1.TimeSlotController.GetAll">

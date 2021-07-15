@@ -54,15 +54,7 @@
         <MudTd DataLabel="Start">@context.TimeSlotStart.ToLocalTime().ToShortTimeString()</MudTd>
         <MudTd DataLabel="End">@context.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudTd>
         <MudTd DataLabel="Title">@context.Title</MudTd>
-        <MudTd DataLabel="Booker">
-            @foreach (var bookerItem in _booker)
-            {
-                @if (bookerItem.ID == context.TBookerID)
-                {
-                    @bookerItem.Name
-                }
-            }
-            
+        <MudTd DataLabel="Booker">@context.Booker?.Name
         </MudTd>   @*//Empty object error. Maybe do a if(TbookerId =...)*@
     </RowTemplate>
     <PagerContent>
@@ -96,7 +88,7 @@
 
     private Room _room = new Room();
     private IList<TimeSlot> _timeSlots = new List<TimeSlot>();
-    private IList<Booker> _booker = new List<Booker>();
+    //private IList<Booker> _booker = new List<Booker>();
 
     [Parameter] public Guid ThisRoomId { get; set; }
     [Parameter] public int HasItems { get; set; }
@@ -123,12 +115,11 @@
     //Read TimeSlots from Db at start
     protected override async Task OnInitializedAsync()
     {
-        //_room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
-
         await RefreshDb();
 
-        HasItems = _timeSlots.Count;        // Add check for isVacant = null, to display no scheduled meetings all day
+        HasItems = _timeSlots.Count;        // Add check for isVacant = null, to display "no scheduled meetings all day"
 
+        // Change navigation order; Login/Admin page/Room admin/Choose Room/Display Room-TimeSlots
         if (_room is null)                  // Create empty Timeslots if none for the day
 
         {
@@ -145,12 +136,12 @@
     }
 
     //Add check if timeSlot.isVacant = true else message to user
-    private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, Guid bookerId)
+    private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, Guid? bookerId)
     {
         var timeUpdateTimeSlot = firstVacantSlot;
         timeUpdateTimeSlot.IsVacant = notVacantSlot;
         timeUpdateTimeSlot.Title = title;
-        timeUpdateTimeSlot.TBookerID = bookerId;
+        timeUpdateTimeSlot.BookerId = bookerId;
         timeUpdateTimeSlot.RoomId = ThisRoomId;
         await _http.PutAsJsonAsync($"https://localhost:44315/api/v1/TimeSlot/Update?id={timeUpdateTimeSlot.ID}", timeUpdateTimeSlot);
 
@@ -197,7 +188,7 @@
                 TimeSlotEnd = initDate.Add(duration),
                 Title = "Vacant",
                 IsVacant = true,
-                TBookerID = Guid.Empty,
+                BookerId = null,
                 CreatedUTC = _dtToday,
                 RoomId = ThisRoomId
             };
@@ -216,7 +207,7 @@
         //Get current room
         _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
         // Get Bookers List
-        _booker = await _http.GetFromJsonAsync<List<Booker>>("https://localhost:44315/api/v1/Booker/");
+        //_booker = await _http.GetFromJsonAsync<List<Booker>>("https://localhost:44315/api/v1/Booker/");
 
 
         if (_room is not null)

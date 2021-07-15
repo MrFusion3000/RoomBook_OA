@@ -14,7 +14,7 @@ namespace Persistance.Features.ScheduleFeatures.Commands
         public DateTime TimeSlotEnd { get; set; }
         public string Title { get; set; }
         public bool IsVacant { get; set; }
-        public Guid BookerId { get; set; }
+        public Guid? BookerId { get; set; }
         public DateTime CreatedUTC { get; set; }
 
         public class UpdateTimeSlotCommandHandler : IRequestHandler<UpdateTimeSlotCommand, Guid>
@@ -38,7 +38,7 @@ namespace Persistance.Features.ScheduleFeatures.Commands
                     timeSlot.TimeSlotEnd = command.TimeSlotEnd;
                     timeSlot.Title = command.Title;
                     timeSlot.IsVacant = command.IsVacant;
-                    timeSlot.TBookerID = command.BookerId;
+                    timeSlot.BookerId = command.BookerId;
                     timeSlot.CreatedUTC = command.CreatedUTC;
                     await _context.SaveChangesAsync();
                     return timeSlot.ID;

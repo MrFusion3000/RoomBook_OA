@@ -3,6 +3,7 @@ using Persistance.Features.ScheduleFeatures.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers.v1
@@ -13,12 +14,12 @@ namespace WebApi.Controllers.v1
         /// <summary>
         /// Creates a New TimeSlot.
         /// </summary>
-        /// <param name="command"></param>
+        /// <param name="timeSlot"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTimeSlotCommand command)
+        public async Task<IActionResult> Create(TimeSlot timeSlot)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(await Mediator.Send(new CreateTimeSlotCommand(){TimeSlot = timeSlot}));
         }
         /// <summary>
         /// Gets all TimeSlots.

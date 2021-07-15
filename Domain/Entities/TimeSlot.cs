@@ -15,12 +15,13 @@ namespace Domain.Entities
         public bool IsVacant { get; set; }
         public DateTime CreatedUTC { get; set; }
         public Guid RoomId { get; set; }
-        public Guid TBookerID { get; set; }
+        //public Guid TBookerID { get; set; }
 
         //Navigation properties
-        public Booker Booker { get; set; }
+        public Guid? BookerId { get; set; }
+        public virtual Booker Booker { get; set; }
 
-        public static ITimeSlot Create(Guid id, DateTime timeSlotStart, DateTime timeSlotEnd, string title, bool isVacant, Guid bookerId, DateTime createdUTC, Guid roomId)
+        public static ITimeSlot Create(Guid id, DateTime timeSlotStart, DateTime timeSlotEnd, string title, bool isVacant, Guid? bookerId, DateTime createdUTC, Guid roomId)
         {
             return new TimeSlot()
             {
@@ -31,7 +32,7 @@ namespace Domain.Entities
                 IsVacant = isVacant,
                 CreatedUTC = createdUTC,
                 RoomId = roomId,
-                TBookerID = bookerId
+                BookerId = bookerId
             };
         }
     }
