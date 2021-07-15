@@ -1,8 +1,10 @@
 ﻿using System.Reflection;
+using Application.Bookers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistance.Bookers;
 using Persistance.Context;
 using Persistance.Interfaces;
 
@@ -19,6 +21,7 @@ namespace Persistance
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+            services.AddTransient<IBookerRepository, BookerRepository>();
             //services.AddIdentity<APIUser, UserRole>()
             //    .AddDefaultTokenProviders();
             //services.AddScoped<IUserStore<APIUser>, UserStore>();

@@ -15,7 +15,7 @@ namespace Persistance.Context
 
         public DbSet<TimeSlot> TimeSlots { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<Booker> Bookers { get; set; }
+        public DbSet<Domain.Entities.Booker> Bookers { get; set; }
         public DbSet<User> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -32,7 +32,6 @@
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Persistance\Persistance.csproj" />
-    <ProjectReference Include="..\RoomBook_OA_UI\RoomBook_OA_UI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

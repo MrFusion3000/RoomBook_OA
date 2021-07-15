@@ -3,6 +3,7 @@ using Persistance.Features.BookerFeatures.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Application.Bookers.Commands;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers.v1

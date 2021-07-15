@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Persistance.Interfaces;
-using Domain.Entities;
 using MediatR;
 
-namespace Persistance.Features.BookerFeatures.Commands
+namespace Application.Bookers.Commands
 {
     public class CreateBookerCommand : IRequest<Guid>
     {
@@ -14,21 +12,22 @@ namespace Persistance.Features.BookerFeatures.Commands
 
         public class CreateBookerCommandHandler : IRequestHandler<CreateBookerCommand, Guid>
         {
-            private readonly IApplicationDbContext _context;
-            public CreateBookerCommandHandler(IApplicationDbContext context)
+            private readonly IBookerRepository _bookerRepository;
+
+            public CreateBookerCommandHandler(IBookerRepository bookerRepository)
             {
-                _context = context;
+                _bookerRepository = bookerRepository;
+          
             }
             public async Task<Guid> Handle(CreateBookerCommand command, CancellationToken cancellationToken)
             {
-                var Booker = new Booker()
+                var booker = new Domain.Entities.Booker()
                 {
                     Name = command.Name,
                     CreatedUTC = command.CreatedUTC
                 };
-                _context.Bookers.Add(Booker);
-                await _context.SaveChangesAsync();
-                return Booker.ID;
+               return await _bookerRepository.CreateBookerAsync(booker, cancellationToken);
+
             }
         }
     }
