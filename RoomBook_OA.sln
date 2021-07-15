@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoomBook_OA_UI", "RoomBook_OA_UI\RoomBook_OA_UI.csproj", "{EFB5B608-41BE-47E2-BDA1-D9FA2A020B4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Shared", "Application.Shared\Application.Shared.csproj", "{276C42FA-08BB-4BDB-9D5E-1DE8F1854431}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{EFB5B608-41BE-47E2-BDA1-D9FA2A020B4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFB5B608-41BE-47E2-BDA1-D9FA2A020B4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFB5B608-41BE-47E2-BDA1-D9FA2A020B4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{276C42FA-08BB-4BDB-9D5E-1DE8F1854431}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{276C42FA-08BB-4BDB-9D5E-1DE8F1854431}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{276C42FA-08BB-4BDB-9D5E-1DE8F1854431}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{276C42FA-08BB-4BDB-9D5E-1DE8F1854431}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{925FCE8E-A6C4-4B0E-AC07-30928A715DBB} = {049C5173-9E78-4ABD-96FE-01C22DE75D35}
 		{FDD3A237-29A6-43F1-8EF6-062BF0CF9944} = {103DA492-51E7-4567-9873-9375EA826891}
 		{EFB5B608-41BE-47E2-BDA1-D9FA2A020B4B} = {103DA492-51E7-4567-9873-9375EA826891}
+		{276C42FA-08BB-4BDB-9D5E-1DE8F1854431} = {09C8DFC3-AB9C-41E0-B6DA-A749B3C0F8B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE0C6275-DE5E-4BAB-BFC5-268CBAF1379D}
