@@ -20,11 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Application.Shared\Application.Shared.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\BookerFeatures\Commands\" />
+    <Folder Include="Rooms" />
   </ItemGroup>
 
 </Project>
