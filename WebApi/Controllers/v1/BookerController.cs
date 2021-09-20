@@ -21,6 +21,7 @@ namespace WebApi.Controllers.v1
         {
             return Ok(await Mediator.Send(command));
         }
+
         /// <summary>
         /// Gets all Bookers.
         /// </summary>
@@ -30,6 +31,7 @@ namespace WebApi.Controllers.v1
         {
             return Ok(await Mediator.Send(new GetAllBookersQuery()));
         }
+
         /// <summary>
         /// Gets Booker Entity by Id.
         /// </summary>
@@ -40,17 +42,19 @@ namespace WebApi.Controllers.v1
         {
             return Ok(await Mediator.Send(new GetBookerByIdQuery { Id = id }));
         }
-        /// <summary>
-        /// Deletes Booker Entity based on Id.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [Authorize]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            return Ok(await Mediator.Send(new DeleteBookerByIdCommand { ID = id }));
-        }
+
+       // /// <summary>
+       // /// Deletes Booker Entity based on Id.
+       // /// </summary>
+       // /// <param name="id"></param>
+       // /// <returns></returns>
+        //[Authorize]
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(Guid id)
+        //{
+        //    return Ok(await Mediator.Send(new DeleteBookerByIdCommand { ID = id }));
+        //}
+
         /// <summary>
         /// Updates the Booker Entity based on Id.   
         /// </summary>

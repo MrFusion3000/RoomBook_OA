@@ -4,7 +4,7 @@
         <name>WebApi</name>
     </assembly>
     <members>
-        <member name="M:WebApi.Controllers.v1.BookerController.Create(Persistance.Features.BookerFeatures.Commands.CreateBookerCommand)">
+        <member name="M:WebApi.Controllers.v1.BookerController.Create(Application.Bookers.Commands.CreateBookerCommand)">
             <summary>
             Creates a New Booker.
             </summary>
@@ -20,13 +20,6 @@
         <member name="M:WebApi.Controllers.v1.BookerController.GetById(System.Guid)">
             <summary>
             Gets Booker Entity by Id.
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.BookerController.Delete(System.Guid)">
-            <summary>
-            Deletes Booker Entity based on Id.
             </summary>
             <param name="id"></param>
             <returns></returns>

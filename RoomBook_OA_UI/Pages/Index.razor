@@ -1,7 +1,10 @@
 ﻿@page "/"
 @page "/{thisroomid:guid}"
+
+@using Application.Shared.DTO
 @using Domain.Entities
 @using System.Security.Claims
+@using System.Text.Json
 @using Domain.Interfaces
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Logging
@@ -39,7 +42,7 @@
 <MudTable Items="@_timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" @bind-SelectedItem="_selectedItem" RowsPerPage="12">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Schedule for @_room.Name</MudText>
-        <MudToolBarSpacer />
+        <MudSpacer />
         <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
@@ -54,8 +57,7 @@
         <MudTd DataLabel="Start">@context.TimeSlotStart.ToLocalTime().ToShortTimeString()</MudTd>
         <MudTd DataLabel="End">@context.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudTd>
         <MudTd DataLabel="Title">@context.Title</MudTd>
-        <MudTd DataLabel="Booker">@context.Booker?.Name
-        </MudTd>   @*//Empty object error. Maybe do a if(TbookerId =...)*@
+        <MudTd DataLabel="Booker">@context.BookerId</MudTd>   
     </RowTemplate>
     <PagerContent>
         <MudTablePager PageSizeOptions="new int[] { 12, 24, 36, 48, 60 }" />
@@ -63,9 +65,9 @@
 </MudTable>
 <div class="d-flex flex-wrap mt-4">
 
-    <MudToolBarSpacer />
+    <MudSpacer />
     <MudText Inline="true" Class="align-self-center" Style="min-width:200px;">Selected: @_selectedItem?.TimeSlotStart.ToLocalTime().ToShortTimeString() - @_selectedItem?.TimeSlotEnd.ToLocalTime().ToShortTimeString() : @_selectedItem?.Title</MudText>
-    <MudToolBarSpacer />
+    <MudSpacer />
 
     </div>
 
@@ -91,13 +93,13 @@
     //private IList<Booker> _booker = new List<Booker>();
 
     [Parameter] public Guid ThisRoomId { get; set; }
-    [Parameter] public int HasItems { get; set; }
+    [Parameter] public int? HasItems { get; set; }
     [Parameter] public TimeSlot FirstVacantSlot { get; set; }
     [Parameter] public int AnyVacantSlot { get; set; }
 
     private string _searchString = "";
     private TimeSlot _selectedItem = null;
-    //private HashSet<TimeSlot> _selectedItems = new HashSet<TimeSlot>();
+    private HashSet<TimeSlot> _selectedItems = new HashSet<TimeSlot>();
 
     private DateTime _dtToday = DateTime.UtcNow;
 
@@ -205,14 +207,20 @@
     private async Task RefreshDb()
     {
         //Get current room
-        _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
+        _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId, 
+            new JsonSerializerOptions(){ ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve}
+            );
+
         // Get Bookers List
         //_booker = await _http.GetFromJsonAsync<List<Booker>>("https://localhost:44315/api/v1/Booker/");
 
 
         if (_room is not null)
         {
+            //if (_room.TimeSlots is not null)
+            //{
             _timeSlots = _room.TimeSlots;
+            //}
         }
         else
         {

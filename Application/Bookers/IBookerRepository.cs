@@ -8,5 +8,7 @@ namespace Application.Bookers
     public interface IBookerRepository
     {
          Task<Guid> CreateBookerAsync(Booker booker, CancellationToken cancellationToken);
+         Task<Guid> DeleteBookerAsync(Booker booker, CancellationToken cancellationToken);
+
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Domain.Entities;
 
-namespace Application.Shared.Rooms
+namespace Application.Shared.DTO
 {
     public class RoomDto
     {
@@ -10,5 +11,9 @@ namespace Application.Shared.Rooms
         
         public int AnyVacantSlot { get; set; }
         public TimeSlot FirstVacantTimeSlot { get; set; }
+
+        //Navigation properties
+        public virtual IList<TimeSlotDto> TimeSlots { get; set; }
+        public virtual IList<BookerDto> Bookers { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using Domain.Entities;
 
 namespace Domain.Interfaces
 {
-    public interface ISchedule : IDataEntitybase
+    public interface ISchedule //: IDataEntitybase
     {
         public List<TimeSlot> TimeSlots { get; set; }
 

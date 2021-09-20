@@ -1,14 +1,15 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 
 namespace Application.Bookers.Commands
 {
     public class CreateBookerCommand : IRequest<Guid>
     {
-        public string Name { get; set; }
-        public DateTime CreatedUTC { get; set; }
+        //Guid is created in db
+        private string Name { get; set; }
+        private DateTime CreatedUTC { get; set; }
 
         public class CreateBookerCommandHandler : IRequestHandler<CreateBookerCommand, Guid>
         {

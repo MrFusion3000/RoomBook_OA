@@ -44,28 +44,26 @@
 
 @code
 {
-    private List<Room> _rooms = new List<Room>();
+        private List<Room> _rooms = new List<Room>();
 
-    protected override async Task OnInitializedAsync()
-    {
-        NavigationManager.LocationChanged += HandleLocationChanged;
+        protected override async Task OnInitializedAsync()
+        {
+            NavigationManager.LocationChanged += HandleLocationChanged;
 
-        _rooms = await _http.GetFromJsonAsync<List<Room>>("https://localhost:44315/api/v1/Room/");
+            _rooms = await _http.GetFromJsonAsync<List<Room>>("https://localhost:44315/api/v1/Room/");
 
-        await RefreshDb();
+            await RefreshDb();
+        }
 
-    }
-
-    private async Task RefreshDb()
-    {
+        private async Task RefreshDb()
+        {
         //Get current rooms
-        //_rooms = await _http.GetFromJsonAsync<List<Room>>("https://localhost:44315/api/v1/Room/");
-
-    }
+        _rooms = await _http.GetFromJsonAsync<List<Room>>("https://localhost:44315/api/v1/Room/");
+        }
 
     private void GotoRoom(Guid room)
     {
-        string navUri = "/" + room; 
+        string navUri = "/" + room;
         NavigationManager.NavigateTo(navUri);
     }
 

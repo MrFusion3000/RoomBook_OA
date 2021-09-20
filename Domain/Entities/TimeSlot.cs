@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-//using Domain.Common;
+using Domain.Common;
 using Domain.Interfaces;
 
 namespace Domain.Entities
 {
-    public class TimeSlot : ITimeSlot
+    public class TimeSlot : IDataEntitybase, ITimeSlot
     {
         public Guid ID { get; set; }
         public DateTime TimeSlotStart { get; set; }

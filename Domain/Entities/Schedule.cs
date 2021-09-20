@@ -8,14 +8,14 @@ using Domain.Interfaces;
 
 namespace Domain.Entities
 {
-    public class Schedule : ISchedule
+    public class Schedule : IDataEntitybase, ISchedule
     {
-        public int ID { get; set; }
+        //public int ID { get; set; }
+        public Guid ID { get; set; }
         public List<TimeSlot> TimeSlots { get; set; }
         public DateTime CreatedUTC { get; set; }
-        Guid IDataEntitybase.ID { get; set; }
 
-        public static Schedule Create(int id)
+        public static Schedule Create(Guid id)
         {
             return new Schedule()
             {
@@ -26,7 +26,7 @@ namespace Domain.Entities
 
         public static List<TimeSlot> InitiateSchedule(List<TimeSlot> timeSlots)
         {
-            DateTime tSlot = DateTime.Today.AddHours(6);
+            //DateTime tSlot = DateTime.Today.AddHours(6);
 
             return timeSlots;
         }

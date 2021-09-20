@@ -7,7 +7,7 @@ using Domain.Common;
 
 namespace Domain.Interfaces
 {
-    public interface ITimeSlot : IDataEntitybase
+    public interface ITimeSlot //: IDataEntitybase
     {
         public DateTime TimeSlotStart { get; set; }
         public DateTime TimeSlotEnd { get; set; }

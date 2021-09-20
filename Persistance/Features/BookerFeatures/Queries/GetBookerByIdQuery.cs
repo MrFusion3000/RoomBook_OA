@@ -3,12 +3,12 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Shared.DTO;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using Persistance.Interfaces;
+using Mapster;
 
 namespace Persistance.Features.BookerFeatures.Queries
 {
@@ -25,16 +25,20 @@ namespace Persistance.Features.BookerFeatures.Queries
             public async Task<Booker> Handle(GetBookerByIdQuery query, CancellationToken cancellationToken)
             {
                 var dtToday = DateTime.UtcNow;
-                var Booker = _context.Bookers
+                var booker = _context.Bookers
                     .Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
                     .FirstOrDefault(a => a.ID == query.Id);
+
+                //var bookerDto = booker.Adapt<IEnumerable<BookerDto>>;
+
+                
+                
                 //var Booker = _context.Bookers
                 //.Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
                 //.Include(b => b.TimeSlots).FirstOrDefaultAsync()
-                //.FirstOrDefault(a => a.ID == query.Id)
-                ;
-                if (Booker == null) return null;
-                return await Task.FromResult(Booker);
+                //.FirstOrDefault(a => a.ID == query.Id);
+                if (booker == null) return null;
+                return await Task.FromResult(booker);
             }
         }
     }
