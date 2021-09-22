@@ -10,7 +10,7 @@ namespace Domain.Interfaces
         string Name { get; set; }
         int Placement { get; set; }
         
-        List<TimeSlot> TimeSlots { get; set; }
+        //ICollection<TimeSlot> TimeSlots { get; set; }
 
         static readonly IRoom Create;
 

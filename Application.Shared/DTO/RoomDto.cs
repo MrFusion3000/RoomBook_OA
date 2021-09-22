@@ -13,7 +13,7 @@ namespace Application.Shared.DTO
         public TimeSlot FirstVacantTimeSlot { get; set; }
 
         //Navigation properties
-        public virtual IList<TimeSlotDto> TimeSlots { get; set; }
-        public virtual IList<BookerDto> Bookers { get; set; }
+        public virtual ICollection<TimeSlotDto> TimeSlots { get; set; }
+        //public virtual IList<BookerDto> Bookers { get; set; }
     }
 }

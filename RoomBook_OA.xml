@@ -87,6 +87,14 @@
             <param name="today"></param>
             <returns></returns>
         </member>
+        <member name="M:WebApi.Controllers.v1.TimeSlotController.GetAllTimeSlotsByDateAndRoomId(System.DateTime,System.Guid)">
+            <summary>
+            Gets all TimeSlots by date.
+            </summary>
+            <param name="roomid"></param>
+            /// <param name="today"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebApi.Controllers.v1.TimeSlotController.GetById(System.Guid)">
             <summary>
             Gets TimeSlot Entity by Id.

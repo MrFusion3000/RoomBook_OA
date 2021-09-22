@@ -61,15 +61,14 @@ namespace Persistance.Migrations
                     IsVacant = table.Column<bool>(type: "bit", nullable: false),
                     CreatedUTC = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RoomId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TBookerID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BookerID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    BookerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TimeSlots", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_TimeSlots_Bookers_BookerID",
-                        column: x => x.BookerID,
+                        name: "FK_TimeSlots_Bookers_BookerId",
+                        column: x => x.BookerId,
                         principalTable: "Bookers",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
@@ -82,9 +81,9 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TimeSlots_BookerID",
+                name: "IX_TimeSlots_BookerId",
                 table: "TimeSlots",
-                column: "BookerID");
+                column: "BookerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TimeSlots_RoomId",

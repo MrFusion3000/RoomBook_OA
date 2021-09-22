@@ -24,6 +24,7 @@ namespace Persistance.Features.RoomFeatures.Queries
             }
             public async Task<Room> Handle(GetRoomByIdQuery query, CancellationToken cancellationToken)
             {
+                // TODO dtToday should be sent in the query as a parameter instead to allow any date
                 var dtToday = DateTime.UtcNow;
                 //var room = _context.Rooms
                 //    .Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
@@ -31,9 +32,10 @@ namespace Persistance.Features.RoomFeatures.Queries
 
                 // försök 1
                 var room = _context.Rooms
-                    .Include(a => a.TimeSlots
-                        .Where(t => t.TimeSlotStart > dtToday))
-                    .ThenInclude(t => t.Booker)
+                    //.Include(a => a.TimeSlots
+                    //    .Where(t => t.TimeSlotStart > dtToday))
+                    //.ThenInclude(t => t.Booker)
+                    //.AsNoTracking()
                     .FirstOrDefault(a => a.ID == query.Id);
 
                 //försök 2

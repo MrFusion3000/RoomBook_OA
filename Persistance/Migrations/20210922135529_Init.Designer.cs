@@ -10,8 +10,8 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210715113504_ChangeRoomTimeSlotBooker")]
-    partial class ChangeRoomTimeSlotBooker
+    [Migration("20210922135529_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,12 +33,7 @@ namespace Persistance.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("RoomID")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("RoomID");
 
                     b.ToTable("Bookers");
                 });
@@ -124,13 +119,6 @@ namespace Persistance.Migrations
                     b.ToTable("ApplicationUsers");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Booker", b =>
-                {
-                    b.HasOne("Domain.Entities.Room", null)
-                        .WithMany("Bookers")
-                        .HasForeignKey("RoomID");
-                });
-
             modelBuilder.Entity("Domain.Entities.TimeSlot", b =>
                 {
                     b.HasOne("Domain.Entities.Booker", "Booker")
@@ -153,8 +141,6 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.Room", b =>
                 {
-                    b.Navigation("Bookers");
-
                     b.Navigation("TimeSlots");
                 });
 #pragma warning restore 612, 618

@@ -15,18 +15,18 @@ namespace Domain.Entities
         public int Placement { get; set; }
 
         //Navigation properties
-        public virtual List<TimeSlot> TimeSlots { get; set; }
-        public virtual List<Booker> Bookers { get; set; }
+        //public virtual ICollection<TimeSlot> TimeSlots { get; set; }
+        //public virtual List<Booker> Bookers { get; set; }
 
-        public static IRoom Create(Guid id, string name, DateTime createdUTC, List<TimeSlot> timeSlots, int placement)
+        public static IRoom Create(Guid id, string name, DateTime createdUTC, int placement) //, List<TimeSlot> timeSlots)
         {
             return new Room()
             {
                 ID = id,
                 Name = name,
                 CreatedUTC = createdUTC,
-                Placement = placement,
-                TimeSlots = timeSlots
+                Placement = placement //,
+                //TimeSlots = timeSlots
             };
         }
     }

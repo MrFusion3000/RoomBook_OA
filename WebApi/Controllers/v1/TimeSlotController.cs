@@ -35,10 +35,21 @@ namespace WebApi.Controllers.v1
         /// </summary>
         /// <param name="today"></param>
         /// <returns></returns>
-        [HttpGet("GetAllTimeSlotsByDate/{today}")]
+        [HttpGet("GetAllTimeSlotsByDate/{today:datetime}")]
         public async Task<IActionResult> GetAllTimeSlotsByDate(DateTime today)
         {
             return Ok(await Mediator.Send(new GetAllTimeSlotsByDateQuery { Today = today }));
+        }
+        /// <summary>
+        /// Gets all TimeSlots by date.
+        /// </summary>
+        /// <param name="roomid"></param>
+        /// /// <param name="today"></param>
+        /// <returns></returns>
+        [HttpGet("GetAllTimeSlotsByDateAndRoomId/{roomid:guid},{today:datetime}")]
+        public async Task<IActionResult> GetAllTimeSlotsByDateAndRoomId(DateTime today, Guid roomid)
+        {
+            return Ok(await Mediator.Send(new GetAllTimeSlotsByDateAndRoomIdQuery { Today = today, ThisRoomId = roomid }));
         }
         /// <summary>
         /// Gets TimeSlot Entity by Id.

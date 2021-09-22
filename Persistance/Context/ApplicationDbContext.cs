@@ -15,7 +15,7 @@ namespace Persistance.Context
 
         public DbSet<TimeSlot> TimeSlots { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<Domain.Entities.Booker> Bookers { get; set; }
+        public DbSet<Booker> Bookers { get; set; }
         public DbSet<User> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,16 +25,16 @@ namespace Persistance.Context
             //    .Property(r => r.ID)
             //    .IsRequired();
 
-            modelBuilder.Entity<Room>()
-                .HasMany(r => r.TimeSlots)
-                .WithOne();
-            modelBuilder.Entity<Room>()
-                .Navigation(r => r.TimeSlots);
+            //modelBuilder.Entity<Room>()
+            //    .HasMany(r => r.TimeSlots)
+            //    .WithOne();
+            //modelBuilder.Entity<Room>()
+            //    .Navigation(r => r.TimeSlots);
                     //.UsePropertyAccessMode(PropertyAccessMode.Property);
 
             //modelBuilder.Entity<Booker>()
-                //.HasMany(b => b.TimeSlots)
-                //.WithOne();
+            //    .HasMany(b => b.TimeSlots)
+            //    .WithOne();
             //modelBuilder.Entity<Booker>()
             //    .Navigation(b => b.TimeSlots)
             //    .UsePropertyAccessMode(PropertyAccessMode.Property);

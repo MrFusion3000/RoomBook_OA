@@ -19,7 +19,7 @@ namespace Domain.Entities
 
         //Navigation properties
         public Guid? BookerId { get; set; }
-        public virtual Booker Booker { get; set; }
+        //public virtual Booker Booker { get; set; }
 
         public static ITimeSlot Create(Guid id, DateTime timeSlotStart, DateTime timeSlotEnd, string title, bool isVacant, Guid? bookerId, DateTime createdUTC, Guid roomId)
         {
