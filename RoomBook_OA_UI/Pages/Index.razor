@@ -166,12 +166,18 @@
         //}
         //else
         //{
-        //await InitDailySchedule();
         //_timeSlots = _room?.TimeSlots;
         //}
         //_timeSlots = await _http.GetFromJsonAsync<ICollection<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + ThisRoomId, options);
 
-        _timeSlots = await _http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + _dtToday, options);
+        // TODO Fix check for timeslots in db
+        //if (_timeSlots.Count < 1)
+        //{
+            //await InitDailySchedule();
+
+        //}
+        _timeSlots = await _http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + _dtToday); //, options);
+
 
 
         // Check for first vacant timeslot for the day
