@@ -16,7 +16,7 @@ namespace Domain.Entities
         public DateTime CreatedUTC { get; set; }
 
         //Navigation properties
-        public virtual List<TimeSlot> TimeSlots { get; private set; }
+        public List<TimeSlot> TimeSlots { get; }
 
         public static Booker Create(string name)
         {

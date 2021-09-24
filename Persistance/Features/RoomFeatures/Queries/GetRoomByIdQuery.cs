@@ -32,10 +32,11 @@ namespace Persistance.Features.RoomFeatures.Queries
 
                 // försök 1
                 var room = _context.Rooms
-                    //.Include(a => a.TimeSlots
-                    //    .Where(t => t.TimeSlotStart > dtToday))
+                    .Include(a => a.TimeSlots
+                        .Where(t => t.TimeSlotStart > dtToday))
+                    // TODO how to include Booker?
                     //.ThenInclude(t => t.Booker)
-                    //.AsNoTracking()
+                    .AsNoTracking()
                     .FirstOrDefault(a => a.ID == query.Id);
 
                 //försök 2

@@ -18,10 +18,10 @@ namespace Domain.Entities
         //public Guid TBookerID { get; set; }
 
         //Navigation properties
-        public Guid? BookerId { get; set; }
-        //public virtual Booker Booker { get; set; }
+        public Guid BookerId { get; set; }
+        //public Booker Booker { get; set; }
 
-        public static ITimeSlot Create(Guid id, DateTime timeSlotStart, DateTime timeSlotEnd, string title, bool isVacant, Guid? bookerId, DateTime createdUTC, Guid roomId)
+        public static ITimeSlot Create(Guid id, DateTime timeSlotStart, DateTime timeSlotEnd, string title, bool isVacant, Guid bookerId, DateTime createdUTC, Guid roomId)
         {
             return new TimeSlot()
             {

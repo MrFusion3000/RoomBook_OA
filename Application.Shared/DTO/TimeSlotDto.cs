@@ -17,7 +17,7 @@ namespace Application.Shared.DTO
         //public Guid TBookerID { get; set; }
 
         //Navigation properties
-        public Guid? BookerId { get; set; }
+        public Guid BookerId { get; set; }
         public virtual BookerDto Booker { get; set; }
 
     }

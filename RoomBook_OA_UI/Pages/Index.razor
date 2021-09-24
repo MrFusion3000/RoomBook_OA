@@ -28,7 +28,7 @@
         </NotAuthorized>
     </AuthorizeView>*@
 <hr />
-<h2>HasItems: @HasItems</h2>
+<h2>HasItems (From present time and forward): @HasItems</h2>
 
 
 @if (FirstVacantSlot != null)
@@ -128,8 +128,6 @@
 
         await RefreshDb();
 
-        if (_timeSlots != null) HasItems = _timeSlots.Count; // Add check for isVacant = null, to display "no scheduled meetings all day"
-
         // TODO Change navigation order; Login/Admin page/Room admin/Choose Room/Display Room-TimeSlots
         if (_room is null)
         {
@@ -146,41 +144,26 @@
 
     private async Task RefreshDb()
     {
-        var options = new JsonSerializerOptions()
-        {
-            ReferenceHandler = ReferenceHandler.Preserve,
-            //WriteIndented = true
-        };
+        var test = await _http.GetStringAsync("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
 
         //Get current room
-        _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId, options);
+        _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
 
-        //if (_room?.TimeSlots != null)
-        //{
-        //    foreach (var tSlot in _room.TimeSlots)
-        //    {
-        //        _timeSlots.Add(tSlot);
-        //    }
-        //    HasItems = _timeSlots.Count;
-        //_timeSlots = _room?.TimeSlots;
-        //}
-        //else
-        //{
-        //_timeSlots = _room?.TimeSlots;
-        //}
-        //_timeSlots = await _http.GetFromJsonAsync<ICollection<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + ThisRoomId, options);
+    #region CheckIfTimeSlotsExists
+        if (_room?.TimeSlots != null)
+        {
+            HasItems = _timeSlots.Count;
+        }
+        
+        _timeSlots = _room.TimeSlots;
 
         // TODO Fix check for timeslots in db
-        //if (_timeSlots.Count < 1)
-        //{
-            //await InitDailySchedule();
+        if (_timeSlots != null) HasItems = _timeSlots.Count; // Add check for isVacant = null, to display "no scheduled meetings all day"
+        else { await InitDailySchedule(); }
 
-        //}
-        _timeSlots = await _http.GetFromJsonAsync<List<TimeSlot>>("https://localhost:44315/api/v1/TimeSlot/GetAllTimeSlotsByDate/" + _dtToday); //, options);
+    #endregion
 
-
-
-        // Check for first vacant timeslot for the day
+    // Check for first vacant timeslot for the day
         FirstVacantSlot = _timeSlots
         .Where(f => f.TimeSlotStart > _dtToday)
         .FirstOrDefault(f => f.IsVacant);
@@ -195,7 +178,7 @@
     }
 
     //Add check if timeSlot.isVacant = true else message to user
-    private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, Guid? bookerId)
+    private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, Guid bookerId)
     {
         var timeUpdateTimeSlot = firstVacantSlot;
         timeUpdateTimeSlot.IsVacant = notVacantSlot;
@@ -213,7 +196,7 @@
         var room = new Room
         {
             ID = ThisRoomId,
-            Name = "Init",
+            Name = "Init Room",
             Placement = 1,
             CreatedUTC = _dtToday
         };
@@ -247,7 +230,7 @@
                 TimeSlotEnd = initDate.Add(duration),
                 Title = "Vacant",
                 IsVacant = true,
-                BookerId = null,
+                BookerId = Guid.Empty,
                 CreatedUTC = _dtToday,
                 RoomId = ThisRoomId
             };
