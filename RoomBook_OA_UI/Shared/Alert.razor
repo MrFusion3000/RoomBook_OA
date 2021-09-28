@@ -1,4 +1,4 @@
-@using Persistance.Models
+@using Domain.Models
 @implements IDisposable
 @inject IAlertService AlertService
 @inject NavigationManager NavigationManager
@@ -18,7 +18,7 @@
     [Parameter]
     public bool Fade { get; set; } = true;
 
-    private List<Persistance.Models.Alert> alerts = new List<Persistance.Models.Alert>();
+    private List<Domain.Models.Alert> alerts = new List<Domain.Models.Alert>();
 
     protected override void OnInitialized()
     {
@@ -34,7 +34,7 @@
         NavigationManager.LocationChanged -= OnLocationChange;
     }
 
-    private async void OnAlert(Persistance.Models.Alert alert)
+    private async void OnAlert(Domain.Models.Alert alert)
     {
         // ignore alerts sent to other alert components
         if (alert.Id != Id) 
@@ -72,7 +72,7 @@
         AlertService.Clear(Id);
     }
 
-    private async void RemoveAlert(Persistance.Models.Alert alert)
+    private async void RemoveAlert(Domain.Models.Alert alert)
     {
         // check if already removed to prevent error on auto close
         if (!alerts.Contains(alert)) return;
@@ -95,7 +95,7 @@
         StateHasChanged();
     }
 
-    private string CssClass(Persistance.Models.Alert alert) 
+    private string CssClass(Domain.Models.Alert alert) 
     {
         if (alert == null) return null;
 

@@ -1,5 +1,4 @@
-﻿using Persistance.Features.BookerFeatures.Commands;
-using Persistance.Features.BookerFeatures.Queries;
+﻿using Persistance.Features.BookerFeatures.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

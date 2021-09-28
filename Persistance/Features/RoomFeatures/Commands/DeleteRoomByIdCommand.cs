@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Persistance.Interfaces;
+using Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

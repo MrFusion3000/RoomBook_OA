@@ -1,12 +1,13 @@
 ﻿using System.Reflection;
-using Application.Bookers;
+
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Persistance.Bookers;
 using Persistance.Context;
-using Persistance.Interfaces;
+using Persistance.Repositories.Bookers;
+using Application.Bookers;
+using Application.Interfaces;
 
 namespace Persistance
 {

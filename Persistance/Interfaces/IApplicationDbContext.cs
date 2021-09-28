@@ -3,7 +3,7 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Persistance.Models;
 
-namespace Persistance.Interfaces
+namespace Application.Interfaces
 {
     public interface IApplicationDbContext
     {

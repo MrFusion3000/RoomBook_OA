@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Persistance.Interfaces;
+using Application.Bookers;
 
 namespace Persistance.Features.BookerFeatures.Queries
 {
@@ -15,14 +15,14 @@ namespace Persistance.Features.BookerFeatures.Queries
 
         public class GetAllBookersQueryHandler : IRequestHandler<GetAllBookersQuery, IEnumerable<Booker>>
         {
-            private readonly IApplicationDbContext _context;
-            public GetAllBookersQueryHandler(IApplicationDbContext context)
+            private readonly IBookerRepository _bookerRepository;
+            public GetAllBookersQueryHandler(IBookerRepository bookerRepository)
             {
-                _context = context;
+                _bookerRepository = bookerRepository;
             }
             public async Task<IEnumerable<Booker>> Handle(GetAllBookersQuery query, CancellationToken cancellationToken)
             {
-                var BookerList = await _context.Bookers.ToListAsync(cancellationToken: cancellationToken);
+                var BookerList = await _bookerRepository.Bookers.ToListAsync(cancellationToken: cancellationToken);
                 if (BookerList == null)
                 {
                     return null;

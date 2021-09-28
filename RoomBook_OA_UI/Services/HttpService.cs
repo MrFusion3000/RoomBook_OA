@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using RoomBook_OA_UI.Helpers;
-using Persistance.Models;
+using Domain.Models;
 
 namespace RoomBook_OA_UI.Services
 {

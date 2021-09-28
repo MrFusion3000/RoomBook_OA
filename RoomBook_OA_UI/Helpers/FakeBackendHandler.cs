@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using RoomBook_OA_UI.Services;
-using Persistance.Models.Account;
+using Domain.Models.Account;
 
 namespace RoomBook_OA_UI.Helpers
 {

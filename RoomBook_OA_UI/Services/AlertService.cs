@@ -1,5 +1,5 @@
 using System;
-using Persistance.Models;
+using Domain.Models;
 
 namespace RoomBook_OA_UI.Services
 {

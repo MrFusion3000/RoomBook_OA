@@ -1,4 +1,4 @@
-namespace Persistance.Models
+namespace Domain.Models
 {
     public class Alert
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Persistance.Models
+namespace Domain.Models
 {
     public class User : IUser
     {

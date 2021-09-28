@@ -94,7 +94,7 @@ namespace Persistance.Migrations
                     b.ToTable("TimeSlots");
                 });
 
-            modelBuilder.Entity("Persistance.Models.User", b =>
+            modelBuilder.Entity("Domain.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");

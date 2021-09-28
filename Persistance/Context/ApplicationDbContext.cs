@@ -1,8 +1,8 @@
-﻿using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using Persistance.Models;
-using Persistance.Interfaces;
+using Application.Interfaces;
+using Domain.Entities;
+using Domain.Models;
 
 namespace Persistance.Context
 {

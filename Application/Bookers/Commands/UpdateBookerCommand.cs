@@ -3,9 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Persistance.Interfaces;
 
-namespace Persistance.Features.BookerFeatures.Commands
+namespace Application.Bookers.Commands
 {
     public class UpdateBookerCommand : IRequest<Guid>
     {
@@ -15,14 +14,15 @@ namespace Persistance.Features.BookerFeatures.Commands
 
         public class UpdateBookerCommandHandler : IRequestHandler<UpdateBookerCommand, Guid>
         {
-            private readonly IApplicationDbContext _context;
-            public UpdateBookerCommandHandler(IApplicationDbContext context)
+            private readonly IBookerRepository _bookerRepository;
+
+            public UpdateBookerCommandHandler(IBookerRepository bookerRepository)
             {
-                _context = context;
+                _bookerRepository = bookerRepository;
             }
             public async Task<Guid> Handle(UpdateBookerCommand command, CancellationToken cancellationToken)
             {
-                var Booker = _context.Bookers.FirstOrDefault(a => a.ID == command.ID);
+                var Booker = _bookerRepository.Bookers.FirstOrDefault(a => a.ID == command.ID);
 
                 if (Booker == null)
                 {
@@ -33,7 +33,7 @@ namespace Persistance.Features.BookerFeatures.Commands
                     Booker.Name = command.Name;
                     Booker.CreatedUTC = command.CreatedUTC;
 
-                    await _context.SaveChangesAsync();
+                    await _bookerRepository.SaveChangesAsync();
                     return Booker.ID;
                 }
             }

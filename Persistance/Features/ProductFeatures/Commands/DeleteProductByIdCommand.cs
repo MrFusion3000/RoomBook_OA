@@ -6,7 +6,7 @@
 //using System.Text;
 //using System.Threading;
 //using System.Threading.Tasks;
-//using Persistance.Interfaces;
+//using Application.Interfaces;
 
 //namespace Application.Features.ProductFeatures.Commands
 //{

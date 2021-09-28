@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Persistance.Models.Account
+namespace Domain.Models.Account
 {
     public class EditUser
     {

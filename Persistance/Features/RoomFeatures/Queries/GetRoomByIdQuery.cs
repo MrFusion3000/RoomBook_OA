@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using Persistance.Interfaces;
+using Application.Interfaces;
 
 namespace Persistance.Features.RoomFeatures.Queries
 {

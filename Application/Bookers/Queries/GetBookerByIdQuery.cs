@@ -7,8 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Shared.DTO;
 using Microsoft.EntityFrameworkCore;
-using Persistance.Interfaces;
-using Mapster;
+using Application.Interfaces;
+//using Mapster;
 
 namespace Persistance.Features.BookerFeatures.Queries
 {
