@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
 
-namespace Persistance.Features.RoomFeatures.Queries
+namespace Application.Features.RoomFeatures.Queries
 {
     public class GetAllRoomsQuery : IRequest<IEnumerable<Room>>
     {

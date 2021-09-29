@@ -4,7 +4,7 @@
         <name>WebApi</name>
     </assembly>
     <members>
-        <member name="M:WebApi.Controllers.v1.BookerController.Create(Application.Bookers.Commands.CreateBookerCommand)">
+        <member name="M:WebApi.Controllers.v1.BookerController.Create(Application.Features.BookerFeatures.Commands.CreateBookerCommand)">
             <summary>
             Creates a New Booker.
             </summary>
@@ -24,7 +24,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:WebApi.Controllers.v1.BookerController.Update(System.Guid,Persistance.Features.BookerFeatures.Commands.UpdateBookerCommand)">
+        <member name="M:WebApi.Controllers.v1.BookerController.Update(System.Guid,Application.Features.BookerFeatures.Commands.UpdateBookerCommand)">
             <summary>
             Updates the Booker Entity based on Id.   
             </summary>
@@ -32,7 +32,7 @@
             <param name="command"></param>
             <returns></returns>
         </member>
-        <member name="M:WebApi.Controllers.v1.RoomController.Create(Persistance.Features.RoomFeatures.Commands.CreateRoomCommand)">
+        <member name="M:WebApi.Controllers.v1.RoomController.Create(Application.Features.RoomFeatures.Commands.CreateRoomCommand)">
             <summary>
             Creates a New Room.
             </summary>
@@ -59,7 +59,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:WebApi.Controllers.v1.RoomController.Update(System.Guid,Persistance.Features.RoomFeatures.Commands.UpdateRoomCommand)">
+        <member name="M:WebApi.Controllers.v1.RoomController.Update(System.Guid,Application.Features.RoomFeatures.Commands.UpdateRoomCommand)">
             <summary>
             Updates the Room Entity based on Id.   
             </summary>
@@ -109,7 +109,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:WebApi.Controllers.v1.TimeSlotController.Update(System.Guid,Persistance.Features.ScheduleFeatures.Commands.UpdateTimeSlotCommand)">
+        <member name="M:WebApi.Controllers.v1.TimeSlotController.Update(System.Guid,Application.Features.TimeslotFeatures.Commands.UpdateTimeSlotCommand)">
             <summary>
             Updates the TimeSlot Entity based on Id.   
             </summary>

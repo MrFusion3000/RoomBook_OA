@@ -3,20 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
 using Domain.Entities;
-using Domain.Interfaces;
 using MediatR;
 
-namespace Persistance.Features.ScheduleFeatures.Commands
+namespace Application.Features.TimeslotFeatures.Commands
 {
     public class CreateTimeSlotCommand : IRequest<Guid>
     {
-        //public DateTime TimeSlotStart { get; set; }
-        //public DateTime TimeSlotEnd { get; set; }
-        //public string Title { get; set; }
-        //public bool IsVacant { get; set; }
-        //public Guid BookerId { get; set; }
-        //public DateTime CreatedUTC { get; set; }
-        //public Guid RoomId { get; set; }
         public TimeSlot TimeSlot { get; set; }
 
         public class CreateTimeSlotCommandHandler : IRequestHandler<CreateTimeSlotCommand, Guid>

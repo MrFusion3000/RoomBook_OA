@@ -92,7 +92,7 @@
     [Parameter] public Guid InstaBookerGuid { get; set; } = Guid.Parse("99999999-9999-9999-9999-999999999999");
 
     private Room _room = new();
-    private List<TimeSlot> _timeSlots = new List<TimeSlot>();
+    private List<TimeSlot> _timeSlots = new();
     //private IList<Booker> _booker = new List<Booker>();
 
     [Parameter] public Guid ThisRoomId { get; set; }
@@ -134,12 +134,16 @@
             //await InitRoom();
             GotoRoom();
         }
-        //else if (HasItems == 0)             // Create empty Timeslots if none for the day
-        //{
-        //    await InitDailySchedule();
-        //}
+        else if (HasItems == 0)             // Create empty Timeslots if none for the day
+        {
+            //await InitDailySchedule();
+        }
 
-        //TODO Redirect to Rooms page to choose room
+        //await InitDailySchedule();
+
+        //await InitBooker();
+
+    //TODO Redirect to Rooms page to choose room
     }
 
     private async Task RefreshDb()
@@ -152,10 +156,12 @@
     #region CheckIfTimeSlotsExists
         if (_room?.TimeSlots != null)
         {
+            _timeSlots = _room.TimeSlots;
+
             HasItems = _timeSlots.Count;
         }
         
-        _timeSlots = _room.TimeSlots;
+        //_timeSlots = _room.TimeSlots;
 
         // TODO Fix check for timeslots in db
         if (_timeSlots != null) HasItems = _timeSlots.Count; // Add check for isVacant = null, to display "no scheduled meetings all day"
@@ -210,6 +216,7 @@
         {
             ID = Guid.Empty,
             Name = "Joe Dull",
+            CreatedUTC = DateTime.Now
 
         };
         await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Booker", booker);

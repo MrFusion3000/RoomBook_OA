@@ -8,22 +8,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
 
-namespace Persistance.Features.ScheduleFeatures.Queries
+namespace Application.Features.TimeslotFeatures.Queries
 {
-    public class GetAllTimeSlotsByDateAndRoomIdQuery : IRequest<IEnumerable<TimeSlot>>
+    public class GetAllTimeSlotsByDateQuery : IRequest<IEnumerable<TimeSlot>>
     {
         public DateTime Today { get; init; }
         public Guid ThisRoomId { get; init; }
         //public DateTime PresentTime { get; set; } = DateTime.Now;
 
-        public class GetAllTimeSlotsByDateAndRoomIdQueryHandler : IRequestHandler<GetAllTimeSlotsByDateAndRoomIdQuery, IEnumerable<TimeSlot>>
+        public class GetAllTimeSlotsByDateQueryHandler : IRequestHandler<GetAllTimeSlotsByDateQuery, IEnumerable<TimeSlot>>
         {
             private readonly IApplicationDbContext _context;
-            public GetAllTimeSlotsByDateAndRoomIdQueryHandler(IApplicationDbContext context)
+            public GetAllTimeSlotsByDateQueryHandler(IApplicationDbContext context)
             {
                 _context = context;
             }
-            public async Task<IEnumerable<TimeSlot>> Handle(GetAllTimeSlotsByDateAndRoomIdQuery query, CancellationToken cancellationToken)
+            public async Task<IEnumerable<TimeSlot>> Handle(GetAllTimeSlotsByDateQuery query, CancellationToken cancellationToken)
             {
                 var today = query.Today.Date;
                 var thisRoomId = query.ThisRoomId;
@@ -31,7 +31,7 @@ namespace Persistance.Features.ScheduleFeatures.Queries
                 var timeSlotsList = await _context.TimeSlots
                     .Where(t => t.TimeSlotStart.Date == today)
                     .Where(t => t.TimeSlotStart.TimeOfDay >= presentTime)
-                    .Where(t => t.RoomId == thisRoomId)
+                    //.Where(t => t.RoomId == thisRoomId)
                     .ToListAsync(cancellationToken);
 
                 if (timeSlotsList == null)

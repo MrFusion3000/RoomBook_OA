@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
 
-namespace Persistance.Features.ScheduleFeatures.Queries
+namespace Application.Features.TimeslotFeatures.Queries
 {
     public class GetAllTimeSlotsQuery : IRequest<IEnumerable<TimeSlot>>
     {

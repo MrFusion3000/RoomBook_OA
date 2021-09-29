@@ -1,12 +1,10 @@
 ﻿using System.Reflection;
-
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistance.Context;
 using Persistance.Repositories.Bookers;
-using Application.Bookers;
 using Application.Interfaces;
 
 namespace Persistance
@@ -15,7 +13,9 @@ namespace Persistance
     {
         public static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            //services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(typeof(Application.DependencyInjection), typeof(Persistance.DependencyInjection));
+
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

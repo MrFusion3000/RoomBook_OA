@@ -6,7 +6,7 @@ using Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistance.Features.ScheduleFeatures.Commands
+namespace Application.Features.TimeslotFeatures.Commands
 {
     public class DeleteTimeSlotByIdCommand : IRequest<Guid>
     {

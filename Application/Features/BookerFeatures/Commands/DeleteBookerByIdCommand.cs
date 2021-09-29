@@ -3,7 +3,7 @@
 //using System.Threading;
 //using System.Threading.Tasks;
 
-//namespace Application.Bookers.Commands
+//namespace Application.Features.Bookers.Commands
 //{
 //    public class DeleteBookerByIdCommand : IRequest<Guid>
 //    {

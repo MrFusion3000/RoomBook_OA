@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Application.Interfaces;
 
-namespace Persistance.Features.RoomFeatures.Commands
+namespace Application.Features.RoomFeatures.Commands
 {
     public class UpdateRoomCommand : IRequest<Guid>
     {

@@ -2,9 +2,10 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Interfaces;
 using MediatR;
 
-namespace Application.Bookers.Commands
+namespace Application.Features.BookerFeatures.Commands
 {
     public class UpdateBookerCommand : IRequest<Guid>
     {
@@ -14,27 +15,27 @@ namespace Application.Bookers.Commands
 
         public class UpdateBookerCommandHandler : IRequestHandler<UpdateBookerCommand, Guid>
         {
-            private readonly IBookerRepository _bookerRepository;
+            private readonly IApplicationDbContext _context;
 
-            public UpdateBookerCommandHandler(IBookerRepository bookerRepository)
+            public UpdateBookerCommandHandler(IApplicationDbContext context)
             {
-                _bookerRepository = bookerRepository;
+                _context = context;
             }
             public async Task<Guid> Handle(UpdateBookerCommand command, CancellationToken cancellationToken)
             {
-                var Booker = _bookerRepository.Bookers.FirstOrDefault(a => a.ID == command.ID);
+                var booker = _context.Bookers.FirstOrDefault(a => a.ID == command.ID);
 
-                if (Booker == null)
+                if (booker == null)
                 {
                     return default;
                 }
                 else
                 {
-                    Booker.Name = command.Name;
-                    Booker.CreatedUTC = command.CreatedUTC;
+                    booker.Name = command.Name;
+                    booker.CreatedUTC = command.CreatedUTC;
 
-                    await _bookerRepository.SaveChangesAsync();
-                    return Booker.ID;
+                    await _context.SaveChangesAsync();
+                    return booker.ID;
                 }
             }
         }

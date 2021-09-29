@@ -6,7 +6,7 @@ using Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistance.Features.RoomFeatures.Commands
+namespace Application.Features.RoomFeatures.Commands
 {
     public class DeleteRoomByIdCommand : IRequest<Guid>
     {

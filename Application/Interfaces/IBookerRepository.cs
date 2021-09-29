@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Domain.Entities;
 
-namespace Application.Bookers
+namespace Application.Interfaces
 {
     public interface IBookerRepository
     {

@@ -1,16 +1,15 @@
-﻿using Domain.Entities;
-using MediatR;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Shared.DTO;
-using Microsoft.EntityFrameworkCore;
 using Application.Interfaces;
+using Domain.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
 //using Mapster;
 
-namespace Persistance.Features.BookerFeatures.Queries
+namespace Application.Features.BookerFeatures.Queries
 {
     public class GetBookerByIdQuery : IRequest<Booker>
     {

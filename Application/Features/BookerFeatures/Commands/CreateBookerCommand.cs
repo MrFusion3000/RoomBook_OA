@@ -2,8 +2,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Interfaces;
 
-namespace Application.Bookers.Commands
+namespace Application.Features.BookerFeatures.Commands
 {
     public class CreateBookerCommand : IRequest<Guid>
     {

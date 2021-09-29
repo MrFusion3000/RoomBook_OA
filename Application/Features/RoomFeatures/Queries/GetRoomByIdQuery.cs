@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Application.Interfaces;
 
-namespace Persistance.Features.RoomFeatures.Queries
+namespace Application.Features.RoomFeatures.Queries
 {
     public class GetRoomByIdQuery : IRequest<Room>
     {

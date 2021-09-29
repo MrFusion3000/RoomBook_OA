@@ -5,7 +5,7 @@ using Application.Interfaces;
 using Domain.Entities;
 using MediatR;
 
-namespace Persistance.Features.RoomFeatures.Commands
+namespace Application.Features.RoomFeatures.Commands
 {
     public class CreateRoomCommand : IRequest<Guid>
     {

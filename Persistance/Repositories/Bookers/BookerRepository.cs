@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Application.Interfaces;
-using Application.Bookers;
 
 
 namespace Persistance.Repositories.Bookers

@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using Application.Interfaces;
+using MediatR;
 
-namespace Persistance.Features.ScheduleFeatures.Commands
+namespace Application.Features.TimeslotFeatures.Commands
 {
     public class UpdateTimeSlotCommand : IRequest<Guid>
     {

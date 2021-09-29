@@ -1,10 +1,9 @@
-﻿using Persistance.Features.ScheduleFeatures.Commands;
-using Persistance.Features.ScheduleFeatures.Queries;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Application.Features.TimeslotFeatures.Commands;
+using Application.Features.TimeslotFeatures.Queries;
 using Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers.v1
 {
