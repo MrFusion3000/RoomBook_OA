@@ -10,8 +10,8 @@ namespace Domain.Entities
 {
     public class Schedule : IDataEntitybase, ISchedule
     {
-        //public int ID { get; set; }
         public Guid ID { get; set; }
+        public Room Room { get; set; } 
         public List<TimeSlot> TimeSlots { get; set; }
         public DateTime CreatedUTC { get; set; }
 
@@ -22,13 +22,6 @@ namespace Domain.Entities
                 ID = id,
                 TimeSlots = new()
             };
-        }
-
-        public static List<TimeSlot> InitiateSchedule(List<TimeSlot> timeSlots)
-        {
-            //DateTime tSlot = DateTime.Today.AddHours(6);
-
-            return timeSlots;
         }
     }
 }

@@ -26,9 +26,9 @@ namespace Application.Features.TimeslotFeatures.Commands
                     TimeSlotEnd = command.TimeSlot.TimeSlotEnd,
                     Title = command.TimeSlot.Title,
                     IsVacant = command.TimeSlot.IsVacant,
-                    BookerId = command.TimeSlot.BookerId,
                     CreatedUTC = command.TimeSlot.CreatedUTC,
-                    RoomId = command.TimeSlot.RoomId
+                    RoomId = command.TimeSlot.RoomId,
+                    BookerId = command.TimeSlot.BookerId
                 };
                 _context.TimeSlots.Add(timeslot);
                 await _context.SaveChangesAsync();

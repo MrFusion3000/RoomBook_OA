@@ -16,17 +16,15 @@ namespace Domain.Entities
 
         //Navigation properties
         public List<TimeSlot> TimeSlots { get; set; }
-        //public List<Booker> Bookers { get; set; }
 
-        public static IRoom Create(Guid id, string name, DateTime createdUTC, int placement) //, List<TimeSlot> timeSlots)
+        public static IRoom Create(Guid id, string name, DateTime createdUTC, int placement)
         {
             return new Room()
             {
                 ID = id,
                 Name = name,
                 CreatedUTC = createdUTC,
-                Placement = placement //,
-                //TimeSlots = timeSlots
+                Placement = placement
             };
         }
     }

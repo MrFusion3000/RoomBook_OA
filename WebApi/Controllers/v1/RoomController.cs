@@ -21,6 +21,7 @@ namespace WebApi.Controllers.v1
         {
             return Ok(await Mediator.Send(command));
         }
+
         /// <summary>
         /// Gets all Rooms.
         /// </summary>
@@ -30,6 +31,7 @@ namespace WebApi.Controllers.v1
         {
             return Ok(await Mediator.Send(new GetAllRoomsQuery()));
         }
+
         /// <summary>
         /// Gets Room Entity by Id.
         /// </summary>
@@ -40,6 +42,19 @@ namespace WebApi.Controllers.v1
         {
             return Ok(await Mediator.Send(new GetRoomByIdQuery { Id = id }));
         }
+
+        /// <summary>
+        /// Gets Room Entity by Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="queryDateTime"></param>
+        /// <returns></returns>
+        [HttpGet("GetByIdAndDateTime/{id:guid},{queryDateTime:datetime}")]
+        public async Task<IActionResult> GetByIdAndDateTIme(Guid id, DateTime queryDateTime)
+        {
+            return Ok(await Mediator.Send(new GetRoomByIdAndTimeslotsBySpecDateTimeQuery() { QueryDateTime = queryDateTime, Id = id }));
+        }
+
         /// <summary>
         /// Deletes Room Entity based on Id.
         /// </summary>
@@ -51,6 +66,7 @@ namespace WebApi.Controllers.v1
         {
             return Ok(await Mediator.Send(new DeleteRoomByIdCommand { ID = id }));
         }
+
         /// <summary>
         /// Updates the Room Entity based on Id.   
         /// </summary>
