@@ -14,11 +14,10 @@ namespace Application.Shared.DTO
         public bool IsVacant { get; set; }
         public DateTime CreatedUTC { get; set; }
         public Guid RoomId { get; set; }
-        //public Guid TBookerID { get; set; }
 
         //Navigation properties
         public Guid BookerId { get; set; }
-        public virtual BookerDto Booker { get; set; }
+        public BookerDto Booker { get; set; }
 
     }
 }

@@ -36,7 +36,6 @@
     <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(FirstVacantSlot, false, "InstaBooked", InstaBookerGuid))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart.ToShortDateString() @FirstVacantSlot.TimeSlotStart.ToLocalTime().ToShortTimeString() - @FirstVacantSlot.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
 }
 
-
 @if (AnyVacantSlot < 0)
 {
     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
@@ -60,7 +59,7 @@
         <MudTd DataLabel="Start">@context.TimeSlotStart.ToLocalTime().ToShortTimeString()</MudTd>
         <MudTd DataLabel="End">@context.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudTd>
         <MudTd DataLabel="Title">@context.Title</MudTd>
-        <MudTd DataLabel="Booker">@context.BookerId</MudTd>   
+        <MudTd DataLabel="Booker">@context.Booker.Name</MudTd>   
     </RowTemplate>
     <PagerContent>
         <MudTablePager PageSizeOptions="new int[] { 12, 24, 36, 48, 60 }" />

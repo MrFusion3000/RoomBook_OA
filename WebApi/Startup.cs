@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +7,9 @@ using Microsoft.OpenApi.Models;
 using Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Mapster;
+using Domain.Entities;
+using Application.Shared.DTO;
 
 namespace WebApi
 {
@@ -89,6 +91,12 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //TypeAdapterConfig.GlobalSettings.Default.PreserveReference(true);
+            //TypeAdapterConfig<Room, RoomDto>.NewConfig()
+            //    .Map(dest => dest.Id, src => src.ID)
+            //    .Map(dest => dest.Name, src => src.Name)
+            //    .Map(dest => dest.TimeSlots, src => src.TimeSlots);
 
             //app.UseCors(MyAllowSpecificOrigins);
             app.UseCors(x => x

@@ -23,6 +23,34 @@ namespace WebApi.Controllers.v1
         }
 
         /// <summary>
+        /// Deletes a Room based on Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            return Ok(await Mediator.Send(new DeleteRoomByIdCommand { ID = id }));
+        }
+
+        /// <summary>
+        /// Updates a Room based on Id.   
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Update(Guid id, UpdateRoomCommand command)
+        {
+            if (id != command.ID)
+            {
+                return BadRequest();
+            }
+            return Ok(await Mediator.Send(command));
+        }
+
+        /// <summary>
         /// Gets all Rooms.
         /// </summary>
         /// <returns></returns>
@@ -33,7 +61,7 @@ namespace WebApi.Controllers.v1
         }
 
         /// <summary>
-        /// Gets Room Entity by Id.
+        /// Gets a Room by Id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -53,34 +81,6 @@ namespace WebApi.Controllers.v1
         public async Task<IActionResult> GetByIdAndDateTIme(Guid id, DateTime queryDateTime)
         {
             return Ok(await Mediator.Send(new GetRoomByIdAndTimeslotsBySpecDateTimeQuery() { QueryDateTime = queryDateTime, Id = id }));
-        }
-
-        /// <summary>
-        /// Deletes Room Entity based on Id.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [Authorize]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            return Ok(await Mediator.Send(new DeleteRoomByIdCommand { ID = id }));
-        }
-
-        /// <summary>
-        /// Updates the Room Entity based on Id.   
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        [HttpPut("[action]")]
-        public async Task<IActionResult> Update(Guid id, UpdateRoomCommand command)
-        {
-            if (id != command.ID)
-            {
-                return BadRequest();
-            }
-            return Ok(await Mediator.Send(command));
         }
     }
 }

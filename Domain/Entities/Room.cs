@@ -16,6 +16,7 @@ namespace Domain.Entities
 
         //Navigation properties
         public List<TimeSlot> TimeSlots { get; set; }
+        //public Booker Booker { get; set; }
 
         public static IRoom Create(Guid id, string name, DateTime createdUTC, int placement)
         {
