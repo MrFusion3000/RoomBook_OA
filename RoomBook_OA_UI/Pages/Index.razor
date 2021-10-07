@@ -92,14 +92,11 @@
 
     private Room _room = new();
     private List<TimeSlot> _timeSlots = new();
-    //private IList<Booker> _booker = new List<Booker>();
 
     [Parameter] public Guid ThisRoomId { get; set; }
     [Parameter] public int? HasItems { get; set; }
     [Parameter] public TimeSlot FirstVacantSlot { get; set; }
     [Parameter] public int AnyVacantSlot { get; set; }
-
-    public string _bookerName { get; set; }
 
     private string _searchString = "";
     private TimeSlot _selectedItem = null;

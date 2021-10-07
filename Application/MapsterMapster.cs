@@ -31,10 +31,10 @@ namespace Application
 
         TypeAdapterConfig<TimeSlot, TimeSlotDto>
             .NewConfig()
-                    .Map(dest => dest.ID, src => src.ID)
-                    .Map(dest => dest.Title, src => src.Title)
-                    .Map(dest => dest.Booker.Name, src => src.Booker.Name)
-                    .Ignore("TimeSlotStart");
-        }
+            .Map(dest => dest.ID, src => src.ID)
+            .Map(dest => dest.Title, src => src.Title)
+            .Map(dest => dest.Booker.Name, src => src.Booker.Name);
+        //.Ignore("TimeSlotStart");
+            }
     }
 }
