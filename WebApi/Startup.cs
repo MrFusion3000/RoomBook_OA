@@ -92,12 +92,6 @@ namespace WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            //TypeAdapterConfig.GlobalSettings.Default.PreserveReference(true);
-            //TypeAdapterConfig<Room, RoomDto>.NewConfig()
-            //    .Map(dest => dest.Id, src => src.ID)
-            //    .Map(dest => dest.Name, src => src.Name)
-            //    .Map(dest => dest.TimeSlots, src => src.TimeSlots);
-
             //app.UseCors(MyAllowSpecificOrigins);
             app.UseCors(x => x
                 .AllowAnyOrigin()

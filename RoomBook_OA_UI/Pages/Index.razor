@@ -41,7 +41,7 @@
     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
 }
 
-<MudTable Items="@_timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" @bind-SelectedItem="_selectedItem" RowsPerPage="12">
+<MudTable Items="@_timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" FixedHeader="true" FixedFooter="true" @bind-SelectedItem="_selectedItem" RowsPerPage="12">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Schedule for @_room.Name</MudText>
         <MudSpacer />
@@ -99,6 +99,8 @@
     [Parameter] public TimeSlot FirstVacantSlot { get; set; }
     [Parameter] public int AnyVacantSlot { get; set; }
 
+    public string _bookerName { get; set; }
+
     private string _searchString = "";
     private TimeSlot _selectedItem = null;
     private HashSet<TimeSlot> _selectedItems = new HashSet<TimeSlot>();
@@ -147,8 +149,6 @@
 
     private async Task RefreshDb()
     {
-        //var test = await _http.GetStringAsync("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
-
         //Get current room and related Timeslots (from DateTime.Now and forward)
         _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
 
@@ -158,11 +158,9 @@
             _timeSlots = _room.TimeSlots;
 
             HasItems = _timeSlots.Count;
-        }
 
-        // TODO Fix check for timeslots in db
-        //if (_timeSlots != null) HasItems = _timeSlots.Count; // Add check for isVacant = null, to display "no scheduled meetings all day"
-        //else { await InitDailySchedule(); }
+  
+        }
 
         #endregion
 

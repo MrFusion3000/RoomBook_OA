@@ -14,14 +14,13 @@ namespace Application
         {
             //services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetEntryAssembly());
-            TypeAdapterConfig.GlobalSettings.Default.PreserveReference(true);
-            TypeAdapterConfig<Room, RoomDto>.NewConfig()
-                .Map(dest => dest, src => src);
-                
-                //.Map(dest => dest.Id, src => src.ID)
-                //.Map(dest => dest.Name, src => src.Name)
-                //.Map(dest => dest.TimeSlots, src => src.TimeSlots)
+            //TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetEntryAssembly());
+            //TypeAdapterConfig.GlobalSettings.Default.PreserveReference(true);
+            //TypeAdapterConfig<Room, RoomDto>.NewConfig()
+            //    //.Map(dest => dest, src => src);
+            //    .Map(dest => dest.Id, src => src.ID)
+            //    .Map(dest => dest.Name, src => src.Name);
+                //.Map(dest => dest.TimeSlots, src => src.TimeSlots);
                 //.Map(dest => dest.TimeSlots.Booker, src => src.TimeSlots.b);
         }
 

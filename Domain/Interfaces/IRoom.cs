@@ -13,6 +13,5 @@ namespace Domain.Interfaces
         List<TimeSlot> TimeSlots { get; set; }
 
         static readonly IRoom Create;
-
     }
 }

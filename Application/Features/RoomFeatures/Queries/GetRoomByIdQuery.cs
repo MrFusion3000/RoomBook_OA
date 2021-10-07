@@ -21,24 +21,24 @@ namespace Application.Features.RoomFeatures.Queries
             {
                 _context = context;
             }
+
             public async Task<RoomDto> Handle(GetRoomByIdQuery query, CancellationToken cancellationToken)
             {
                 // TODO dtToday should be sent in the query as a parameter instead to allow any date
                 var dtToday = DateTime.UtcNow;
 
-                // försök 1
+                // TODO query should extract only necessary fields and data
                 var room = _context.Rooms
                     .Include(a => a.TimeSlots)
                         //.Where(t => t.TimeSlotStart > dtToday))
-                    // TODO how to include Booker?
                     .ThenInclude(t => t.Booker)
-                    //.AsNoTracking()
                     .FirstOrDefault(a => a.ID == query.Id);
 
                 if (room == null) return null;
 
-                
-                var chosenRoom = room.Adapt<RoomDto>();
+                MapsterMapster.MapsterSetter();
+            
+                var chosenRoom = room.Adapt<Room, RoomDto>();
 
 
                 return await Task.FromResult(chosenRoom);
