@@ -91,7 +91,7 @@
     [Parameter] public Guid InstaBookerGuid { get; set; } = Guid.Parse("99999999-9999-9999-9999-999999999999");
 
     private Room _room = new();
-    private List<TimeSlot> _timeSlots = new();
+    private List<TimeSlot> _timeSlots;// = new();
 
     [Parameter] public Guid ThisRoomId { get; set; }
     [Parameter] public int? HasItems { get; set; }
@@ -147,7 +147,7 @@
     private async Task RefreshDb()
     {
         //Get current room and related Timeslots (from DateTime.Now and forward)
-        _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
+        _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetByIdAndDateTime/" + ThisRoomId + "," + _dtToday);
 
         #region CheckIfTimeSlotsExists
         if (_room?.TimeSlots != null)
@@ -167,24 +167,18 @@
         .FirstOrDefault(f => f.IsVacant);
 
         //Check if there is any vacant timeslots for the day
-        //AnyVacantSlot = _timeSlots.Count(f => f.IsVacant);
         AnyVacantSlot = _timeSlots.Count(f => f.IsVacant);
-
-
-        // Get Bookers List
-        //_booker = await _http.GetFromJsonAsync<List<Booker>>("https://localhost:44315/api/v1/Booker/");
-
-        //await ShowRoomAndTimeSlots();
     }
 
-    //Add check if timeSlot.isVacant = true else message to user
+    //TODO Add check if timeSlot.isVacant = true else message to user
+    //TODO Update doesn't work
     private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, Guid bookerId)
     {
         var timeUpdateTimeSlot = firstVacantSlot;
         timeUpdateTimeSlot.IsVacant = notVacantSlot;
         timeUpdateTimeSlot.Title = title;
-        timeUpdateTimeSlot.BookerId = bookerId;
         timeUpdateTimeSlot.RoomId = ThisRoomId;
+        timeUpdateTimeSlot.BookerId = bookerId;
         await _http.PutAsJsonAsync($"https://localhost:44315/api/v1/TimeSlot/Update?id={timeUpdateTimeSlot.ID}", timeUpdateTimeSlot);
 
         await RefreshDb();
@@ -240,15 +234,7 @@
 
             initDate = initDate.Add(duration);
         }
-
-        //await RefreshDb();
-
     }
-
-    //private async Task ShowRoomAndTimeSlots()
-    //{
-    //    _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetById/" + ThisRoomId);
-    //}
 
     private void GotoRoom()
     {

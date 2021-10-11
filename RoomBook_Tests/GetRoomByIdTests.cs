@@ -8,18 +8,18 @@ namespace RoomBook_OA.Tests
 {
     public class GetRoomByIdTests
     {
-        [Fact]
-        public async Task GetPublicHealthEndpoint()
-        {
-            var apiClient = new HttpClient();
+        //[Fact]
+        //public async Task GetPublicHealthEndpoint()
+        //{
+        //    var apiClient = new HttpClient();
 
-            var apiResponse = await apiClient.GetAsync($"https://localhost:44315/api/v1/health");
+        //    var apiResponse = await apiClient.GetAsync($"https://localhost:44315/api/v1/Booker");
 
-            Assert.True(apiResponse.IsSuccessStatusCode);
+        //    Assert.True(apiResponse.IsSuccessStatusCode);
 
-            var stringResponse = await apiResponse.Content.ReadAsStringAsync();
+        //    var stringResponse = await apiResponse.Content.ReadAsStringAsync();
 
-            Assert.Equal("Healthy", stringResponse);
-        }
+        //    Assert.Equal("Healthy", stringResponse);
+        //}
     }
 }

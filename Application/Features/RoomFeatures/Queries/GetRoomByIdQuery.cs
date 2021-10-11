@@ -29,8 +29,8 @@ namespace Application.Features.RoomFeatures.Queries
 
                 // TODO query should extract only necessary fields and data
                 var room = _context.Rooms
-                    .Include(a => a.TimeSlots)
-                        //.Where(t => t.TimeSlotStart > dtToday))
+                    .Include(a => a.TimeSlots
+                        .Where(t => t.TimeSlotStart > dtToday))
                     .ThenInclude(t => t.Booker)
                     .FirstOrDefault(a => a.ID == query.Id);
 

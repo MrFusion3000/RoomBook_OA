@@ -144,8 +144,9 @@ namespace WebApi
             //    endpoints.MapControllers();
             //});
 
+            //app.UseEndpoints(endpoints => endpoints.MapHealthChecks("/health"));
+
             app.UseEndpoints(x => x.MapControllers());
-            //endpoints => endpoints.MapHealthChecks("/health"));
         }
     }
 }
