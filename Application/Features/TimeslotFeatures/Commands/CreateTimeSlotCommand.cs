@@ -27,10 +27,12 @@ namespace Application.Features.TimeslotFeatures.Commands
                     Title = command.TimeSlot.Title,
                     IsVacant = command.TimeSlot.IsVacant,
                     CreatedUTC = command.TimeSlot.CreatedUTC,
+                    UpdatedUTC = command.TimeSlot.UpdatedUTC,
                     RoomId = command.TimeSlot.RoomId,
                     BookerId = command.TimeSlot.BookerId
                 };
                 _context.TimeSlots.Add(timeslot);
+
                 await _context.SaveChangesAsync();
                 return timeslot.ID;
             }

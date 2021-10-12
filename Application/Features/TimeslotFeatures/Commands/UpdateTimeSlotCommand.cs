@@ -16,6 +16,7 @@ namespace Application.Features.TimeslotFeatures.Commands
         public bool IsVacant { get; set; }
         public Guid BookerId { get; set; }
         public DateTime CreatedUTC { get; set; }
+        public DateTime UpdatedUTC { get; set; }
 
         public class UpdateTimeSlotCommandHandler : IRequestHandler<UpdateTimeSlotCommand, Guid>
         {
@@ -34,12 +35,13 @@ namespace Application.Features.TimeslotFeatures.Commands
                 }
                 else
                 {
-                    timeSlot.TimeSlotStart = command.TimeSlotStart;
-                    timeSlot.TimeSlotEnd = command.TimeSlotEnd;
+                    //timeSlot.TimeSlotStart = command.TimeSlotStart;
+                    //timeSlot.TimeSlotEnd = command.TimeSlotEnd;
                     timeSlot.Title = command.Title;
                     timeSlot.IsVacant = command.IsVacant;
+                    timeSlot.UpdatedUTC = command.UpdatedUTC;
                     timeSlot.BookerId = command.BookerId;
-                    timeSlot.CreatedUTC = command.CreatedUTC;
+
                     await _context.SaveChangesAsync();
                     return timeSlot.ID;
                 }

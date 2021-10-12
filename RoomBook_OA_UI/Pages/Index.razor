@@ -17,7 +17,7 @@
 @attribute [Authorize]
 
 
-<h1>RoomId : @ThisRoomId</h1>
+<h1>Room: @ThisRoomId - @_room.Name</h1>
 
 @*<AuthorizeView Roles="Administrator">
         <Authorized>
@@ -28,24 +28,32 @@
         </NotAuthorized>
     </AuthorizeView>*@
 <hr />
-<h2>HasItems (From present time and forward): @HasItems</h2>
+@*<h2>HasItems (From present time and forward): @HasItems</h2>*@
+<br />
 
-
+<div align="center">
 @if (FirstVacantSlot != null)
-{
-    <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(FirstVacantSlot, false, "InstaBooked", InstaBookerGuid))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart.ToShortDateString() @FirstVacantSlot.TimeSlotStart.ToLocalTime().ToShortTimeString() - @FirstVacantSlot.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
-}
+    {
+        @*<MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(FirstVacantSlot, false, "InstaBooked", InstaBookerGuid))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart.ToShortDateString() @FirstVacantSlot.TimeSlotStart.ToLocalTime().ToShortTimeString() - @FirstVacantSlot.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>*@
+        <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(@FirstVacantSlot.ID, "InstaBooked", InstaBookerGuid))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart.ToShortDateString() @FirstVacantSlot.TimeSlotStart.ToLocalTime().ToShortTimeString() - @FirstVacantSlot.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
+        @if (_selectedItem != null)
+        {
+            <MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="@(e => UpdateTimeSlot(@_selectedItem.ID, "InstaBooked+", InstaBookerGuid))">InstaBookPlus&trade; @_selectedItem?.TimeSlotStart.ToShortDateString() @_selectedItem?.TimeSlotStart.ToLocalTime().ToShortTimeString() - @_selectedItem?.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
+        }
 
-@if (AnyVacantSlot < 0)
+    }
+</div>
+
+@if (AnyVacantSlot < 1)
 {
     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
 }
 
 <MudTable Items="@_timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" FixedHeader="true" FixedFooter="true" @bind-SelectedItem="_selectedItem" RowsPerPage="12">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">Schedule for @_room.Name</MudText>
+        @*<MudText Typo="Typo.h6">Schedule for @_room.Name</MudText>*@
         <MudSpacer />
-        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        @*<MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>*@
     </ToolBarContent>
     <HeaderContent>
         <MudTh>Id</MudTh>
@@ -53,13 +61,15 @@
         <MudTh>End</MudTh>
         <MudTh>Title</MudTh>
         <MudTh>Booker</MudTh>
+        <MudTh>Booking made</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.ID</MudTd>
         <MudTd DataLabel="Start">@context.TimeSlotStart.ToLocalTime().ToShortTimeString()</MudTd>
         <MudTd DataLabel="End">@context.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudTd>
         <MudTd DataLabel="Title">@context.Title</MudTd>
-        <MudTd DataLabel="Booker">@context.Booker.Name</MudTd>   
+        <MudTd DataLabel="Booker">@context.Booker.Name</MudTd>  
+        <MudTd DataLabel="Updated">@context.UpdatedUTC</MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager PageSizeOptions="new int[] { 12, 24, 36, 48, 60 }" />
@@ -118,11 +128,11 @@
     //Read TimeSlots from Db at start
     protected override async Task OnInitializedAsync()
     {
-        // TODO 1. Check if room exists
-        // TODO 2.a. if room exists check for timeslots
-        // TODO      2.a.1 if timeslots exists read those to list
-        // TODO      2.a.2 if timeslots doesn't exist create daily schedule
-        // TODO 2.b if room doesn't exists create room
+        // 1. Check if room exists
+        // 2.a. if room exists check for timeslots
+        //      2.a.1 if timeslots exists read those to list
+        //      2.a.2 if timeslots doesn't exist create daily schedule
+        // 2.b if room doesn't exists create room
 
         await RefreshDb();
 
@@ -149,37 +159,33 @@
         //Get current room and related Timeslots (from DateTime.Now and forward)
         _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetByIdAndDateTime/" + ThisRoomId + "," + _dtToday);
 
-        #region CheckIfTimeSlotsExists
+        // CheckIfTimeSlotsExists
         if (_room?.TimeSlots != null)
         {
             _timeSlots = _room.TimeSlots;
 
-            HasItems = _timeSlots.Count;
-
-  
+            HasItems = _timeSlots.Count;  
         }
-
-        #endregion
 
         // Check for first vacant timeslot for the day
         FirstVacantSlot = _timeSlots
         .Where(f => f.TimeSlotStart > _dtToday)
         .FirstOrDefault(f => f.IsVacant);
 
-        //Check if there is any vacant timeslots for the day
+        //Check if there are any vacant timeslots for the day
         AnyVacantSlot = _timeSlots.Count(f => f.IsVacant);
     }
 
     //TODO Add check if timeSlot.isVacant = true else message to user
-    //TODO Update doesn't work
-    private async Task UpdateTimeSlot(TimeSlot firstVacantSlot, bool notVacantSlot, string title, Guid bookerId)
+    private async Task UpdateTimeSlot(Guid vacantSlotId, string title, Guid bookerId)
     {
-        var timeUpdateTimeSlot = firstVacantSlot;
-        timeUpdateTimeSlot.IsVacant = notVacantSlot;
-        timeUpdateTimeSlot.Title = title;
-        timeUpdateTimeSlot.RoomId = ThisRoomId;
-        timeUpdateTimeSlot.BookerId = bookerId;
-        await _http.PutAsJsonAsync($"https://localhost:44315/api/v1/TimeSlot/Update?id={timeUpdateTimeSlot.ID}", timeUpdateTimeSlot);
+        var updateTimeSlot = new TimeSlot();
+        updateTimeSlot.ID = (Guid)vacantSlotId;
+        updateTimeSlot.IsVacant = false;
+        updateTimeSlot.Title = title;
+        updateTimeSlot.UpdatedUTC = DateTime.UtcNow;
+        updateTimeSlot.BookerId = bookerId;
+        await _http.PutAsJsonAsync($"https://localhost:44315/api/v1/TimeSlot/Update?id={updateTimeSlot.ID}", updateTimeSlot);
 
         await RefreshDb();
     }
@@ -205,7 +211,6 @@
             ID = Guid.Empty,
             Name = "Joe Dull",
             CreatedUTC = DateTime.Now
-
         };
         await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Booker", booker);
 

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Application.Shared.DTO;
 
 namespace Application.Shared.DTO
 {
@@ -13,6 +10,7 @@ namespace Application.Shared.DTO
         public string Title { get; set; }
         public bool IsVacant { get; set; }
         public DateTime CreatedUTC { get; set; }
+        public DateTime? UpdatedUTC { get; set; }
         public Guid RoomId { get; set; }
 
         //Navigation properties

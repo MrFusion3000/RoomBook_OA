@@ -25,23 +25,14 @@ namespace Application.Features.RoomFeatures.Queries
             }
             public async Task<RoomDto> Handle(GetRoomByIdAndTimeslotsBySpecDateTimeQuery query, CancellationToken cancellationToken)
             {
-                // TODO dtToday should be sent in the query as a parameter instead to allow any date
+                //dtToday is sent in the query as a parameter to allow any date
                 var dtToday = query.QueryDateTime;
 
-
-                // försök 1
                 var room = _context.Rooms
                     .Include(a => a.TimeSlots
                         .Where(t => t.TimeSlotStart > dtToday))
-                    // TODO how to include Booker?
                     .ThenInclude(t => t.Booker)
-                    //.AsNoTracking()
                     .FirstOrDefault(a => a.ID == query.Id);
-
-                //försök 2
-                //var room = this._context.Rooms.AsQueryable();
-                //room = _context.Rooms.Include(p => p.TimeSlots.Select(c => c.Booker));
-
 
                 if (room == null) return null;
 
