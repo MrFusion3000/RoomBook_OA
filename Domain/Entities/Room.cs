@@ -6,12 +6,12 @@ using Domain.Common;
 
 namespace Domain.Entities
 {
-    public class Room : IDataEntitybase, IRoom
+    public class Room : BaseEntity, IRoom //IDataEntitybase,
     {
         //[Required]
-        public Guid ID { get; set; }
+        //public Guid ID { get; set; }
         public string Name { get; set; }
-        public DateTime CreatedUTC { get; set; }
+        //public DateTime CreatedUTC { get; set; }
         public int Placement { get; set; }
 
         //Navigation properties

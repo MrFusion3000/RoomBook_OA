@@ -34,12 +34,22 @@
 <div align="center">
 @if (FirstVacantSlot != null)
     {
-        @*<MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(FirstVacantSlot, false, "InstaBooked", InstaBookerGuid))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart.ToShortDateString() @FirstVacantSlot.TimeSlotStart.ToLocalTime().ToShortTimeString() - @FirstVacantSlot.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>*@
         <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(@FirstVacantSlot.ID, "InstaBooked", InstaBookerGuid))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart.ToShortDateString() @FirstVacantSlot.TimeSlotStart.ToLocalTime().ToShortTimeString() - @FirstVacantSlot.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
         @if (_selectedItem != null)
         {
-            <MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="@(e => UpdateTimeSlot(@_selectedItem.ID, "InstaBooked+", InstaBookerGuid))">InstaBookPlus&trade; @_selectedItem?.TimeSlotStart.ToShortDateString() @_selectedItem?.TimeSlotStart.ToLocalTime().ToShortTimeString() - @_selectedItem?.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
+            @if(_selectedItem.IsVacant == true)
+            {
+                //Vacant timeslot for IB+
+                <MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="@(e => UpdateTimeSlot(@_selectedItem.ID, "InstaBooked+", InstaBookerGuid))">InstaBookPlus&trade; @_selectedItem?.TimeSlotStart.ToShortDateString() @_selectedItem?.TimeSlotStart.ToLocalTime().ToShortTimeString() - @_selectedItem?.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
+            }
+            else
+            {
+                //Alert message no vacant slot for IB+
+                <MudAlert Severity="Severity.Warning">Timeslot is not vacant. Please choose other time to schedule.</MudAlert>
+
+            }
         }
+
 
     }
 </div>
