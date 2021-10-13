@@ -16,8 +16,11 @@ namespace Application.Features.RoomFeatures.Commands
         public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, Guid>
         {
             private readonly IApplicationDbContext _context;
+
+            //public CreateRoomCommandHandler(IRoomRepository roomRepository)
             public CreateRoomCommandHandler(IApplicationDbContext context)
             {
+                //_context = context;
                 _context = context;
             }
             public async Task<Guid> Handle(CreateRoomCommand command, CancellationToken cancellationToken)
@@ -31,6 +34,9 @@ namespace Application.Features.RoomFeatures.Commands
                 _context.Rooms.Add(room);
                 await _context.SaveChangesAsync();
                 return room.ID;
+
+                //return await _roomRepository.CreateRoomAsync(room, cancellationToken);
+
             }
         }
     }

@@ -10,6 +10,5 @@ namespace Application.Interfaces
          Task<Guid> CreateBookerAsync(Booker booker, CancellationToken cancellationToken);
          Task<Guid> DeleteBookerAsync(Booker booker, CancellationToken cancellationToken);
          Task<Guid> UpdateBookerAsync(Booker booker, CancellationToken cancellationToken);
-
     }
 }

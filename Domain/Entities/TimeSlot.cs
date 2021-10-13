@@ -8,12 +8,10 @@ namespace Domain.Entities
 {
     public class TimeSlot : BaseEntity, IDataEntitybase, ITimeSlot
     {
-        //public Guid ID { get; set; }
         public DateTime TimeSlotStart { get; set; }
         public DateTime TimeSlotEnd { get; set; }
         public string Title { get; set; }
         public bool IsVacant { get; set; }
-        //public DateTime CreatedUTC { get; set; }
         public DateTime? UpdatedUTC { get; set; }
         public Guid RoomId { get; set; }
 
