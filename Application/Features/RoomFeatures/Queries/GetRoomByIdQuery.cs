@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using MediatR;
-using Mapster;
 using Application.Interfaces;
 using Application.Shared.DTO;
-using Domain.Entities;
 
 namespace Application.Features.RoomFeatures.Queries
 {
@@ -16,32 +12,34 @@ namespace Application.Features.RoomFeatures.Queries
         public Guid Id { get; init; }
         public class GetRoomByIdQueryHandler : IRequestHandler<GetRoomByIdQuery, RoomDto>
         {
-            private readonly IApplicationDbContext _context;
-            public GetRoomByIdQueryHandler(IApplicationDbContext context)
+            public GetRoomByIdQueryHandler(IRoomRepository roomRepository)
             {
-                _context = context;
+                RoomRepository = roomRepository;
             }
+
+            public IRoomRepository RoomRepository { get; }
 
             public async Task<RoomDto> Handle(GetRoomByIdQuery query, CancellationToken cancellationToken)
             {
                 // TODO dtToday should be sent in the query as a parameter instead to allow any date
-                var dtToday = DateTime.UtcNow;
+                //var dtToday = DateTime.UtcNow;
 
                 // TODO query should extract only necessary fields and data
-                var room = _context.Rooms
-                    .Include(a => a.TimeSlots
-                        .Where(t => t.TimeSlotStart > dtToday))
-                    .ThenInclude(t => t.Booker)
-                    .FirstOrDefault(a => a.ID == query.Id);
+                //var room = _context.Rooms
+                //    .Include(a => a.TimeSlots
+                //        .Where(t => t.TimeSlotStart > dtToday))
+                //    .ThenInclude(t => t.Booker)
+                //    .FirstOrDefault(a => a.ID == query.Id);
 
-                if (room == null) return null;
+                //if (room == null) return null;
 
-                MapsterMapster.MapsterSetter();
+                //MapsterMapster.MapsterSetter();
             
-                var chosenRoom = room.Adapt<Room, RoomDto>();
+                //var chosenRoom = room.Adapt<Room, RoomDto>();
 
 
-                return await Task.FromResult(chosenRoom);
+                //return await Task.FromResult(chosenRoom);
+                return await RoomRepository.GetRoomByIdAsync(query, cancellationToken);
             }
         }
     }

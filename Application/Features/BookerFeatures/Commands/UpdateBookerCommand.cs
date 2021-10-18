@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Domain.Entities;
+using Mapster;
 using MediatR;
 
 namespace Application.Features.BookerFeatures.Commands
@@ -15,15 +17,18 @@ namespace Application.Features.BookerFeatures.Commands
 
         public class UpdateBookerCommandHandler : IRequestHandler<UpdateBookerCommand, Guid>
         {
-            private readonly IApplicationDbContext _context;
-
-            public UpdateBookerCommandHandler(IApplicationDbContext context)
+            public UpdateBookerCommandHandler(IBookerRepository bookerRepository)
             {
-                _context = context;
+                BookerRepository = bookerRepository;
             }
+
+            public IBookerRepository BookerRepository { get; }
+
             public async Task<Guid> Handle(UpdateBookerCommand command, CancellationToken cancellationToken)
             {
-                var booker = _context.Bookers.FirstOrDefault(a => a.ID == command.ID);
+                //var booker = _context.Bookers.FirstOrDefault(a => a.ID == command.ID);
+
+                var booker = command.Adapt<Booker>();
 
                 if (booker == null)
                 {
@@ -31,11 +36,14 @@ namespace Application.Features.BookerFeatures.Commands
                 }
                 else
                 {
-                    booker.Name = command.Name;
-                    booker.CreatedUTC = command.CreatedUTC;
+                    //booker = command.Adapt<Booker>();
+                    //booker.Name = command.Name;
+                    //booker.CreatedUTC = command.CreatedUTC;
 
-                    await _context.SaveChangesAsync();
-                    return booker.ID;
+                    //await _context.SaveChangesAsync();
+                    //return booker.ID;
+
+                    return await BookerRepository.UpdateBookerAsync(booker, cancellationToken);
                 }
             }
         }

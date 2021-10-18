@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Application.Shared.DTO;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,37 +13,32 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.BookerFeatures.Queries
 {
-    public class GetBookerByIdQuery : IRequest<Booker>
+public class GetBookerByIdQuery : IRequest<BookerDto>
+{
+    public Guid Id { get; init; }
+    public class GetBookerByIdQueryHandler : IRequestHandler<GetBookerByIdQuery, BookerDto>
     {
-        public Guid Id { get; init; }
-        public class GetBookerByIdQueryHandler : IRequestHandler<GetBookerByIdQuery, Booker>
+        public GetBookerByIdQueryHandler(IBookerRepository bookerRepository)
         {
-            private readonly IApplicationDbContext _context;
-            public GetBookerByIdQueryHandler(IApplicationDbContext context)
-            {
-                _context = context;
-            }
-            public async Task<Booker> Handle(GetBookerByIdQuery query, CancellationToken cancellationToken)
-            {
-                var dtToday = DateTime.UtcNow;
-                var booker = _context.Bookers
-                    .Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
-                    .FirstOrDefault(a => a.ID == query.Id);
+            BookerRepository = bookerRepository;
+        }
 
-                //var bookerDto = booker.Adapt<IEnumerable<BookerDto>>;
+        public IBookerRepository BookerRepository { get; }
 
-                
-                
-                //var Booker = _context.Bookers
-                //.Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
-                //.Include(b => b.TimeSlots).FirstOrDefaultAsync()
-                //.FirstOrDefault(a => a.ID == query.Id);
-                if (booker == null) return null;
-                return await Task.FromResult(booker);
-            }
+        public async Task<BookerDto> Handle(GetBookerByIdQuery query, CancellationToken cancellationToken)
+        {              
+
+            //var dtToday = DateTime.UtcNow;
+
+            //var booker = BookerRepository.Bookers
+            //    .Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
+            //    .FirstOrDefault(a => a.ID == query.Id);
+
+            //var bookerDto = booker.Adapt<IEnumerable<BookerDto>>;               
+
+            //if (booker == null) return null;
+            return await BookerRepository.GetBookerByIdAsync(query, cancellationToken);
         }
     }
-
-    //Parent parent = _context.Parent.Include(p => p.Children.Grandchild).FirstOrDefault();
-
+}
 }

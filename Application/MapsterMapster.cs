@@ -13,6 +13,8 @@ namespace Application
     {
         public static void MapsterSetter()
             {
+            TypeAdapterConfig.GlobalSettings.RequireExplicitMapping = true;
+
             TypeAdapterConfig<Room, RoomDto>
                     .NewConfig()
                     .PreserveReference(true);
@@ -35,6 +37,9 @@ namespace Application
             .Map(dest => dest.Title, src => src.Title)
             .Map(dest => dest.UpdatedUTC, src => src.UpdatedUTC)
             .Map(dest => dest.Booker.Name, src => src.Booker.Name);
-            }
+            
+        TypeAdapterConfig.GlobalSettings.Compile();
+        }
+
     }
 }

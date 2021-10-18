@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Application.Interfaces;
+using Mapster;
+using Domain.Entities;
 
 namespace Application.Features.RoomFeatures.Commands
 {
@@ -16,14 +18,19 @@ namespace Application.Features.RoomFeatures.Commands
 
         public class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand, Guid>
         {
-            private readonly IApplicationDbContext _context;
-            public UpdateRoomCommandHandler(IApplicationDbContext context)
+            public UpdateRoomCommandHandler(IRoomRepository roomRepository)
             {
-                _context = context;
+                RoomRepository = roomRepository;
             }
+
+            public IRoomRepository RoomRepository { get; }
+
             public async Task<Guid> Handle(UpdateRoomCommand command, CancellationToken cancellationToken)
             {
-                var room = _context.Rooms.FirstOrDefault(a => a.ID == command.ID);
+                //var room = command.Adapt<Room>();
+                //var room = _context.Rooms.FirstOrDefault(a => a.ID == command.ID);
+
+                var room = command.Adapt<Room>();
 
                 if (room == null)
                 {
@@ -31,12 +38,14 @@ namespace Application.Features.RoomFeatures.Commands
                 }
                 else
                 {
-                    room.Name = command.Name;
-                    room.Placement = command.Placement;
-                    room.CreatedUTC = command.CreatedUTC;
+                    //room.Name = command.Name;
+                    //room.Placement = command.Placement;
+                    //room.CreatedUTC = command.CreatedUTC;
 
-                    await _context.SaveChangesAsync();
-                    return room.ID;
+                    //await _context.SaveChangesAsync();
+                    //return await room.ID;
+                    return await RoomRepository.UpdateRoomAsync(room, cancellationToken);
+
                 }
             }
         }

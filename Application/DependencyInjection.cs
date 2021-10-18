@@ -12,6 +12,8 @@ namespace Application
     {
         public static void AddApplication(this IServiceCollection services)
         {
+            MapsterMapster.MapsterSetter();
+
             //services.AddMediatR(Assembly.GetExecutingAssembly());
 
             //TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetEntryAssembly());

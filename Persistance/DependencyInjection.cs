@@ -3,8 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistance.Context;
-using Persistance.Repositories.Bookers;
 using Application.Interfaces;
+using Persistance.Repositories.Bookers;
+using Persistance.Repositories.Rooms;
 
 namespace Persistance
 {
@@ -22,9 +23,11 @@ namespace Persistance
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+            services.AddScoped<ApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.AddTransient<IBookerRepository, BookerRepository>();
+            services.AddTransient<IRoomRepository, RoomRepository>();
+
 
             //services.AddIdentity<APIUser, UserRole>()
             //    .AddDefaultTokenProviders();

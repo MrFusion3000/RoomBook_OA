@@ -7,27 +7,33 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Application.Shared.DTO;
 
 namespace Application.Features.RoomFeatures.Queries
 {
-    public class GetAllRoomsQuery : IRequest<IEnumerable<Room>>
+    public class GetAllRoomsQuery : IRequest<IEnumerable<RoomDto>>
     {
 
-        public class GetAllRoomsQueryHandler : IRequestHandler<GetAllRoomsQuery, IEnumerable<Room>>
+        public class GetAllRoomsQueryHandler : IRequestHandler<GetAllRoomsQuery, IEnumerable<RoomDto>>
         {
-            private readonly IApplicationDbContext _context;
-            public GetAllRoomsQueryHandler(IApplicationDbContext context)
+            public GetAllRoomsQueryHandler(IRoomRepository roomRepository)
             {
-                _context = context;
+                RoomRepository = roomRepository;
             }
-            public async Task<IEnumerable<Room>> Handle(GetAllRoomsQuery query, CancellationToken cancellationToken)
+
+            public IRoomRepository RoomRepository { get; }
+
+            public async Task<IEnumerable<RoomDto>> Handle(GetAllRoomsQuery query, CancellationToken cancellationToken)
             {
-                var roomList = await _context.Rooms.ToListAsync(cancellationToken: cancellationToken);
-                if (roomList == null)
-                {
-                    return null;
-                }
-                return roomList.AsReadOnly();
+                //var roomList = await _context.Rooms.ToListAsync(cancellationToken: cancellationToken);
+                //if (roomList == null)
+                //{
+                //    return null;
+                //}
+                //return roomList.AsReadOnly();
+
+                return await RoomRepository.GetAllRoomsAsync(query, cancellationToken);
+
             }
         }
     }

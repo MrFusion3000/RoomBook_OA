@@ -2,30 +2,29 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Application.Shared.DTO;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.BookerFeatures.Queries
 {
-    public class GetAllBookersQuery : IRequest<IEnumerable<Booker>>
+    public class GetAllBookersQuery : IRequest<IEnumerable<BookerDto>>
     {
 
-        public class GetAllBookersQueryHandler : IRequestHandler<GetAllBookersQuery, IEnumerable<Booker>>
+        public class GetAllBookersQueryHandler : IRequestHandler<GetAllBookersQuery, IEnumerable<BookerDto>>
         {
-            private readonly IApplicationDbContext _context;
-            public GetAllBookersQueryHandler(IApplicationDbContext context)
+            public GetAllBookersQueryHandler(IBookerRepository bookerRepository)
             {
-                _context = context;
+                BookerRepository = bookerRepository;
             }
-            public async Task<IEnumerable<Booker>> Handle(GetAllBookersQuery query, CancellationToken cancellationToken)
+
+            public IBookerRepository BookerRepository { get; }
+
+            public async Task<IEnumerable<BookerDto>> Handle(GetAllBookersQuery query, CancellationToken cancellationToken)
             {
-                var BookerList = await _context.Bookers.ToListAsync(cancellationToken: cancellationToken);
-                if (BookerList == null)
-                {
-                    return null;
-                }
-                return BookerList.AsReadOnly();
+                return await BookerRepository.GetAllBookersAsync(query, cancellationToken);
+
             }
         }
     }

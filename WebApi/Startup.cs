@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Mapster;
 using Domain.Entities;
 using Application.Shared.DTO;
+using Application;
 
 namespace WebApi
 {
@@ -82,6 +83,7 @@ namespace WebApi
             #endregion
 
             services.AddPersistence(Configuration);
+            services.AddApplication();
 
             services.AddHealthChecks();
         }

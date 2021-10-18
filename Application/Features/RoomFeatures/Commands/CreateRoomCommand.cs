@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
 using Domain.Entities;
+using Mapster;
 using MediatR;
 
 namespace Application.Features.RoomFeatures.Commands
@@ -15,27 +16,20 @@ namespace Application.Features.RoomFeatures.Commands
 
         public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, Guid>
         {
-            private readonly IApplicationDbContext _context;
-
-            //public CreateRoomCommandHandler(IRoomRepository roomRepository)
-            public CreateRoomCommandHandler(IApplicationDbContext context)
+            public CreateRoomCommandHandler(IRoomRepository roomRepository)
             {
-                //_context = context;
-                _context = context;
+                RoomRepository = roomRepository;
             }
+
+            public IRoomRepository RoomRepository { get; }
+
             public async Task<Guid> Handle(CreateRoomCommand command, CancellationToken cancellationToken)
             {
-                var room = new Room()
-                {
-                    Name = command.Name,
-                    Placement = command.Placement,
-                    CreatedUTC = command.CreatedUTC
-                };
-                _context.Rooms.Add(room);
-                await _context.SaveChangesAsync();
-                return room.ID;
+                var room = command.Adapt<Room>();
 
-                //return await _roomRepository.CreateRoomAsync(room, cancellationToken);
+                room.ID = Guid.NewGuid();
+
+                return await RoomRepository.CreateRoomAsync(room, cancellationToken);
 
             }
         }

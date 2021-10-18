@@ -18,29 +18,30 @@ namespace Application.Features.RoomFeatures.Queries
         public DateTime QueryDateTime { get; set; }
         public class GetRoomByIdAndTimeslotsBySpecDateTimeQueryHandler : IRequestHandler<GetRoomByIdAndTimeslotsBySpecDateTimeQuery, RoomDto>
         {
-            private readonly IApplicationDbContext _context;
-            public GetRoomByIdAndTimeslotsBySpecDateTimeQueryHandler(IApplicationDbContext context)
+            public GetRoomByIdAndTimeslotsBySpecDateTimeQueryHandler(IRoomRepository roomRepository)
             {
-                _context = context;
+                RoomRepository = roomRepository;
             }
+
+            public IRoomRepository RoomRepository { get; }
+
             public async Task<RoomDto> Handle(GetRoomByIdAndTimeslotsBySpecDateTimeQuery query, CancellationToken cancellationToken)
             {
                 //dtToday is sent in the query as a parameter to allow any date
-                var dtToday = query.QueryDateTime;
+                //var dtToday = query.QueryDateTime;
 
-                var room = _context.Rooms
-                    .Include(a => a.TimeSlots
-                        .Where(t => t.TimeSlotStart > dtToday))
-                    .ThenInclude(t => t.Booker)
-                    .FirstOrDefault(a => a.ID == query.Id);
+                //var room = Context.Rooms
+                //    .Include(a => a.TimeSlots
+                //        .Where(t => t.TimeSlotStart > dtToday))
+                //    .ThenInclude(t => t.Booker)
+                //    .FirstOrDefault(a => a.ID == query.Id);
 
-                if (room == null) return null;
+                //if (room == null) return null;
 
-                MapsterMapster.MapsterSetter();
+                //var chosenRoom = room.Adapt<Room, RoomDto>();
 
-                var chosenRoom = room.Adapt<Room, RoomDto>();
-
-                return await Task.FromResult(chosenRoom);
+                //return await Task.FromResult(chosenRoom);
+                return await RoomRepository.GetRoomByIdAndTimeSlotsBySpecDateTime(query, cancellationToken);
             }
         }
     }

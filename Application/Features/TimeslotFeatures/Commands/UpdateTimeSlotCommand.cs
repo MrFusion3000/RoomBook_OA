@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Domain.Entities;
+using Mapster;
 using MediatR;
 
 namespace Application.Features.TimeslotFeatures.Commands
@@ -20,14 +22,16 @@ namespace Application.Features.TimeslotFeatures.Commands
 
         public class UpdateTimeSlotCommandHandler : IRequestHandler<UpdateTimeSlotCommand, Guid>
         {
-            private readonly IApplicationDbContext _context;
-            public UpdateTimeSlotCommandHandler(IApplicationDbContext context)
+            public UpdateTimeSlotCommandHandler(ITimeSlotRepository timeSlotRepository)
             {
-                _context = context;
+                TimeSlotRepository = timeSlotRepository;
             }
+
+            public ITimeSlotRepository TimeSlotRepository { get; }
+
             public async Task<Guid> Handle(UpdateTimeSlotCommand command, CancellationToken cancellationToken)
             {
-                var timeSlot = _context.TimeSlots.FirstOrDefault(a => a.ID == command.ID);
+                var timeSlot = command.Adapt<TimeSlot>();
 
                 if (timeSlot == null)
                 {
@@ -35,16 +39,30 @@ namespace Application.Features.TimeslotFeatures.Commands
                 }
                 else
                 {
-                    //timeSlot.TimeSlotStart = command.TimeSlotStart;
-                    //timeSlot.TimeSlotEnd = command.TimeSlotEnd;
-                    timeSlot.Title = command.Title;
-                    timeSlot.IsVacant = command.IsVacant;
-                    timeSlot.UpdatedUTC = command.UpdatedUTC;
-                    timeSlot.BookerId = command.BookerId;
+                    return await TimeSlotRepository.UpdateTimeSlotAsync(timeSlot, cancellationToken);
 
-                    await _context.SaveChangesAsync();
-                    return timeSlot.ID;
                 }
+
+                #region
+                //*** Flytta
+                //var timeSlot = Context.TimeSlots.FirstOrDefault(a => a.ID == command.ID);
+
+                //if (timeSlot == null)
+                //{
+                //    return default;
+                //}
+                //else
+                //{                    
+                //    timeSlot.Title = command.Title;
+                //    timeSlot.IsVacant = command.IsVacant;
+                //    timeSlot.UpdatedUTC = command.UpdatedUTC;
+                //    timeSlot.BookerId = command.BookerId;
+
+                //    await Context.SaveChangesAsync();
+                //    return timeSlot.ID;
+                //}
+                //***
+                #endregion
             }
         }
     }

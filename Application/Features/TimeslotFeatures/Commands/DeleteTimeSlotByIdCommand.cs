@@ -13,18 +13,20 @@ namespace Application.Features.TimeslotFeatures.Commands
         public Guid ID { get; set; }
         public class DeleteTimeSlotByIdCommandHandler : IRequestHandler<DeleteTimeSlotByIdCommand, Guid>
         {
-            private readonly IApplicationDbContext _context;
-            public DeleteTimeSlotByIdCommandHandler(IApplicationDbContext context)
+            public DeleteTimeSlotByIdCommandHandler(ITimeSlotRepository timeSlotRepository)
             {
-                _context = context;
+                TimeSlotRepository = timeSlotRepository;
             }
+
+            public ITimeSlotRepository TimeSlotRepository { get; }
+
             public async Task<Guid> Handle(DeleteTimeSlotByIdCommand command, CancellationToken cancellationToken)
             {
                 var timeSlot = await _context.TimeSlots.Where(a => a.ID == command.ID).FirstOrDefaultAsync();
                 if (timeSlot == null) return default;
-                _context.TimeSlots.Remove(timeSlot);
-                await _context.SaveChangesAsync();
-                return timeSlot.ID;
+                //_context.TimeSlots.Remove(timeSlot);
+                //await _context.SaveChangesAsync();
+                //return timeSlot.ID;
             }
         }
     }

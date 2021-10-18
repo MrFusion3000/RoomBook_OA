@@ -13,18 +13,20 @@ namespace Application.Features.RoomFeatures.Commands
         public Guid ID { get; set; }
         public class DeleteRoomByIdCommandHandler : IRequestHandler<DeleteRoomByIdCommand, Guid>
         {
-            private readonly IApplicationDbContext _context;
-            public DeleteRoomByIdCommandHandler(IApplicationDbContext context)
+            public DeleteRoomByIdCommandHandler(IRoomRepository roomRepository)
             {
-                _context = context;
+                RoomRepository = roomRepository;
             }
+
+            public IRoomRepository RoomRepository { get; }
+
             public async Task<Guid> Handle(DeleteRoomByIdCommand command, CancellationToken cancellationToken)
             {
-                var timeSlot = await _context.TimeSlots.Where(a => a.ID == command.ID).FirstOrDefaultAsync(cancellationToken: cancellationToken);
-                if (timeSlot == null) return default;
-                _context.TimeSlots.Remove(timeSlot);
+                var room = await _context.Room.Where(a => a.ID == command.ID).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+                if (room == null) return default;
+                _context.Room.Remove(room);
                 await _context.SaveChangesAsync();
-                return timeSlot.ID;
+                return room.ID;
             }
         }
     }
