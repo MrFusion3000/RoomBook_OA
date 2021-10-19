@@ -39,7 +39,7 @@ namespace Application.Features.TimeslotFeatures.Commands
                 }
                 else
                 {
-                    return await TimeSlotRepository.UpdateTimeSlotAsync(timeSlot, cancellationToken);
+                    return await TimeSlotRepository.UpdateTimeSlotAsync(command, cancellationToken);
 
                 }
 

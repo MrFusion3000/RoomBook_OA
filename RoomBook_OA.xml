@@ -24,6 +24,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:WebApi.Controllers.v1.BookerController.Delete(System.Guid)">
+            <summary>
+            Deletes Booker Entity based on Id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebApi.Controllers.v1.BookerController.Update(System.Guid,Application.Features.BookerFeatures.Commands.UpdateBookerCommand)">
             <summary>
             Updates the Booker Entity based on Id.   

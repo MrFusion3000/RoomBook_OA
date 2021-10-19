@@ -7,24 +7,29 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Application.Shared.DTO;
 
 namespace Application.Features.TimeslotFeatures.Queries
 {
-    public class GetTimeSlotByIdQuery : IRequest<TimeSlot>
+    public class GetTimeSlotByIdQuery : IRequest<TimeSlotDto>
     {
         public Guid ID { get; set; }
-        public class GetTimeSlotByIdQueryHandler : IRequestHandler<GetTimeSlotByIdQuery, TimeSlot>
+        public class GetTimeSlotByIdQueryHandler : IRequestHandler<GetTimeSlotByIdQuery, TimeSlotDto>
         {
-            private readonly IApplicationDbContext _context;
-            public GetTimeSlotByIdQueryHandler(IApplicationDbContext context)
+            public GetTimeSlotByIdQueryHandler(ITimeSlotRepository timeSlotRepository)
             {
-                _context = context;
+                TimeSlotRepository = timeSlotRepository;
             }
-            public async Task<TimeSlot> Handle(GetTimeSlotByIdQuery query, CancellationToken cancellationToken)
+
+            public ITimeSlotRepository TimeSlotRepository { get; }
+
+            public async Task<TimeSlotDto> Handle(GetTimeSlotByIdQuery query, CancellationToken cancellationToken)
             {
-                var timeSlot = _context.TimeSlots.FirstOrDefault(a => a.ID == query.ID);
-                if (timeSlot == null) return null;
-                return await Task.FromResult(timeSlot);
+                //var timeSlot = Context.TimeSlots.FirstOrDefault(a => a.ID == query.ID);
+                //if (timeSlot == null) return null;
+                //return await Task.FromResult(timeSlot);
+
+                return await TimeSlotRepository.GetTimeSlotByIdAsync(query, cancellationToken);
             }
         }
     }

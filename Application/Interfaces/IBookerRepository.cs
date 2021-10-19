@@ -13,6 +13,7 @@ public interface IBookerRepository
     Task<Guid> CreateBookerAsync(Booker booker, CancellationToken cancellationToken);
     Task<Guid> DeleteBookerAsync(Booker booker, CancellationToken cancellationToken);
     Task<Guid> UpdateBookerAsync(Booker booker, CancellationToken cancellationToken);
+
     Task<BookerDto> GetBookerByIdAsync(GetBookerByIdQuery query, CancellationToken cancellationToken);
     Task<List<BookerDto>> GetAllBookersAsync(GetAllBookersQuery query, CancellationToken cancellationToken);
 }

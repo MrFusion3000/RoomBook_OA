@@ -39,6 +39,8 @@ namespace Application.Features.TimeslotFeatures.Commands
 
                 //await _context.SaveChangesAsync();
                 //return timeslot.ID;
+
+                return await TimeSlotRepository.CreateTimeSlotAsync(timeslot, cancellationToken);
             }
         }
     }

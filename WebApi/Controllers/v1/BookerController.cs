@@ -41,17 +41,17 @@ public class BookerController : BaseApiController
         return Ok(await Mediator.Send(new GetBookerByIdQuery { Id = id }));
     }
 
-    // /// <summary>
-    // /// Deletes Booker Entity based on Id.
-    // /// </summary>
-    // /// <param name="id"></param>
-    // /// <returns></returns>
+    /// <summary>
+    /// Deletes Booker Entity based on Id.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     //[Authorize]
-    //[HttpDelete("{id}")]
-    //public async Task<IActionResult> Delete(Guid id)
-    //{
-    //    return Ok(await Mediator.Send(new DeleteBookerByIdCommand { ID = id }));
-    //}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        return Ok(await Mediator.Send(new DeleteBookerByIdCommand { ID = id }));
+    }
 
     /// <summary>
     /// Updates the Booker Entity based on Id.   
@@ -59,7 +59,7 @@ public class BookerController : BaseApiController
     /// <param name="id"></param>
     /// <param name="command"></param>
     /// <returns></returns>
-    [HttpPut("[action]")]
+        [HttpPut("[action]")]
     public async Task<IActionResult> Update(Guid id, UpdateBookerCommand command)
     {
         if (id != command.ID)

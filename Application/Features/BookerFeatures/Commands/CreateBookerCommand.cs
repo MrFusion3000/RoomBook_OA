@@ -15,8 +15,8 @@ namespace Application.Features.BookerFeatures.Commands
         // Should the Booker have a separate UserId aside from the Guid ID in db?
 
         //Guid is created in Db
-        //private string Name { get; set; }
-        //private DateTime CreatedUTC { get; set; }
+        private string Name { get; set; }
+        private DateTime CreatedUTC { get; set; }
 
         public class CreateBookerCommandHandler : IRequestHandler<CreateBookerCommand, Guid>
         {
@@ -29,12 +29,12 @@ namespace Application.Features.BookerFeatures.Commands
 
             public async Task<Guid> Handle(CreateBookerCommand command, CancellationToken cancellationToken)
             {
-                var booker = command.Adapt<Booker>();
-                //var booker = new Booker()
-                //{
-                //    Name = command.Name,
-                //    CreatedUTC = command.CreatedUTC
-                //};
+                //var booker = command.Adapt<Booker>();
+                var booker = new Booker()
+                {
+                    Name = command.Name,
+                    CreatedUTC = command.CreatedUTC
+                };
                return await BookerRepository.CreateBookerAsync(booker, cancellationToken);
 
             }

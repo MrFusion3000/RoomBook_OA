@@ -6,6 +6,7 @@ using Persistance.Context;
 using Application.Interfaces;
 using Persistance.Repositories.Bookers;
 using Persistance.Repositories.Rooms;
+using Persistance.Repositories.TimeSlots;
 
 namespace Persistance
 {
@@ -27,6 +28,7 @@ namespace Persistance
 
             services.AddTransient<IBookerRepository, BookerRepository>();
             services.AddTransient<IRoomRepository, RoomRepository>();
+            services.AddTransient<ITimeSlotRepository, TimeSlotRepository>();
 
 
             //services.AddIdentity<APIUser, UserRole>()

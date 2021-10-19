@@ -7,27 +7,31 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Application.Shared.DTO;
 
 namespace Application.Features.TimeslotFeatures.Queries
 {
-    public class GetAllTimeSlotsQuery : IRequest<IEnumerable<TimeSlot>>
+    public class GetAllTimeSlotsQuery : IRequest<IEnumerable<TimeSlotDto>>
     {
 
-        public class GetAllTimeSlotsQueryHandler : IRequestHandler<GetAllTimeSlotsQuery, IEnumerable<TimeSlot>>
+        public class GetAllTimeSlotsQueryHandler : IRequestHandler<GetAllTimeSlotsQuery, IEnumerable<TimeSlotDto>>
         {
-            private readonly IApplicationDbContext _context;
-            public GetAllTimeSlotsQueryHandler(IApplicationDbContext context)
+            public GetAllTimeSlotsQueryHandler(ITimeSlotRepository timeSlotRepository)
             {
-                _context = context;
+                TimeSlotRepository = timeSlotRepository;
             }
-            public async Task<IEnumerable<TimeSlot>> Handle(GetAllTimeSlotsQuery query, CancellationToken cancellationToken)
+
+            public ITimeSlotRepository TimeSlotRepository { get; }
+
+            public async Task<IEnumerable<TimeSlotDto>> Handle(GetAllTimeSlotsQuery query, CancellationToken cancellationToken)
             {
-                var timeSlotsList = await _context.TimeSlots.ToListAsync(cancellationToken: cancellationToken);
-                if (timeSlotsList == null)
-                {
-                    return null;
-                }
-                return timeSlotsList.AsReadOnly();
+                //var timeSlotsList = await _context.TimeSlots.ToListAsync(cancellationToken: cancellationToken);
+                //if (timeSlotsList == null)
+                //{
+                //    return null;
+                //}
+                //return timeSlotsList.AsReadOnly();
+                return await TimeSlotRepository.GetAllTimeSlotsAsync(query, cancellationToken);
             }
         }
     }
