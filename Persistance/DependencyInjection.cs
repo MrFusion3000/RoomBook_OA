@@ -5,8 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistance.Context;
 using Application.Interfaces;
 using Persistance.Repositories.Bookers;
-//using Persistance.Repositories.Rooms;
-//using Persistance.Repositories.TimeSlots;
+using Persistance.Repositories.Rooms;
+using Persistance.Repositories.TimeSlots;
 using System.Reflection;
 
 namespace Persistance
@@ -15,21 +15,24 @@ namespace Persistance
     {
         public static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            /// To Use MediatR in the active layer only
+            //***To Use MediatR in the active layer only
             //services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services.AddMediatR(typeof(Application.DependencyInjection), typeof(Persistance.DependencyInjection));
 
-            /// Add layers that need to reach MediatR
+            //***Add layers that need to reach MediatR
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+
+            //***Adds the possibility to inject the interface instead of the concrete implementation.
+            //***DbContext is not thread-safe, so the same instance should not be re-used across threads
+            //services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.AddTransient<IBookerRepository, BookerRepository>();
-            //services.AddTransient<IRoomRepository, RoomRepository>();
-            //services.AddTransient<ITimeSlotRepository, TimeSlotRepository>();
+            services.AddTransient<IRoomRepository, RoomRepository>();
+            services.AddTransient<ITimeSlotRepository, TimeSlotRepository>();
 
 
             //services.AddIdentity<APIUser, UserRole>()
