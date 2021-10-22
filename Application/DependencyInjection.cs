@@ -12,7 +12,7 @@ namespace Application
     {
         public static void AddApplication(this IServiceCollection services)
         {
-            MapsterMapster.MapsterSetter();
+            //MapsterMapster.MapsterSetter();
 
             //services.AddMediatR(Assembly.GetExecutingAssembly());
 

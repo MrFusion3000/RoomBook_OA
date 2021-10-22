@@ -7,10 +7,8 @@ using Microsoft.OpenApi.Models;
 using Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Mapster;
-using Domain.Entities;
-using Application.Shared.DTO;
 using Application;
+using MediatR;
 
 namespace WebApi
 {
@@ -46,6 +44,8 @@ namespace WebApi
             //});
             services.AddCors();
             #endregion
+
+            //services.AddMediatR(typeof(RoomBookEntryPoint),typeof(Application.DependencyInjection));
 
             services.AddControllers(options =>
             {
@@ -83,7 +83,7 @@ namespace WebApi
             #endregion
 
             services.AddPersistence(Configuration);
-            services.AddApplication();
+            //services.AddApplication();
 
             services.AddHealthChecks();
         }

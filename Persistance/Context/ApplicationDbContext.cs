@@ -6,7 +6,7 @@ using Domain.Models;
 
 namespace Persistance.Context
 {
-    public class ApplicationDbContext : DbContext //, IApplicationDbContext
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -18,8 +18,8 @@ namespace Persistance.Context
         public DbSet<Booker> Bookers { get; set; }
         public DbSet<User> ApplicationUsers { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
             //modelBuilder.Entity<Product>().Property(p => p.Rate).HasColumnType("decimal(10, 2)");
             //modelBuilder.Entity<Room>()
             //    .Property(r => r.ID)
@@ -39,8 +39,8 @@ namespace Persistance.Context
             //    .Navigation(b => b.TimeSlots)
             //    .UsePropertyAccessMode(PropertyAccessMode.Property);
 
-            base.OnModelCreating(modelBuilder);
-        }
+        //    base.OnModelCreating(modelBuilder);
+        //}
 
         //public DbSet<Product> Products { get; set; }
 

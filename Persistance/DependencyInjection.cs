@@ -5,30 +5,31 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistance.Context;
 using Application.Interfaces;
 using Persistance.Repositories.Bookers;
-using Persistance.Repositories.Rooms;
-using Persistance.Repositories.TimeSlots;
+//using Persistance.Repositories.Rooms;
+//using Persistance.Repositories.TimeSlots;
+using System.Reflection;
 
 namespace Persistance
 {
     public static class DependencyInjection
     {
         public static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
-        {           
-            /// Use MediatR in the active layer
+        {
+            /// To Use MediatR in the active layer only
             //services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            /// Add layers that need to reach MediatR
             services.AddMediatR(typeof(Application.DependencyInjection), typeof(Persistance.DependencyInjection));
 
+            /// Add layers that need to reach MediatR
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-            services.AddScoped<ApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.AddTransient<IBookerRepository, BookerRepository>();
-            services.AddTransient<IRoomRepository, RoomRepository>();
-            services.AddTransient<ITimeSlotRepository, TimeSlotRepository>();
+            //services.AddTransient<IRoomRepository, RoomRepository>();
+            //services.AddTransient<ITimeSlotRepository, TimeSlotRepository>();
 
 
             //services.AddIdentity<APIUser, UserRole>()

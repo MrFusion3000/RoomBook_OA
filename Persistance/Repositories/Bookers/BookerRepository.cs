@@ -4,24 +4,22 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Domain.Entities;
-using Application.Interfaces;
 using Persistance.Context;
+using Application.Interfaces;
 using Application.Features.BookerFeatures.Queries;
-using Application.Shared.DTO;
-using Mapster;
+using Domain.Entities;
 
 namespace Persistance.Repositories.Bookers
 {
     public class BookerRepository : IBookerRepository
     {
-        private readonly ApplicationDbContext Context;
+        private ApplicationDbContext Context;
 
         public BookerRepository(ApplicationDbContext context)
         {
             Context = context;
         }
-        
+
         public async Task<Guid> CreateBookerAsync(Booker booker, CancellationToken cancellationToken)
         {
             Context.Bookers.Add(booker);
@@ -51,25 +49,25 @@ namespace Persistance.Repositories.Bookers
             return booker.ID;
         }
 
-        public async Task<BookerDto> GetBookerByIdAsync(GetBookerByIdQuery query, CancellationToken cancellationToken)
+        public async Task<Booker> GetBookerByIdAsync(GetBookerByIdQuery query, CancellationToken cancellationToken)
         {
             var booker = Context.Bookers
-                    //.Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
-                    .FirstOrDefault(a => a.ID == query.Id);
+            //.Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
+            .FirstOrDefault(a => a.ID == query.Id);
 
             if (booker == null) return default;
 
-            var bookerDto = booker.Adapt<BookerDto>();               
+            //var bookerDto = booker.Adapt<BookerDto>();               
 
-            return await Task.FromResult(bookerDto);
+            return await Task.FromResult(booker);
         }
 
-        public async Task<List<BookerDto>> GetAllBookersAsync(GetAllBookersQuery query, CancellationToken cancellationToken)
+        public async Task<List<Booker>> GetAllBookersAsync(GetAllBookersQuery query, CancellationToken cancellationToken)
         {
-            var BookerList = await Context.Bookers.ToListAsync(cancellationToken: cancellationToken);
-            var bookerList = BookerList.Adapt<List<BookerDto>>();
+            var bookerList = await Context.Bookers.ToListAsync(cancellationToken: cancellationToken);
+            //var bookerList = BookerList.Adapt<List<BookerDto>>();
 
-            if (BookerList == null)
+            if (bookerList == null)
             {
                 return null;
             }

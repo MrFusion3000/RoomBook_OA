@@ -16,16 +16,16 @@ namespace Application.Features.BookerFeatures.Commands
 
         //Guid is created in Db
         private string Name { get; set; }
-        private DateTime CreatedUTC { get; set; }
+        private DateTime CreatedUTC { get; }
 
         public class CreateBookerCommandHandler : IRequestHandler<CreateBookerCommand, Guid>
         {
+            private readonly IBookerRepository _bookerRepository;
+
             public CreateBookerCommandHandler(IBookerRepository bookerRepository)
             {
-                BookerRepository = bookerRepository;          
+                _bookerRepository = bookerRepository;          
             }
-
-            public IBookerRepository BookerRepository { get; }
 
             public async Task<Guid> Handle(CreateBookerCommand command, CancellationToken cancellationToken)
             {
@@ -35,7 +35,7 @@ namespace Application.Features.BookerFeatures.Commands
                     Name = command.Name,
                     CreatedUTC = command.CreatedUTC
                 };
-               return await BookerRepository.CreateBookerAsync(booker, cancellationToken);
+               return await _bookerRepository.CreateBookerAsync(booker, cancellationToken);
 
             }
         }

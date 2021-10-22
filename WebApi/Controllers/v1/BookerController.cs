@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Application.Features.BookerFeatures.Commands;
 using Application.Features.BookerFeatures.Queries;
+using Domain.Entities;
 
 namespace WebApi.Controllers.v1
 {
@@ -20,34 +21,36 @@ public class BookerController : BaseApiController
         return Ok(await Mediator.Send(command));
     }
 
-    /// <summary>
-    /// Gets all Bookers.
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        return Ok(await Mediator.Send(new GetAllBookersQuery()));
-    }
+        /// <summary>
+        /// Gets all Bookers.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await Mediator.Send(new GetAllBookersQuery()));
+        }
 
-    /// <summary>
-    /// Gets Booker Entity by Id.
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    [HttpGet("GetById/{id}")]
-    public async Task<IActionResult> GetById(Guid id)
-    {
-        return Ok(await Mediator.Send(new GetBookerByIdQuery { Id = id }));
-    }
+        /// <summary>
+        /// Gets Booker by Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            Booker booker = await Mediator.Send(new GetBookerByIdQuery { Id = id });
+            //return Ok(await Mediator.Send(new GetBookerByIdQuery { Id = id }));
+            return Ok(booker);
+        }
 
-    /// <summary>
-    /// Deletes Booker Entity based on Id.
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    //[Authorize]
-    [HttpDelete("{id}")]
+        /// <summary>
+        /// Deletes Booker Entity based on Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        //[Authorize]
+        [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
         return Ok(await Mediator.Send(new DeleteBookerByIdCommand { ID = id }));
