@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Application.Features.BookerFeatures.Commands;
 using Application.Features.BookerFeatures.Queries;
 using Domain.Entities;
+using Application.Shared.DTO;
 
 namespace WebApi.Controllers.v1
 {
@@ -39,9 +40,10 @@ public class BookerController : BaseApiController
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            Booker booker = await Mediator.Send(new GetBookerByIdQuery { Id = id });
-            //return Ok(await Mediator.Send(new GetBookerByIdQuery { Id = id }));
-            return Ok(booker);
+            //BookerDto booker = await Mediator.Send(new GetBookerByIdQuery { Id = id });
+            //return Ok(booker);
+
+            return Ok(await Mediator.Send(new GetBookerByIdQuery { Id = id }));            
         }
 
         /// <summary>

@@ -15,12 +15,12 @@ namespace Persistance.Repositories.Rooms
 {
     internal class RoomRepository : IRoomRepository
     {
+        public ApplicationDbContext Context;
+
         public RoomRepository(ApplicationDbContext context)
         {
             Context = context;
         }
-
-        public ApplicationDbContext Context { get; }
 
         public async Task<Guid> CreateRoomAsync(Room room, CancellationToken cancellationToken)
         {
@@ -47,41 +47,32 @@ namespace Persistance.Repositories.Rooms
 
         public async Task<RoomDto> GetRoomByIdAsync(GetRoomByIdQuery query, CancellationToken cancellationToken)
         {
-            //var room = Context.Rooms
-            //    .FirstOrDefault(a => a.ID == query.Id);
-
-            //var roomDto = room.Adapt<RoomDto>();
-
-            //return await Task.FromResult(roomDto);
-
             // TODO dtToday should be sent in the query as a parameter instead to allow any date
             var dtToday = DateTime.UtcNow;
 
             // TODO query should extract only necessary fields and data
             var room = Context.Rooms
-                .Include(a => a.TimeSlots
-                    .Where(t => t.TimeSlotStart > dtToday))
-                .ThenInclude(t => t.Booker)
+                //.Include(a => a.TimeSlots
+                //    .Where(t => t.TimeSlotStart > dtToday))
+                //.ThenInclude(t => t.Booker)
                 .FirstOrDefault(a => a.ID == query.Id);
 
             if (room == null) return null;
 
-            var chosenRoom = room.Adapt<Room, RoomDto>();
+            var roomDto = room.Adapt<RoomDto>();
 
-            return await Task.FromResult(chosenRoom);
+            return await Task.FromResult(roomDto);
         }
 
         public async Task<List<RoomDto>> GetAllRoomsAsync(GetAllRoomsQuery query, CancellationToken cancellationToken)
         {
-            var RoomList = await Context.Rooms.ToListAsync(cancellationToken: cancellationToken);
-            var roomList = RoomList.Adapt<List<RoomDto>>();
-            //if (roomList == null)
-            //{
-            //    return null;
-            //}
-            //return roomList.AsReadOnly();
+            var roomList = await Context.Rooms.ToListAsync(cancellationToken: cancellationToken);
 
-            return await Task.FromResult(roomList);
+            if (roomList == null) return null;
+
+            var roomDtoList = roomList.Adapt<List<RoomDto>>();
+
+            return await Task.FromResult(roomDtoList);
         }
 
         public async Task<RoomDto> GetRoomByIdAndTimeSlotsBySpecDateTime(GetRoomByIdAndTimeslotsBySpecDateTimeQuery query, CancellationToken cancellationToken)
@@ -97,9 +88,9 @@ namespace Persistance.Repositories.Rooms
 
             if (room == null) return null;
 
-            var chosenRoom = room.Adapt<Room, RoomDto>();
+            var roomDto = room.Adapt<RoomDto>();
 
-            return await Task.FromResult(chosenRoom);
+            return await Task.FromResult(roomDto);
         }
     }
 }

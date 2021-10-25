@@ -1,4 +1,5 @@
 ﻿@page "/rooms"
+@using Application.Shared.DTO
 @using Domain.Entities
 @using System.Security.Claims
 @using Domain.Interfaces
@@ -31,7 +32,7 @@
                             <span><span class="oi oi-clock mr-2"></span> @room.CreatedUTC.ToShortTimeString()</span>
                         </div>
                         @*<button class="btn btn-primary mt-3" @onclick="@(e => GotoRoom(room.ID))">@room.Name</button>*@
-                        <MudButton Variant="Variant.Filled" @onclick="@(e => GotoRoom(room.ID))">@room.Name</MudButton>
+                        <MudButton Variant="Variant.Filled" @onclick="@(e => GotoRoom(@room.ID))">@room.Name</MudButton>
                         @*</div>*@
                     </div>
                 </MudPaper>
@@ -44,26 +45,26 @@
 
 @code
 {
-        private List<Room> _rooms = new List<Room>();
+        private List<RoomDto> _rooms = new List<RoomDto>();
 
         protected override async Task OnInitializedAsync()
         {
             NavigationManager.LocationChanged += HandleLocationChanged;
 
-            _rooms = await _http.GetFromJsonAsync<List<Room>>("https://localhost:44315/api/v1/Room/");
+            _rooms = await _http.GetFromJsonAsync<List<RoomDto>>("https://localhost:44315/api/v1/Room/");
 
-            await RefreshDb();
+            //await RefreshDb();
         }
 
         private async Task RefreshDb()
         {
         //Get current rooms
-        _rooms = await _http.GetFromJsonAsync<List<Room>>("https://localhost:44315/api/v1/Room/");
+        _rooms = await _http.GetFromJsonAsync<List<RoomDto>>("https://localhost:44315/api/v1/Room/");
         }
 
-    private void GotoRoom(Guid room)
+    private void GotoRoom(Guid roomId)
     {
-        string navUri = "/" + room;
+        string navUri = "/" + roomId;
         NavigationManager.NavigateTo(navUri);
     }
 

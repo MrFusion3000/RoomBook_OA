@@ -8,6 +8,8 @@ using Persistance.Context;
 using Application.Interfaces;
 using Application.Features.BookerFeatures.Queries;
 using Domain.Entities;
+using Mapster;
+using Application.Shared.DTO;
 
 namespace Persistance.Repositories.Bookers
 {
@@ -49,7 +51,7 @@ namespace Persistance.Repositories.Bookers
             return booker.ID;
         }
 
-        public async Task<Booker> GetBookerByIdAsync(GetBookerByIdQuery query, CancellationToken cancellationToken)
+        public async Task<BookerDto> GetBookerByIdAsync(GetBookerByIdQuery query, CancellationToken cancellationToken)
         {
             var booker = Context.Bookers
             //.Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
@@ -57,22 +59,20 @@ namespace Persistance.Repositories.Bookers
 
             if (booker == null) return default;
 
-            //var bookerDto = booker.Adapt<BookerDto>();               
+            var bookerDto = booker.Adapt<BookerDto>();               
 
-            return await Task.FromResult(booker);
+            return await Task.FromResult(bookerDto);
         }
 
-        public async Task<List<Booker>> GetAllBookersAsync(GetAllBookersQuery query, CancellationToken cancellationToken)
+        public async Task<List<BookerDto>> GetAllBookersAsync(GetAllBookersQuery query, CancellationToken cancellationToken)
         {
             var bookerList = await Context.Bookers.ToListAsync(cancellationToken: cancellationToken);
-            //var bookerList = BookerList.Adapt<List<BookerDto>>();
+            
+            if (bookerList == null) return null;
 
-            if (bookerList == null)
-            {
-                return null;
-            }
+            var bookerDtoList = bookerList.Adapt<List<BookerDto>>();
 
-            return await Task.FromResult(bookerList);
+            return await Task.FromResult(bookerDtoList);
         }
     }
 }

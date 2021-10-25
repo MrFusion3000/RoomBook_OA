@@ -39,5 +39,48 @@
             <param name="command"></param>
             <returns></returns>
         </member>
+        <member name="M:WebApi.Controllers.v1.RoomController.Create(Application.Features.RoomFeatures.Commands.CreateRoomCommand)">
+            <summary>
+            Creates a New Room.
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.RoomController.Delete(System.Guid)">
+            <summary>
+            Deletes a Room based on Id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.RoomController.Update(System.Guid,Application.Features.RoomFeatures.Commands.UpdateRoomCommand)">
+            <summary>
+            Updates a Room based on Id.   
+            </summary>
+            <param name="id"></param>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.RoomController.GetAll">
+            <summary>
+            Gets all Rooms.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.RoomController.GetById(System.Guid)">
+            <summary>
+            Gets a Room by Id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.RoomController.GetByIdAndDateTIme(System.Guid,System.DateTime)">
+            <summary>
+            Gets Room Entity by Id.
+            </summary>
+            <param name="id"></param>
+            <param name="queryDateTime"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

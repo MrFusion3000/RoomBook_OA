@@ -5,8 +5,10 @@ namespace Application.Shared.DTO
 {
     public class RoomDto
     {
-        public Guid Id { get; set; }
+        public Guid ID { get; set; }
         public string Name { get; set; }
+        public int Placement { get; set; }
+        public DateTime CreatedUTC { get; set; }
 
         //Navigation properties
         public List<TimeSlotDto> TimeSlots { get; set; }

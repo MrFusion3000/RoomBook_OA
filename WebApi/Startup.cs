@@ -45,8 +45,6 @@ namespace WebApi
             services.AddCors();
             #endregion
 
-            //services.AddMediatR(typeof(RoomBookEntryPoint),typeof(Application.DependencyInjection));
-
             services.AddControllers(options =>
             {
                 options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();

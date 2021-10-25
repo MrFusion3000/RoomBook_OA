@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.BookerFeatures.Queries
 {
-    public class GetAllBookersQuery : IRequest<IEnumerable<Booker>>
+    public class GetAllBookersQuery : IRequest<List<BookerDto>>
     {
 
-        public class GetAllBookersQueryHandler : IRequestHandler<GetAllBookersQuery, IEnumerable<Booker>>
+        public class GetAllBookersQueryHandler : IRequestHandler<GetAllBookersQuery, List<BookerDto>>
         {
             public IBookerRepository BookerRepository { get; }
 
@@ -21,7 +21,7 @@ namespace Application.Features.BookerFeatures.Queries
                 BookerRepository = bookerRepository;
             }
 
-            public async Task<IEnumerable<Booker>> Handle(GetAllBookersQuery query, CancellationToken cancellationToken)
+            public async Task<List<BookerDto>> Handle(GetAllBookersQuery query, CancellationToken cancellationToken)
             {
                 return await BookerRepository.GetAllBookersAsync(query, cancellationToken);
 

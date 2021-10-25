@@ -27,7 +27,7 @@ namespace Application
 
         TypeAdapterConfig<Room, RoomDto>
             .NewConfig()
-                    .Map(dest => dest.Id, src => src.ID)
+                    .Map(dest => dest.ID, src => src.ID)
                     .Map(dest => dest.Name, src => src.Name)
                     .Map(dest => dest.TimeSlots, src => src.TimeSlots);
 

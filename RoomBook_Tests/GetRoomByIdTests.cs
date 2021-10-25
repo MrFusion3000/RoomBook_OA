@@ -4,6 +4,7 @@ using Xunit;
 using System.Threading.Tasks;
 using System.Net.Http;
 using RoomBook_OA;
+using Persistance.Repositories.Bookers;
 
 namespace RoomBook_OA.Tests
 {
@@ -26,7 +27,7 @@ namespace RoomBook_OA.Tests
             string expected = "ID: 00000000-0000-0000-0000-000000000000";
 
             // Act
-            //string actual = Persistance.Repositories.;
+            //string actual = BookerRepository.
 
             //Assert
 
