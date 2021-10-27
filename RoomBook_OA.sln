@@ -21,7 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoomBook_OA_UI", "RoomBook_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Shared", "Application.Shared\Application.Shared.csproj", "{276C42FA-08BB-4BDB-9D5E-1DE8F1854431}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomBook_OA.Tests", "RoomBook_Tests\RoomBook_OA.Tests.csproj", "{82671A6A-BD73-4473-8273-B0663355F91A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoomBook_OA.Tests", "RoomBook_Tests\RoomBook_OA.Tests.csproj", "{82671A6A-BD73-4473-8273-B0663355F91A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Tests", "Application.Tests\Application.Tests.csproj", "{454C129B-D4C7-4B6E-8BE2-1E37EE535D59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomBookApiClient", "RoomBookApiClient\RoomBookApiClient.csproj", "{D24AF49C-EF22-4F13-96B2-43C85D35F3CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{82671A6A-BD73-4473-8273-B0663355F91A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82671A6A-BD73-4473-8273-B0663355F91A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82671A6A-BD73-4473-8273-B0663355F91A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{454C129B-D4C7-4B6E-8BE2-1E37EE535D59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{454C129B-D4C7-4B6E-8BE2-1E37EE535D59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{454C129B-D4C7-4B6E-8BE2-1E37EE535D59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{454C129B-D4C7-4B6E-8BE2-1E37EE535D59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D24AF49C-EF22-4F13-96B2-43C85D35F3CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D24AF49C-EF22-4F13-96B2-43C85D35F3CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D24AF49C-EF22-4F13-96B2-43C85D35F3CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D24AF49C-EF22-4F13-96B2-43C85D35F3CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +80,7 @@ Global
 		{FDD3A237-29A6-43F1-8EF6-062BF0CF9944} = {103DA492-51E7-4567-9873-9375EA826891}
 		{EFB5B608-41BE-47E2-BDA1-D9FA2A020B4B} = {103DA492-51E7-4567-9873-9375EA826891}
 		{276C42FA-08BB-4BDB-9D5E-1DE8F1854431} = {09C8DFC3-AB9C-41E0-B6DA-A749B3C0F8B2}
+		{D24AF49C-EF22-4F13-96B2-43C85D35F3CC} = {09C8DFC3-AB9C-41E0-B6DA-A749B3C0F8B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE0C6275-DE5E-4BAB-BFC5-268CBAF1379D}

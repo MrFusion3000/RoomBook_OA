@@ -9,6 +9,8 @@
 @using Domain.Interfaces
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Logging
+@using RoomBook_OA_UI.Helpers.Extensions
+@using RoomBookApiClient;
 
 @inject NavigationManager NavigationManager
 @inject ILogger<Index> Logger
@@ -95,6 +97,8 @@
 
 <hr />
 
+<MudButton Variant="Variant.Filled" @onclick="NavigateToRoomsPage">RoomPicker</MudButton>
+
 @*<MudGrid>
         <MudItem xs="12" sm="6" md="3">
             <MudTextField @bind-Value="newItemTitle" Label="Add Title" Variant="Variant.Outlined" Margin="Margin.Dense" Class="d-flex align-center justify-center mud-width-full py-8" />
@@ -111,18 +115,18 @@
     [Parameter] public Guid InstaBookerGuid { get; set; } = Guid.Parse("99999999-9999-9999-9999-999999999999");
 
     private Room _room = new();
-    private List<TimeSlot> _timeSlots;// = new();
+    private List<TimeSlotDto> _timeSlots;// = new();
 
     [Parameter] public Guid ThisRoomId { get; set; }
     [Parameter] public int? HasItems { get; set; }
-    [Parameter] public TimeSlot FirstVacantSlot { get; set; }
+    [Parameter] public TimeSlotDto FirstVacantSlot { get; set; }
     [Parameter] public int AnyVacantSlot { get; set; }
 
     private string _searchString = "";
-    private TimeSlot _selectedItem = null;
-    private HashSet<TimeSlot> _selectedItems = new HashSet<TimeSlot>();
+    private TimeSlotDto _selectedItem = null;
+    private HashSet<TimeSlotDto> _selectedItems = new HashSet<TimeSlotDto>();
 
-    public DateTime _dtToday = DateTime.UtcNow;
+    public DateTime dtToday = DateTime.UtcNow;
 
     //private bool FilterFunc(ITimeSlot slot)
     //{
@@ -147,19 +151,20 @@
         await RefreshDb();
 
         // TODO Change navigation order; Login/Admin page/Room admin/Choose Room/Display Room-TimeSlots
-        if (_room is null)
-        {
-            //await InitRoom();
-            GotoRoom(ThisRoomId);
-        }
+        //if (_room is null)
+        //{
+        //    NavigateToRoomsPage();
+        //}
+        //else
+        //{
+        //    //await InitRoom();
+        //        GotoRoom(ThisRoomId);
+        //}
 
-        if (_room.TimeSlots.Count <= 0)             // Create empty Timeslots if none for the day
-        {
-            await InitDailySchedule();
-        }
-
-
-        //await InitBooker();
+        //if (_room.TimeSlots.Count <= 0)             // Create empty Timeslots if none for the day
+        //{
+        //    await InitDailySchedule();
+        //}
 
         //TODO Redirect to Rooms page to choose room
     }
@@ -167,20 +172,24 @@
     private async Task RefreshDb()
     {
         //Get current room and related Timeslots (from DateTime.Now and forward)
-        _room = await _http.GetFromJsonAsync<Room>("https://localhost:44315/api/v1/Room/GetByIdAndDateTime/" + ThisRoomId + "," + _dtToday);
+        //var showRoom = await _http.GetFromJsonAsync<RoomDto>("https://localhost:44315/api/v1/Room/GetByIdAndDateTime/" + ThisRoomId + "," + _dtToday);
+    
+        var roomClient = new RoomClient();
+        
+        var showRoom = await roomClient.GetRoomByIdAndDateTimeAsync(ThisRoomId, dtToday);
+        //TODO Filter result after dtToday
+
 
         // CheckIfTimeSlotsExists
-        if (_room?.TimeSlots != null)
+        if (!showRoom.TimeSlots.Any())
         {
-            _timeSlots = _room.TimeSlots;
-
-            HasItems = _timeSlots.Count;  
+            await InitDailySchedule();
         }
 
-        // Check for first vacant timeslot for the day
-        FirstVacantSlot = _timeSlots
-        .Where(f => f.TimeSlotStart > _dtToday)
-        .FirstOrDefault(f => f.IsVacant);
+        _timeSlots = showRoom.TimeSlots;
+        HasItems = _timeSlots.Count;
+
+        FirstVacantSlot = _timeSlots.GetFirstVacant(dtToday);
 
         //Check if there are any vacant timeslots for the day
         AnyVacantSlot = _timeSlots.Count(f => f.IsVacant);
@@ -189,7 +198,7 @@
     //TODO Add check if timeSlot.isVacant = true else message to user
     private async Task UpdateTimeSlot(Guid vacantSlotId, string title, Guid bookerId)
     {
-        var updateTimeSlot = new TimeSlot();
+        var updateTimeSlot = new TimeSlotDto();
         updateTimeSlot.ID = (Guid)vacantSlotId;
         updateTimeSlot.IsVacant = false;
         updateTimeSlot.Title = title;
@@ -208,7 +217,7 @@
             ID = ThisRoomId,
             Name = "Init Room",
             Placement = 1,
-            CreatedUTC = _dtToday
+            CreatedUTC = dtToday
         };
 
         await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Room", room);
@@ -229,7 +238,7 @@
     private async Task InitDailySchedule()
     {
         TimeSpan duration = new TimeSpan(0, 0, 15, 0);
-        DateTime initDate = new DateTime(_dtToday.Year, _dtToday.Month, _dtToday.Day, 6, 0, 0);
+        DateTime initDate = new DateTime(dtToday.Year, dtToday.Month, dtToday.Day, 6, 0, 0);
 
         for (var i = 0; i < 60; i++)
         {
@@ -240,7 +249,7 @@
                 TimeSlotEnd = initDate.Add(duration),
                 Title = "Vacant",
                 IsVacant = true,
-                CreatedUTC = _dtToday,
+                CreatedUTC = dtToday,
                 RoomId = ThisRoomId,
                 BookerId = Guid.Empty,
             };
@@ -252,11 +261,16 @@
     }
 
     private void GotoRoom(Guid roomId)
-    {
-        string navUri = "/" + roomId;
-        NavigationManager.NavigateTo(navUri);
+    { 
+            string navUri = "/" + roomId;
+            NavigationManager.NavigateTo(navUri);
     }
 
+    private void NavigateToRoomsPage()
+    {
+        NavigationManager.NavigateTo("rooms");
+
+    }
     private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {
         Logger.LogInformation("URL of new location: {Location}", e.Location);

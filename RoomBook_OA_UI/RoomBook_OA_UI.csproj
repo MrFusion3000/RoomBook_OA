@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Persistance\Persistance.csproj" />
+    <ProjectReference Include="..\RoomBookApiClient\RoomBookApiClient.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,7 @@ using Mapster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,14 +14,18 @@ namespace Application
     {
         public static void MapsterSetter()
             {
-            TypeAdapterConfig.GlobalSettings.RequireExplicitMapping = true;
+            TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetEntryAssembly());
+
+            TypeAdapterConfig.GlobalSettings.RequireExplicitMapping = false;
 
             TypeAdapterConfig<Room, RoomDto>
                     .NewConfig()
                     .PreserveReference(true);
-        TypeAdapterConfig<TimeSlot, TimeSlotDto>
+        var config = TypeAdapterConfig<TimeSlot, TimeSlotDto>
             .NewConfig()
-                    .PreserveReference(true);
+            .TwoWays()
+            .PreserveReference(true);
+            
         TypeAdapterConfig<Booker, BookerDto>
             .NewConfig()
                     .PreserveReference(true);
@@ -30,6 +35,8 @@ namespace Application
                     .Map(dest => dest.ID, src => src.ID)
                     .Map(dest => dest.Name, src => src.Name)
                     .Map(dest => dest.TimeSlots, src => src.TimeSlots);
+            //.ignore
+
 
         TypeAdapterConfig<TimeSlot, TimeSlotDto>
             .NewConfig()

@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Application.Shared.DTO;
 using Domain.Entities;
 using Mapster;
 using MediatR;
@@ -10,7 +11,7 @@ namespace Application.Features.TimeslotFeatures.Commands
 {
     public class CreateTimeSlotCommand : IRequest<Guid>
     {
-        public TimeSlot TimeSlot { get; set; }
+        public TimeSlotDto TimeSlot { get; set; }
 
         public class CreateTimeSlotCommandHandler : IRequestHandler<CreateTimeSlotCommand, Guid>
         {
@@ -23,22 +24,7 @@ namespace Application.Features.TimeslotFeatures.Commands
 
             public async Task<Guid> Handle(CreateTimeSlotCommand command, CancellationToken cancellationToken)
             {
-                var timeslot = command.Adapt<TimeSlot>();
-                //var timeslot = new TimeSlot
-                //{
-                //    TimeSlotStart = command.TimeSlot.TimeSlotStart,
-                //    TimeSlotEnd = command.TimeSlot.TimeSlotEnd,
-                //    Title = command.TimeSlot.Title,
-                //    IsVacant = command.TimeSlot.IsVacant,
-                //    CreatedUTC = command.TimeSlot.CreatedUTC,
-                //    UpdatedUTC = command.TimeSlot.UpdatedUTC,
-                //    RoomId = command.TimeSlot.RoomId,
-                //    BookerId = command.TimeSlot.BookerId
-                //};
-                //_context.TimeSlots.Add(timeslot);
-
-                //await _context.SaveChangesAsync();
-                //return timeslot.ID;
+                var timeslot = command.TimeSlot.Adapt<TimeSlot>();                
 
                 return await TimeSlotRepository.CreateTimeSlotAsync(timeslot, cancellationToken);
             }

@@ -82,7 +82,8 @@ namespace Persistance.Repositories.Rooms
 
             var room = Context.Rooms
                 .Include(a => a.TimeSlots
-                    .Where(t => t.TimeSlotStart > dtToday))
+                .Where(t => t.TimeSlotStart > dtToday.Date)
+                .OrderBy(a => a.TimeSlotStart))
                 .ThenInclude(t => t.Booker)
                 .FirstOrDefault(a => a.ID == query.Id);
 

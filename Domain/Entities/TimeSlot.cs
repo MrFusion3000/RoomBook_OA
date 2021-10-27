@@ -6,7 +6,7 @@ using Domain.Interfaces;
 
 namespace Domain.Entities
 {
-    public class TimeSlot : BaseEntity, IDataEntitybase, ITimeSlot
+    public class TimeSlot : BaseEntity, ITimeSlot //,IDataEntitybase
     {
         public DateTime TimeSlotStart { get; set; }
         public DateTime TimeSlotEnd { get; set; }
@@ -29,9 +29,9 @@ namespace Domain.Entities
                 Title = title,
                 IsVacant = isVacant,
                 CreatedUTC = createdUTC,
-                UpdatedUTC = updatedUTC,
                 RoomId = roomId,
-                BookerId = bookerId
+                BookerId = bookerId,
+                UpdatedUTC = updatedUTC
             };
         }
     }

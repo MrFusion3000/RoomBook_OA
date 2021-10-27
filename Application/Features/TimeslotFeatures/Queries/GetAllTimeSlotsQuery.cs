@@ -13,7 +13,6 @@ namespace Application.Features.TimeslotFeatures.Queries
 {
     public class GetAllTimeSlotsQuery : IRequest<IEnumerable<TimeSlotDto>>
     {
-
         public class GetAllTimeSlotsQueryHandler : IRequestHandler<GetAllTimeSlotsQuery, IEnumerable<TimeSlotDto>>
         {
             public GetAllTimeSlotsQueryHandler(ITimeSlotRepository timeSlotRepository)

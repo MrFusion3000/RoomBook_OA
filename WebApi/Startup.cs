@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Application;
 using MediatR;
+using Mapster;
+using System.Reflection;
 
 namespace WebApi
 {
