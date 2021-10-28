@@ -12,8 +12,8 @@ namespace Application.Interfaces
     public interface ITimeSlotRepository
     {
         Task<Guid> CreateTimeSlotAsync(TimeSlot timeSlot, CancellationToken cancellationToken);
-        Task<Guid> DeleteTimeSlotAsync(DeleteTimeSlotByIdCommand command, CancellationToken cancellationToken);
-        Task<Guid> UpdateTimeSlotAsync(UpdateTimeSlotCommand command, CancellationToken cancellationToken);
+        Task<Guid> DeleteTimeSlotAsync(TimeSlot timeSlot, CancellationToken cancellationToken);
+        Task<Guid> UpdateTimeSlotAsync(TimeSlotDto timeSlotDto, CancellationToken cancellationToken);
 
         Task<TimeSlotDto> GetTimeSlotByIdAsync(GetTimeSlotByIdQuery query, CancellationToken cancellationToken);
         Task<List<TimeSlotDto>> GetAllTimeSlotsAsync(GetAllTimeSlotsQuery query, CancellationToken cancellationToken);

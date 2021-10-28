@@ -8,15 +8,13 @@ using Domain.Entities;
 
 namespace Application.Interfaces
 {
-public interface IBookerRepository
-{
-    Task<Guid> CreateBookerAsync(Booker booker, CancellationToken cancellationToken);
-    Task<Guid> DeleteBookerAsync(Booker booker, CancellationToken cancellationToken);
-    Task<Guid> UpdateBookerAsync(Booker booker, CancellationToken cancellationToken);
+    public interface IBookerRepository
+    {
+        Task<Guid> CreateBookerAsync(Booker booker, CancellationToken cancellationToken);
+        Task<Guid> DeleteBookerAsync(Booker booker, CancellationToken cancellationToken);
+        Task<Guid> UpdateBookerAsync(BookerDtoIn booker, CancellationToken cancellationToken);
 
-    Task<BookerDto> GetBookerByIdAsync(GetBookerByIdQuery query, CancellationToken cancellationToken);
-    Task<List<BookerDto>> GetAllBookersAsync(GetAllBookersQuery query, CancellationToken cancellationToken);
-
-    //List<BookerDto> BookerById { get; }
-}
+        Task<BookerDtoIn> GetBookerByIdAsync(GetBookerByIdQuery query, CancellationToken cancellationToken);
+        Task<List<BookerDtoIn>> GetAllBookersAsync(GetAllBookersQuery query, CancellationToken cancellationToken);
+    }
 }

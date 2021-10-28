@@ -32,21 +32,27 @@ namespace Persistance.Repositories.TimeSlots
             return timeSlot.ID;
         }
 
-        public async Task<Guid> DeleteTimeSlotAsync(DeleteTimeSlotByIdCommand command, CancellationToken cancellationToken)
+        public async Task<Guid> DeleteTimeSlotAsync(TimeSlot timeSlot, CancellationToken cancellationToken)
         {
-            var timeSlot = await Context.TimeSlots.Where(a => a.ID == command.ID).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            timeSlot = await Context.TimeSlots.Where(a => a.ID == timeSlot.ID).FirstOrDefaultAsync(cancellationToken: cancellationToken);
             if (timeSlot == null) return default;
             Context.TimeSlots.Remove(timeSlot);
             await Context.SaveChangesAsync();
             return timeSlot.ID;
         }
 
-        public async Task<Guid> UpdateTimeSlotAsync(UpdateTimeSlotCommand command, CancellationToken cancellationToken)
+        public async Task<Guid> UpdateTimeSlotAsync(TimeSlotDto timeSlotDto, CancellationToken cancellationToken)
         {
-            var timeSlot = Context.TimeSlots.FirstOrDefault(a => a.ID == command.ID);
+            //var timeSlot = Context.TimeSlots.FirstOrDefault(a => a.ID == timeSlotDto.ID);
+
+            var timeSlot = timeSlotDto.Adapt<TimeSlot>();
+
+            // No check if ID exists in db(saves a roundtrip to db), and if not a new 'unwanted' booker is created
+            Context.TimeSlots.Update(timeSlot);
 
             await Context.SaveChangesAsync();
-            return timeSlot.ID;
+
+            return timeSlotDto.ID;
         }
 
         public async Task<TimeSlotDto> GetTimeSlotByIdAsync(GetTimeSlotByIdQuery query, CancellationToken cancellationToken)

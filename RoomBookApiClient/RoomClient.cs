@@ -12,7 +12,6 @@ namespace RoomBookApiClient
     public class RoomClient
         :BaseClient
     {
-
         private Url GetRoomClient() => base.GetClient().AppendPathSegment("Room");
 
         public async Task<RoomDto> GetRoomByIdAndDateTimeAsync(Guid id, DateTime queryDateTime)

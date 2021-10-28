@@ -6,6 +6,7 @@ using MediatR;
 using Application.Interfaces;
 using Mapster;
 using Domain.Entities;
+using Application.Shared.DTO;
 
 namespace Application.Features.RoomFeatures.Commands
 {
@@ -32,22 +33,11 @@ namespace Application.Features.RoomFeatures.Commands
 
                 var room = command.Adapt<Room>();
 
-                if (room == null)
-                {
-                    return default;
-                }
-                else
-                {
-                    //room.Name = command.Name;
-                    //room.Placement = command.Placement;
-                    //room.CreatedUTC = command.CreatedUTC;
+                if (room == null) return default;
 
-                    //await _context.SaveChangesAsync();
-                    //return await room.ID;
-                    return await RoomRepository.UpdateRoomAsync(room, cancellationToken);
+                return await RoomRepository.UpdateRoomAsync(room, cancellationToken);
 
                 }
             }
         }
     }
-}

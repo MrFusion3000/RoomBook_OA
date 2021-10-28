@@ -7,7 +7,7 @@ using Application.Interfaces;
 using Persistance.Repositories.Bookers;
 using Persistance.Repositories.Rooms;
 using Persistance.Repositories.TimeSlots;
-using System.Reflection;
+using Application;
 
 namespace Persistance
 {
@@ -19,6 +19,8 @@ namespace Persistance
             //services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services.AddMediatR(typeof(Application.DependencyInjection), typeof(Persistance.DependencyInjection));
+
+            MapsterMapster.MapsterSetter();
 
             //***Add layers that need to reach MediatR
             services.AddDbContext<ApplicationDbContext>(options =>

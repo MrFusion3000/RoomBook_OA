@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Domain.Entities;
+using Mapster;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.TimeslotFeatures.Commands
 {
@@ -22,13 +22,17 @@ namespace Application.Features.TimeslotFeatures.Commands
 
             public async Task<Guid> Handle(DeleteTimeSlotByIdCommand command, CancellationToken cancellationToken)
             {
+                var timeSlot = command.Adapt<TimeSlot>();
+
+                if (timeSlot == null) return default;
+
                 //var timeSlot = await _context.TimeSlots.Where(a => a.ID == command.ID).FirstOrDefaultAsync();
                 //if (timeSlot == null) return default;
                 //_context.TimeSlots.Remove(timeSlot);
                 //await _context.SaveChangesAsync();
                 //return timeSlot.ID;
 
-                return await TimeSlotRepository.DeleteTimeSlotAsync(command, cancellationToken);
+                return await TimeSlotRepository.DeleteTimeSlotAsync(timeSlot, cancellationToken);
             }
         }
     }

@@ -12,10 +12,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.BookerFeatures.Queries
 {
-        public class GetBookerByIdQuery : IRequest<BookerDto>
+        public class GetBookerByIdQuery : IRequest<BookerDtoIn>
         {
         public Guid Id { get; set; }
-        public class GetBookerByIdQueryHandler : IRequestHandler<GetBookerByIdQuery, BookerDto>
+        public class GetBookerByIdQueryHandler : IRequestHandler<GetBookerByIdQuery, BookerDtoIn>
         {
             private readonly IBookerRepository BookerRepository;
 
@@ -24,7 +24,7 @@ namespace Application.Features.BookerFeatures.Queries
                 BookerRepository = bookerRepository;
             }
 
-            public async Task<BookerDto> Handle(GetBookerByIdQuery query, CancellationToken cancellationToken)
+            public async Task<BookerDtoIn> Handle(GetBookerByIdQuery query, CancellationToken cancellationToken)
             {
                 return await BookerRepository.GetBookerByIdAsync(query, cancellationToken);
             }

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
-using Domain.Entities;
+using Application.Shared.DTO;
 using Mapster;
 using MediatR;
 
@@ -31,38 +30,11 @@ namespace Application.Features.TimeslotFeatures.Commands
 
             public async Task<Guid> Handle(UpdateTimeSlotCommand command, CancellationToken cancellationToken)
             {
-                var timeSlot = command.Adapt<TimeSlot>();
+                var timeSlotDto = command.Adapt<TimeSlotDto>();
 
-                if (timeSlot == null)
-                {
-                    return default;
-                }
-                else
-                {
-                    return await TimeSlotRepository.UpdateTimeSlotAsync(command, cancellationToken);
+                if (timeSlotDto == null) return default;
 
-                }
-
-                #region
-                //*** Flytta
-                //var timeSlot = Context.TimeSlots.FirstOrDefault(a => a.ID == command.ID);
-
-                //if (timeSlot == null)
-                //{
-                //    return default;
-                //}
-                //else
-                //{                    
-                //    timeSlot.Title = command.Title;
-                //    timeSlot.IsVacant = command.IsVacant;
-                //    timeSlot.UpdatedUTC = command.UpdatedUTC;
-                //    timeSlot.BookerId = command.BookerId;
-
-                //    await Context.SaveChangesAsync();
-                //    return timeSlot.ID;
-                //}
-                //***
-                #endregion
+                return await TimeSlotRepository.UpdateTimeSlotAsync(timeSlotDto, cancellationToken);
             }
         }
     }

@@ -40,18 +40,22 @@ namespace Persistance.Repositories.Bookers
             return booker.ID;
         }
 
-        public async Task<Guid> UpdateBookerAsync(Booker booker, CancellationToken cancellationToken)
+        public async Task<Guid> UpdateBookerAsync(BookerDtoIn bookerDtoIn, CancellationToken cancellationToken)
         {
-            booker = await Context.Bookers.Where(a => a.ID == booker.ID).FirstOrDefaultAsync(cancellationToken: cancellationToken);
-            if (booker == null) return default;
+            //var bookerToUpdate = await Context.Bookers.Where(a => a.ID == booker.ID).FirstOrDefaultAsync(cancellationToken: cancellationToken);            
+            //if (bookerToUpdate == null) return default;
+
+            var booker = bookerDtoIn.Adapt<Booker>();
+
+            // No check if ID exists in db(saves a roundtrip to db), and if not a new 'unwanted' booker is created
             Context.Bookers.Update(booker);
 
             await Context.SaveChangesAsync();
 
-            return booker.ID;
+            return bookerDtoIn.ID;
         }
 
-        public async Task<BookerDto> GetBookerByIdAsync(GetBookerByIdQuery query, CancellationToken cancellationToken)
+        public async Task<BookerDtoIn> GetBookerByIdAsync(GetBookerByIdQuery query, CancellationToken cancellationToken)
         {
             var booker = Context.Bookers
             //.Include(a => a.TimeSlots.Where(t => t.TimeSlotStart > dtToday))
@@ -59,18 +63,18 @@ namespace Persistance.Repositories.Bookers
 
             if (booker == null) return default;
 
-            var bookerDto = booker.Adapt<BookerDto>();               
+            var bookerDto = booker.Adapt<BookerDtoIn>();               
 
             return await Task.FromResult(bookerDto);
         }
 
-        public async Task<List<BookerDto>> GetAllBookersAsync(GetAllBookersQuery query, CancellationToken cancellationToken)
+        public async Task<List<BookerDtoIn>> GetAllBookersAsync(GetAllBookersQuery query, CancellationToken cancellationToken)
         {
             var bookerList = await Context.Bookers.ToListAsync(cancellationToken: cancellationToken);
             
             if (bookerList == null) return null;
 
-            var bookerDtoList = bookerList.Adapt<List<BookerDto>>();
+            var bookerDtoList = bookerList.Adapt<List<BookerDtoIn>>();
 
             return await Task.FromResult(bookerDtoList);
         }

@@ -19,27 +19,38 @@ namespace Application
             TypeAdapterConfig.GlobalSettings.RequireExplicitMapping = false;
 
             TypeAdapterConfig<Room, RoomDto>
-                    .NewConfig()
-                    .PreserveReference(true);
-        var config = TypeAdapterConfig<TimeSlot, TimeSlotDto>
-            .NewConfig()
-            .TwoWays()
-            .PreserveReference(true);
-            
-        TypeAdapterConfig<Booker, BookerDto>
-            .NewConfig()
-                    .PreserveReference(true);
+                .NewConfig()
+                .PreserveReference(true);
 
-        TypeAdapterConfig<Room, RoomDto>
-            .NewConfig()
-                    .Map(dest => dest.ID, src => src.ID)
-                    .Map(dest => dest.Name, src => src.Name)
-                    .Map(dest => dest.TimeSlots, src => src.TimeSlots);
+            var config = TypeAdapterConfig<TimeSlot, TimeSlotDto>
+                .NewConfig()
+                .TwoWays()
+                .PreserveReference(true);
+            
+            TypeAdapterConfig<Booker, BookerDto>
+                .NewConfig()
+            .PreserveReference(true);
+
+            TypeAdapterConfig<Booker, BookerDtoIn>
+                .NewConfig()
+                .PreserveReference(true)
+                //If ignore ID here but leave ID property in DTO then ID = 00000000-0000-0000-0000-000000000000
+                //.Ignore("ID")
+                .Map(dest => dest.Name, src => src.Name)
+                .Map(dest => dest.CreatedUTC, src => src.CreatedUTC);
+
+            TypeAdapterConfig<Room, RoomDto>
+                .NewConfig()
+                .PreserveReference(true);
+                    //.Map(dest => dest.ID, src => src.ID)
+                    //.Map(dest => dest.Name, src => src.Name)
+                    //.Map(dest => dest.TimeSlots, src => src.TimeSlots);
             //.ignore
 
 
         TypeAdapterConfig<TimeSlot, TimeSlotDto>
             .NewConfig()
+            .PreserveReference(true)
             .Map(dest => dest.ID, src => src.ID)
             .Map(dest => dest.Title, src => src.Title)
             .Map(dest => dest.UpdatedUTC, src => src.UpdatedUTC)

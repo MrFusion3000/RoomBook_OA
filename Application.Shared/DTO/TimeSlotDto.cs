@@ -15,7 +15,7 @@ namespace Application.Shared.DTO
 
         //Navigation properties
         public Guid BookerId { get; set; }
-        public BookerDto Booker { get; set; }
+        public BookerDtoIn Booker { get; set; }
 
     }
 }

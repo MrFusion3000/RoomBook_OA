@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
-using Domain.Entities;
+using Application.Shared.DTO;
 using Mapster;
 using MediatR;
 
@@ -26,25 +25,11 @@ namespace Application.Features.BookerFeatures.Commands
 
             public async Task<Guid> Handle(UpdateBookerCommand command, CancellationToken cancellationToken)
             {
-                //var booker = _context.Bookers.FirstOrDefault(a => a.ID == command.ID);
+                var bookerDtoIn = command.Adapt<BookerDtoIn>();
 
-                var booker = command.Adapt<Booker>();
+                if (bookerDtoIn == null) return default;
 
-                if (booker == null)
-                {
-                    return default;
-                }
-                else
-                {
-                    //booker = command.Adapt<Booker>();
-                    //booker.Name = command.Name;
-                    //booker.CreatedUTC = command.CreatedUTC;
-
-                    //await _context.SaveChangesAsync();
-                    //return booker.ID;
-
-                    return await BookerRepository.UpdateBookerAsync(booker, cancellationToken);
-                }
+                return await BookerRepository.UpdateBookerAsync(bookerDtoIn, cancellationToken);
             }
         }
     }

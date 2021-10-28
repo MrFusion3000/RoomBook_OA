@@ -39,7 +39,9 @@ namespace Persistance.Repositories.Rooms
 
         public async Task<Guid> UpdateRoomAsync(Room room, CancellationToken cancellationToken)
         {
+            //var room = roomDto.Adapt<Room>();
             room = Context.Rooms.FirstOrDefault(a => a.ID == room.ID);
+            if (room == null) return default;
 
             await Context.SaveChangesAsync();
             return room.ID;
@@ -47,14 +49,9 @@ namespace Persistance.Repositories.Rooms
 
         public async Task<RoomDto> GetRoomByIdAsync(GetRoomByIdQuery query, CancellationToken cancellationToken)
         {
-            // TODO dtToday should be sent in the query as a parameter instead to allow any date
             var dtToday = DateTime.UtcNow;
 
-            // TODO query should extract only necessary fields and data
             var room = Context.Rooms
-                //.Include(a => a.TimeSlots
-                //    .Where(t => t.TimeSlotStart > dtToday))
-                //.ThenInclude(t => t.Booker)
                 .FirstOrDefault(a => a.ID == query.Id);
 
             if (room == null) return null;
@@ -93,5 +90,7 @@ namespace Persistance.Repositories.Rooms
 
             return await Task.FromResult(roomDto);
         }
+
+        //public async Task<roomDto> GetRoomByIdAndTimeSlotsBySpecDateTimePeriod(query.id, query.startdate, query.enddate)
     }
 }
