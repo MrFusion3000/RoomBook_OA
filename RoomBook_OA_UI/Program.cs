@@ -40,6 +40,8 @@ namespace RoomBook_OA_UI
                 var apiUrl = new Uri(builder.Configuration["apiUrl"]);
 
                 // use fake backend if "fakeBackend" is "true" in appsettings.json
+                // TODO WARNING! This falsely overrides the Update command PutAsJsonAsync
+                // TODO Change user login system
                 if (builder.Configuration["fakeBackend"] == "true")
                 {
                     var fakeBackendHandler = new FakeBackendHandler(x.GetService<ILocalStorageService>());

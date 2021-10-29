@@ -16,10 +16,10 @@
 @inject ILogger<Index> Logger
 @inject HttpClient _http
 
-@attribute [Authorize]
+@*@attribute [Authorize]*@
 
 
-<h1>Room: @_room.Name | @ThisRoomId</h1>
+<h1>Room: @_room.Name | @_room.ID</h1>
 
 @*<AuthorizeView Roles="Administrator">
         <Authorized>
@@ -36,13 +36,13 @@
 <div align="center">
 @if (FirstVacantSlot != null)
     {
-        <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(@FirstVacantSlot.ID, "InstaBooked", InstaBookerGuid))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart.ToShortDateString() @FirstVacantSlot.TimeSlotStart.ToLocalTime().ToShortTimeString() - @FirstVacantSlot.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(@FirstVacantSlot, "InstaBooked", InstaBookerGuid))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart.ToShortDateString() @FirstVacantSlot.TimeSlotStart.ToLocalTime().ToShortTimeString() - @FirstVacantSlot.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
         @if (_selectedItem != null)
         {
             @if(_selectedItem.IsVacant == true)
             {
                 //Vacant timeslot for IB+
-                <MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="@(e => UpdateTimeSlot(@_selectedItem.ID, "InstaBooked+", InstaBookerGuid))">InstaBookPlus&trade; @_selectedItem?.TimeSlotStart.ToShortDateString() @_selectedItem?.TimeSlotStart.ToLocalTime().ToShortTimeString() - @_selectedItem?.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="@(e => UpdateTimeSlot(@_selectedItem, "InstaBooked+", InstaBookerGuid))">InstaBookPlus&trade; @_selectedItem?.TimeSlotStart.ToShortDateString() @_selectedItem?.TimeSlotStart.ToLocalTime().ToShortTimeString() - @_selectedItem?.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
             }
             else
             {
@@ -61,7 +61,7 @@
     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
 }
 
-<MudTable Items="@_timeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" FixedHeader="true" FixedFooter="true" @bind-SelectedItem="_selectedItem" RowsPerPage="12">
+<MudTable Items="@currentTimeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" FixedHeader="true" FixedFooter="true" @bind-SelectedItem="_selectedItem" RowsPerPage="12">
     <ToolBarContent>
         @*<MudText Typo="Typo.h6">Schedule for @_room.Name</MudText>*@
         <MudSpacer />
@@ -114,8 +114,9 @@
     //temp room set
     [Parameter] public Guid InstaBookerGuid { get; set; } = Guid.Parse("99999999-9999-9999-9999-999999999999");
 
-    private Room _room = new();
-    private List<TimeSlotDto> _timeSlots;// = new();
+    private RoomDto _room = new();
+    private List<TimeSlotDto> timeSlots;// = new();
+    private List<TimeSlotDto> currentTimeSlots;
 
     [Parameter] public Guid ThisRoomId { get; set; }
     [Parameter] public int? HasItems { get; set; }
@@ -151,34 +152,19 @@
         await RefreshDb();
 
         // TODO Change navigation order; Login/Admin page/Room admin/Choose Room/Display Room-TimeSlots
-        //if (_room is null)
-        //{
-        //    NavigateToRoomsPage();
-        //}
-        //else
-        //{
-        //    //await InitRoom();
-        //        GotoRoom(ThisRoomId);
-        //}
-
-        //if (_room.TimeSlots.Count <= 0)             // Create empty Timeslots if none for the day
-        //{
-        //    await InitDailySchedule();
-        //}
-
-        //TODO Redirect to Rooms page to choose room
+        // TODO Redirect to Rooms page to choose room
     }
 
     private async Task RefreshDb()
     {
         //Get current room and related Timeslots (from DateTime.Now and forward)
         //var showRoom = await _http.GetFromJsonAsync<RoomDto>("https://localhost:44315/api/v1/Room/GetByIdAndDateTime/" + ThisRoomId + "," + _dtToday);
-    
+
         var roomClient = new RoomClient();
-        
+
         var showRoom = await roomClient.GetRoomByIdAndDateTimeAsync(ThisRoomId, dtToday);
         //TODO Filter result after dtToday
-
+        _room = showRoom;
 
         // CheckIfTimeSlotsExists
         if (!showRoom.TimeSlots.Any())
@@ -186,20 +172,24 @@
             await InitDailySchedule();
         }
 
-        _timeSlots = showRoom.TimeSlots;
-        HasItems = _timeSlots.Count;
+        timeSlots = showRoom.TimeSlots;
+        currentTimeSlots = timeSlots.GetAllVacant(dtToday);
 
-        FirstVacantSlot = _timeSlots.GetFirstVacant(dtToday);
+        HasItems = currentTimeSlots.Count;
+
+        FirstVacantSlot = timeSlots.GetFirstVacant(dtToday);
 
         //Check if there are any vacant timeslots for the day
-        AnyVacantSlot = _timeSlots.Count(f => f.IsVacant);
+        AnyVacantSlot = timeSlots.Count(f => f.IsVacant);
     }
 
     //TODO Add check if timeSlot.isVacant = true else message to user
-    private async Task UpdateTimeSlot(Guid vacantSlotId, string title, Guid bookerId)
+    private async Task UpdateTimeSlot(TimeSlotDto vacantSlot, string title, Guid bookerId)
     {
         var updateTimeSlot = new TimeSlotDto();
-        updateTimeSlot.ID = (Guid)vacantSlotId;
+        updateTimeSlot.ID = (Guid)vacantSlot.ID;
+        updateTimeSlot.TimeSlotStart = vacantSlot.TimeSlotStart;
+        updateTimeSlot.TimeSlotEnd = vacantSlot.TimeSlotEnd;
         updateTimeSlot.IsVacant = false;
         updateTimeSlot.Title = title;
         updateTimeSlot.UpdatedUTC = DateTime.UtcNow;
@@ -232,7 +222,6 @@
             CreatedUTC = DateTime.Now
         };
         await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Booker", booker);
-
     }
 
     private async Task InitDailySchedule()

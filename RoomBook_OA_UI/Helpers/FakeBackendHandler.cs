@@ -27,7 +27,7 @@ namespace RoomBook_OA_UI.Helpers
             var usersKey = "blazor-registration-login-example-users";
             var users = await _localStorageService.GetItem<List<UserRecord>>(usersKey) ?? new List<UserRecord>();
             var method = request.Method;
-            var path = request.RequestUri.AbsolutePath;            
+            var path = request.RequestUri.AbsolutePath;
 
             return await handleRoute();
 
@@ -45,13 +45,13 @@ namespace RoomBook_OA_UI.Helpers
                     return await updateUser();
                 if (Regex.Match(path, @"\/users\/\d+$").Success && method == HttpMethod.Delete)
                     return await deleteUser();
-                
+
                 // pass through any requests not handled above
                 return await base.SendAsync(request, cancellationToken);
             }
 
             // route functions
-            
+
             async Task<HttpResponseMessage> authenticate()
             {
                 var bodyJson = await request.Content.ReadAsStringAsync();
@@ -61,7 +61,8 @@ namespace RoomBook_OA_UI.Helpers
                 if (user == null)
                     return await error("Username or password is incorrect");
 
-                return await ok(new {
+                return await ok(new
+                {
                     Id = user.Id.ToString(),
                     Username = user.Username,
                     FirstName = user.FirstName,
@@ -78,7 +79,8 @@ namespace RoomBook_OA_UI.Helpers
                 if (users.Any(x => x.Username == body.Username))
                     return await error($"Username '{body.Username}' is already taken");
 
-                var user = new UserRecord {
+                var user = new UserRecord
+                {
                     Id = users.Count > 0 ? users.Max(x => x.Id) + 1 : 1,
                     Username = body.Username,
                     Password = body.Password,
@@ -89,7 +91,7 @@ namespace RoomBook_OA_UI.Helpers
                 users.Add(user);
 
                 await _localStorageService.SetItem(usersKey, users);
-                
+
                 return await ok();
             }
 
@@ -107,7 +109,7 @@ namespace RoomBook_OA_UI.Helpers
                 return await ok(basicDetails(user));
             }
 
-            async Task<HttpResponseMessage> updateUser() 
+            async Task<HttpResponseMessage> updateUser()
             {
                 if (!isLoggedIn()) return await unauthorized();
 
@@ -146,7 +148,7 @@ namespace RoomBook_OA_UI.Helpers
 
             async Task<HttpResponseMessage> ok(object body = null)
             {
-                return await jsonResponse(HttpStatusCode.OK, body ?? new {});
+                return await jsonResponse(HttpStatusCode.OK, body ?? new { });
             }
 
             async Task<HttpResponseMessage> error(string message)
@@ -166,7 +168,7 @@ namespace RoomBook_OA_UI.Helpers
                     StatusCode = statusCode,
                     Content = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json")
                 };
-                
+
                 // delay to simulate real api call
                 await Task.Delay(500);
 
@@ -176,7 +178,7 @@ namespace RoomBook_OA_UI.Helpers
             bool isLoggedIn()
             {
                 return request.Headers.Authorization?.Parameter == "fake-jwt-token";
-            } 
+            }
 
             int idFromPath()
             {
@@ -185,7 +187,8 @@ namespace RoomBook_OA_UI.Helpers
 
             dynamic basicDetails(UserRecord user)
             {
-                return new {
+                return new
+                {
                     Id = user.Id.ToString(),
                     Username = user.Username,
                     FirstName = user.FirstName,
@@ -197,7 +200,8 @@ namespace RoomBook_OA_UI.Helpers
 
     // class for user records stored by fake backend
 
-    public class UserRecord {
+    public class UserRecord
+    {
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -72,7 +72,7 @@ namespace Persistance.Repositories.Rooms
             return await Task.FromResult(roomDtoList);
         }
 
-        public async Task<RoomDto> GetRoomByIdAndTimeSlotsBySpecDateTime(GetRoomByIdAndTimeslotsBySpecDateTimeQuery query, CancellationToken cancellationToken)
+        public async Task<RoomDto> GetRoomByIdAndTimeSlotsBySpecDateTimeAsync(GetRoomByIdAndTimeslotsBySpecDateTimeQuery query, CancellationToken cancellationToken)
         {
             //dtToday is sent in the query as a parameter to allow any date
             var dtToday = query.QueryDateTime;

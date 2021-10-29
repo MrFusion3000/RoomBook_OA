@@ -29,7 +29,7 @@ namespace Application.Features.RoomFeatures.Queries
             {
                 //dtToday is sent in the query as a parameter to allow any date
 
-                return await RoomRepository.GetRoomByIdAndTimeSlotsBySpecDateTime(query, cancellationToken);
+                return await RoomRepository.GetRoomByIdAndTimeSlotsBySpecDateTimeAsync(query, cancellationToken);
             }
         }
     }
