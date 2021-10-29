@@ -74,12 +74,9 @@ namespace Persistance.Repositories.Rooms
 
         public async Task<RoomDto> GetRoomByIdAndTimeSlotsBySpecDateTimeAsync(GetRoomByIdAndTimeslotsBySpecDateTimeQuery query, CancellationToken cancellationToken)
         {
-            //dtToday is sent in the query as a parameter to allow any date
-            var dtToday = query.QueryDateTime;
-
             var room = Context.Rooms
                 .Include(a => a.TimeSlots
-                .Where(t => t.TimeSlotStart > dtToday.Date)
+                .Where(t => t.TimeSlotStart > query.QueryDateTime.Date)
                 .OrderBy(a => a.TimeSlotStart))
                 .ThenInclude(t => t.Booker)
                 .FirstOrDefault(a => a.ID == query.Id);

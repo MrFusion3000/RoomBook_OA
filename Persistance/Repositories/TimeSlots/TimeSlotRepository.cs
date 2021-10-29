@@ -60,7 +60,7 @@ namespace Persistance.Repositories.TimeSlots
             // TODO dtToday should be sent in the query as a parameter instead to allow any date
             var dtToday = DateTime.UtcNow;
 
-            // TODO query should extract only necessary fields and data
+            // TODO query should extract only necessary fields and data (Mapster?)
             var timeSlot = Context.TimeSlots
                 .FirstOrDefault(a => a.ID == query.ID);
 

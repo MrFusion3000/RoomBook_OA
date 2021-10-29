@@ -28,6 +28,7 @@ namespace Application.Features.RoomFeatures.Commands
 
             public async Task<Guid> Handle(UpdateRoomCommand command, CancellationToken cancellationToken)
             {
+                //NOTE: Could be vital to check existance and Vacant if another user books the timeslot just before you
                 //var room = command.Adapt<Room>();
                 //var room = _context.Rooms.FirstOrDefault(a => a.ID == command.ID);
 
