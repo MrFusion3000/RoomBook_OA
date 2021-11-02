@@ -12,7 +12,7 @@ namespace RoomBook_OA_UI.Helpers.Extensions
             return timeSlots.Where(f => f.TimeSlotStart > dtToday).FirstOrDefault(f => f.IsVacant);
         }
 
-        public static List<TimeSlotDto> GetAllVacant(this IEnumerable<TimeSlotDto> timeSlots, DateTime dtToday)
+        public static List<TimeSlotDto> GetAllCurrentTimeSlots(this IEnumerable<TimeSlotDto> timeSlots, DateTime dtToday)
         {
             return timeSlots.Where(f => f.TimeSlotStart > dtToday).ToList();
         }

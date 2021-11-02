@@ -16,7 +16,7 @@ namespace Application.Interfaces
 
         Task<RoomDto> GetRoomByIdAsync(GetRoomByIdQuery query, CancellationToken cancellationToken);
         Task<List<RoomDto>> GetAllRoomsAsync(GetAllRoomsQuery query, CancellationToken cancellationToken);
-        Task<RoomDto> GetRoomByIdAndTimeSlotsBySpecDateTimeAsync(GetRoomByIdAndTimeslotsBySpecDateTimeQuery query, CancellationToken cancellationToken);
+        Task<RoomDto> GetRoomByIdAndTimeSlotsBySpecDateAsync(GetRoomByIdAndTimeslotsBySpecDateQuery query, CancellationToken cancellationToken);
 
     }
 }

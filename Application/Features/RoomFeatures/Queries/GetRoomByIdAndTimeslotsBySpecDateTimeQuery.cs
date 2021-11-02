@@ -12,11 +12,11 @@ using Domain.Entities;
 
 namespace Application.Features.RoomFeatures.Queries
 {
-    public class GetRoomByIdAndTimeslotsBySpecDateTimeQuery : IRequest<RoomDto>
+    public class GetRoomByIdAndTimeslotsBySpecDateQuery : IRequest<RoomDto>
     {
         public Guid Id { get; init; }
         public DateTime QueryDateTime { get; set; }
-        public class GetRoomByIdAndTimeslotsBySpecDateTimeQueryHandler : IRequestHandler<GetRoomByIdAndTimeslotsBySpecDateTimeQuery, RoomDto>
+        public class GetRoomByIdAndTimeslotsBySpecDateTimeQueryHandler : IRequestHandler<GetRoomByIdAndTimeslotsBySpecDateQuery, RoomDto>
         {
             public GetRoomByIdAndTimeslotsBySpecDateTimeQueryHandler(IRoomRepository roomRepository)
             {
@@ -25,11 +25,11 @@ namespace Application.Features.RoomFeatures.Queries
 
             public IRoomRepository RoomRepository { get; }
 
-            public async Task<RoomDto> Handle(GetRoomByIdAndTimeslotsBySpecDateTimeQuery query, CancellationToken cancellationToken)
+            public async Task<RoomDto> Handle(GetRoomByIdAndTimeslotsBySpecDateQuery query, CancellationToken cancellationToken)
             {
                 //dtToday is sent in the query as a parameter to allow any date
 
-                return await RoomRepository.GetRoomByIdAndTimeSlotsBySpecDateTimeAsync(query, cancellationToken);
+                return await RoomRepository.GetRoomByIdAndTimeSlotsBySpecDateAsync(query, cancellationToken);
             }
         }
     }

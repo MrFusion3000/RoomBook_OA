@@ -80,7 +80,7 @@ namespace WebApi.Controllers.v1
         [HttpGet("GetByIdAndDateTime/{id:guid}/{queryDateTime:datetime}")]
         public async Task<IActionResult> GetByIdAndDateTime(Guid id, DateTime queryDateTime)
         {
-            return Ok(await Mediator.Send(new GetRoomByIdAndTimeslotsBySpecDateTimeQuery() { QueryDateTime = queryDateTime, Id = id }));
+            return Ok(await Mediator.Send(new GetRoomByIdAndTimeslotsBySpecDateQuery() { QueryDateTime = queryDateTime, Id = id }));
         }
     }
 }

@@ -33,28 +33,26 @@ namespace Application
 
             TypeAdapterConfig<Booker, BookerDtoIn>
                 .NewConfig()
-                .PreserveReference(true)
+                .PreserveReference(true);
                 //If ignore ID here but leave ID property in DTO then ID = 00000000-0000-0000-0000-000000000000
                 //.Ignore("ID")
-                .Map(dest => dest.Name, src => src.Name)
-                .Map(dest => dest.CreatedUTC, src => src.CreatedUTC);
+                //.Map(dest => dest.Name, src => src.Name)
+                //.Map(dest => dest.CreatedUTC, src => src.CreatedUTC);
 
             TypeAdapterConfig<Room, RoomDto>
                 .NewConfig()
                 .PreserveReference(true);
-                    //.Map(dest => dest.ID, src => src.ID)
-                    //.Map(dest => dest.Name, src => src.Name)
-                    //.Map(dest => dest.TimeSlots, src => src.TimeSlots);
-            //.ignore
+            //.Map(dest => dest.ID, src => src.ID)
+            //.Map(dest => dest.Name, src => src.Name)
+            //.Map(dest => dest.TimeSlots, src => src.TimeSlots);
 
-
-        TypeAdapterConfig<TimeSlot, TimeSlotDto>
-            .NewConfig()
-            .PreserveReference(true)
-            .Map(dest => dest.ID, src => src.ID)
-            .Map(dest => dest.Title, src => src.Title)
-            .Map(dest => dest.UpdatedUTC, src => src.UpdatedUTC)
-            .Map(dest => dest.Booker.Name, src => src.Booker.Name);
+            TypeAdapterConfig<TimeSlot, TimeSlotDto>
+                .NewConfig()
+                .PreserveReference(true);
+            //.Map(dest => dest.ID, src => src.ID)
+            //.Map(dest => dest.Title, src => src.Title)
+            //.Map(dest => dest.UpdatedUTC, src => src.UpdatedUTC)
+            //.Map(dest => dest.Booker.Name, src => src.Booker.Name);
             
         TypeAdapterConfig.GlobalSettings.Compile();
         }

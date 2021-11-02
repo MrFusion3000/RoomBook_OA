@@ -72,7 +72,7 @@ namespace Persistance.Repositories.Rooms
             return await Task.FromResult(roomDtoList);
         }
 
-        public async Task<RoomDto> GetRoomByIdAndTimeSlotsBySpecDateTimeAsync(GetRoomByIdAndTimeslotsBySpecDateTimeQuery query, CancellationToken cancellationToken)
+        public async Task<RoomDto> GetRoomByIdAndTimeSlotsBySpecDateAsync(GetRoomByIdAndTimeslotsBySpecDateQuery query, CancellationToken cancellationToken)
         {
             var room = Context.Rooms
                 .Include(a => a.TimeSlots
