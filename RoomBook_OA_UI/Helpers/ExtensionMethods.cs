@@ -9,7 +9,7 @@ namespace RoomBook_OA_UI.Helpers
     {
         public static NameValueCollection QueryString(this NavigationManager navigationManager)
         {
-            return HttpUtility.ParseQueryString(new Uri(navigationManager.Uri).Query);
+           return HttpUtility.ParseQueryString(new Uri(navigationManager.Uri).Query);
         }
 
         public static string QueryString(this NavigationManager navigationManager, string key)
