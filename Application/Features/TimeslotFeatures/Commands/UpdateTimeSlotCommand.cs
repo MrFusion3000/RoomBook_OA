@@ -18,6 +18,7 @@ namespace Application.Features.TimeslotFeatures.Commands
         public Guid BookerId { get; set; }
         public DateTime CreatedUTC { get; set; }
         public DateTime UpdatedUTC { get; set; }
+        public Guid RoomId { get; set; }
 
         public class UpdateTimeSlotCommandHandler : IRequestHandler<UpdateTimeSlotCommand, Guid>
         {

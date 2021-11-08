@@ -49,12 +49,12 @@
 @if (FirstVacantSlot != null)
     {
         <MudButton Variant="Variant.Filled" Color="Color.Default" @onclick="@(e => UpdateTimeSlot(@FirstVacantSlot, "InstaBooked", InstaBookerGuid))">InstaBook&trade; @FirstVacantSlot.TimeSlotStart.ToShortDateString() @FirstVacantSlot.TimeSlotStart.ToLocalTime().ToShortTimeString() - @FirstVacantSlot.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
-        @if (selectedItem != null)
+        @if (SelectedItem != null)
         {
-            @if(selectedItem.IsVacant == true)
+            @if(SelectedItem.IsVacant == true)
             {
                 //Vacant timeslot for IB+
-                <MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="@(e => UpdateTimeSlot(@selectedItem, "InstaBooked+", InstaBookerGuid))">InstaBookPlus&trade; @selectedItem.TimeSlotStart.ToShortDateString() @selectedItem.TimeSlotStart.ToLocalTime().ToShortTimeString() - @selectedItem.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="@(e => UpdateTimeSlot(SelectedItem, "InstaBooked+", InstaBookerGuid))">InstaBookPlus&trade; @SelectedItem.TimeSlotStart.ToShortDateString() @SelectedItem.TimeSlotStart.ToLocalTime().ToShortTimeString() - @SelectedItem.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudButton>
             }
             else
             {
@@ -71,7 +71,7 @@
     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
 }*@
 
-<MudTable Items="@currentTimeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" FixedHeader="true" FixedFooter="true" @bind-SelectedItem="selectedItem" RowsPerPage="12">
+<MudTable Items="@currentTimeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" FixedHeader="true" FixedFooter="true" @bind-SelectedItem="SelectedItem" RowsPerPage="12">
     <ToolBarContent>
         @*<MudText Typo="Typo.h6">Schedule for @_room.Name</MudText>*@
         <MudSpacer />
@@ -99,9 +99,9 @@
 </MudTable>
 <div class="d-flex flex-wrap mt-4">
     <MudSpacer />
-    <MudText Inline="true" Class="align-self-center" Style="min-width:200px;">Selected: @selectedItem?.TimeSlotStart.ToLocalTime().ToShortTimeString() - @selectedItem?.TimeSlotEnd.ToLocalTime().ToShortTimeString() : @selectedItem?.Title</MudText>
+    <MudText Inline="true" Class="align-self-center" Style="min-width:200px;">Selected: @SelectedItem?.TimeSlotStart.ToLocalTime().ToShortTimeString() - @SelectedItem?.TimeSlotEnd.ToLocalTime().ToShortTimeString() : @SelectedItem?.Title</MudText>
     <MudSpacer />
     </div>
 
     <hr />
-<MudButton Variant="Variant.Filled" @onclick="NavigateToRoomsPage">RoomPicker</MudButton>
+<MudButton Variant="Variant.Filled" @onclick="@(e => NavigateToRoomsPage("Index"))">RoomPicker</MudButton>

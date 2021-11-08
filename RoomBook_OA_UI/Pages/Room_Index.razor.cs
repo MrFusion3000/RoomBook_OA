@@ -31,7 +31,7 @@ namespace RoomBook_OA_UI.Pages
         public RoomDto room = new();
         private List<TimeSlotDto> allTimeSlotsOfToday;
         private List<TimeSlotDto> currentTimeSlots;
-        RoomClient roomClient = new();
+        readonly RoomClient roomClient = new();
 
         [Parameter] public Guid ThisRoomId { get; set; }
         [Parameter] public int? HasItems { get; set; }
@@ -40,7 +40,7 @@ namespace RoomBook_OA_UI.Pages
 
 
         //private string _searchString = "";
-        [Parameter] public TimeSlotDto selectedItem { get; set; }
+        [Parameter] public TimeSlotDto SelectedItem { get; set; }
         //private HashSet<TimeSlotDto> _selectedItems = new HashSet<TimeSlotDto>();
 
         public DateTime dtToday = DateTime.UtcNow;
@@ -88,7 +88,7 @@ namespace RoomBook_OA_UI.Pages
         {
             //var showRoom = await _http.GetFromJsonAsync<RoomDto>("https://localhost:44315/api/v1/Room/GetByIdAndDateTime/" + ThisRoomId + "," + _dtToday);
 
-            var roomClient = new RoomClient();
+            //var roomClient = new RoomClient();
 
             room = await roomClient.GetRoomByIdAndDateAsync(ThisRoomId, dtToday);
 
@@ -96,9 +96,11 @@ namespace RoomBook_OA_UI.Pages
 
             allTimeSlotsOfToday = room.TimeSlots;
             currentTimeSlots = allTimeSlotsOfToday.GetAllCurrentTimeSlots(dtToday);
-            HasItems = currentTimeSlots.Count();
+            //HasItems = currentTimeSlots.Count;
             FirstVacantSlot = allTimeSlotsOfToday.GetFirstVacant(dtToday);
-            AnyVacantSlot = allTimeSlotsOfToday.Count(f => f.IsVacant);
+            //AnyVacantSlot = allTimeSlotsOfToday.Count(f => f.IsVacant);
+
+            StateHasChanged();
         }
 
         private async Task UpdateTimeSlot(TimeSlotDto vacantSlot, string title, Guid bookerId)
@@ -112,7 +114,8 @@ namespace RoomBook_OA_UI.Pages
                 CreatedUTC = vacantSlot.CreatedUTC,
                 Title = title,
                 UpdatedUTC = DateTime.UtcNow,
-                BookerId = bookerId
+                BookerId = bookerId,
+                RoomId = vacantSlot.RoomId
             };
             await _http.PutAsJsonAsync($"https://localhost:44315/api/v1/TimeSlot/Update?id={updateTimeSlot.ID}", updateTimeSlot);
 
@@ -146,8 +149,8 @@ namespace RoomBook_OA_UI.Pages
 
         private async Task InitDailySchedule()
         {
-            TimeSpan duration = new TimeSpan(0, 0, 15, 0);
-            DateTime initDate = new DateTime(dtToday.Year, dtToday.Month, dtToday.Day, 6, 0, 0);
+            TimeSpan duration = new(0, 0, 15, 0);
+            DateTime initDate = new (dtToday.Year, dtToday.Month, dtToday.Day, 6, 0, 0);
 
             for (var i = 0; i < 60; i++)
             {
@@ -175,9 +178,9 @@ namespace RoomBook_OA_UI.Pages
             NavigationManager.NavigateTo(navUri);
         }
 
-        private void NavigateToRoomsPage()
+        private void NavigateToRoomsPage(string chosenPage)
         {
-            NavigationManager.NavigateTo("Index");
+            NavigationManager.NavigateTo(chosenPage);
 
         }
         private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
