@@ -1,22 +1,18 @@
-﻿using Domain.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
-namespace Application.Shared.DTO
+namespace Application.Shared.DTO;
+public class BookerDto
 {
-    public class BookerDto
-    {
-        //public BookerDto()
-        //{
-        //    this.TimeSlots = new List<TimeSlotDto>();
-        //}
+    //public BookerDto()
+    //{
+    //    this.TimeSlots = new List<TimeSlotDto>();
+    //}
 
-        public Guid ID { get; set; }
-        public string Name { get; set; }
-        public DateTime CreatedUTC { get; set; }
+    public Guid ID { get; set; }
+    public string Name { get; set; }
+    public DateTime CreatedUTC { get; set; }
 
-        //Navigation properties
-        //public List<TimeSlotDto> TimeSlots { get; private set; }
+    //Navigation properties
+    //public List<TimeSlotDto> TimeSlots { get; private set; }
 
-    }
 }

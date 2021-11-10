@@ -1,44 +1,41 @@
-﻿using System;
-using System.Linq;
+﻿using Application.Interfaces;
+using Domain.Entities;
+using Mapster;
+using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
-using Application.Interfaces;
-using Mapster;
-using Domain.Entities;
-using Application.Shared.DTO;
 
-namespace Application.Features.RoomFeatures.Commands
+namespace Application.Features.RoomFeatures.Commands;
+
+public class UpdateRoomCommand : IRequest<Guid>
 {
-    public class UpdateRoomCommand : IRequest<Guid>
+    public Guid ID { get; set; }
+    public string Name { get; set; }
+    public int Placement { get; set; }
+    public DateTime CreatedUTC { get; set; }
+
+    public class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand, Guid>
     {
-        public Guid ID { get; set; }
-        public string Name { get; set; }
-        public int Placement { get; set; }
-        public DateTime CreatedUTC { get; set; }
-
-        public class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand, Guid>
+        public UpdateRoomCommandHandler(IRoomRepository roomRepository)
         {
-            public UpdateRoomCommandHandler(IRoomRepository roomRepository)
-            {
-                RoomRepository = roomRepository;
-            }
+            RoomRepository = roomRepository;
+        }
 
-            public IRoomRepository RoomRepository { get; }
+        public IRoomRepository RoomRepository { get; }
 
-            public async Task<Guid> Handle(UpdateRoomCommand command, CancellationToken cancellationToken)
-            {
-                //NOTE: Could be vital to check existance and Vacant if another user books the timeslot just before you
-                //var room = command.Adapt<Room>();
-                //var room = _context.Rooms.FirstOrDefault(a => a.ID == command.ID);
+        public async Task<Guid> Handle(UpdateRoomCommand command, CancellationToken cancellationToken)
+        {
+            //NOTE: Could be vital to check existance and Vacant if another user books the timeslot just before you
+            //var room = command.Adapt<Room>();
+            //var room = _context.Rooms.FirstOrDefault(a => a.ID == command.ID);
 
-                var room = command.Adapt<Room>();
+            var room = command.Adapt<Room>();
 
-                if (room == null) return default;
+            if (room == null) return default;
 
-                return await RoomRepository.UpdateRoomAsync(room, cancellationToken);
+            return await RoomRepository.UpdateRoomAsync(room, cancellationToken);
 
-                }
-            }
         }
     }
+}

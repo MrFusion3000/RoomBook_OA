@@ -1,13 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Models.Account
+namespace Domain.Models.Account;
+public class Login
 {
-    public class Login
-    {
-        [Required]
-        public string Username { get; set; }
+    [Required]
+    public string Username { get; set; }
 
-        [Required]
-        public string Password { get; set; }
-    }
+    [Required]
+    public string Password { get; set; }
 }

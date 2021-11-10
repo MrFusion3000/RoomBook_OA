@@ -1,10 +1,8 @@
 ﻿using System;
 
-namespace Domain.Common
-{
+namespace Domain.Common;
     public interface IDataEntitybase
     {
         Guid ID { get; set; }
         DateTime CreatedUTC { get; set; }
     }
-}

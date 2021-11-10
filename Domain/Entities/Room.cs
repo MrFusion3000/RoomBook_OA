@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using Domain.Common;
 using Domain.Interfaces;
-using Domain.Common;
+using System;
+using System.Collections.Generic;
 
-namespace Domain.Entities
+namespace Domain.Entities;
+public class Room : BaseEntity, IRoom //IDataEntitybase,
 {
-    public class Room : BaseEntity, IRoom //IDataEntitybase,
+    //[Required]
+    public string Name { get; set; }
+    public int Placement { get; set; }
+
+    //Navigation properties
+    public List<TimeSlot> TimeSlots { get; set; }
+
+    public static IRoom Create(Guid id, string name, DateTime createdUTC, int placement)
     {
-        //[Required]
-        public string Name { get; set; }
-        public int Placement { get; set; }
-
-        //Navigation properties
-        public List<TimeSlot> TimeSlots { get; set; }
-
-        public static IRoom Create(Guid id, string name, DateTime createdUTC, int placement)
+        return new Room()
         {
-            return new Room()
-            {
-                ID = id,
-                Name = name,
-                CreatedUTC = createdUTC,
-                Placement = placement
-            };
-        }
+            ID = id,
+            Name = name,
+            CreatedUTC = createdUTC,
+            Placement = placement
+        };
     }
 }

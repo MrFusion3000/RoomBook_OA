@@ -19,18 +19,6 @@
 
 @*@attribute [Authorize]*@
 
-<p>@message1</p>
-<p>@message2</p>
-
-@*@if (currentTimeSlots !=null)
-{
-    @foreach (var slot in currentTimeSlots)
-    {
-    <p>@slot.ID, @slot.Title, @slot.TimeSlotStart</p>
-    }
-    @currentTimeSlots.Count();
-}*@
-
 <h1>Room: @room.Name | @room.ID</h1>
 
 @*<AuthorizeView Roles="Administrator">

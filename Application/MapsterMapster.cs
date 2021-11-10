@@ -8,8 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application
-{
+namespace Application;
     public class MapsterMapster
     {
         public static void MapsterSetter()
@@ -56,6 +55,4 @@ namespace Application
             
         TypeAdapterConfig.GlobalSettings.Compile();
         }
-
     }
-}

@@ -1,7 +1,6 @@
 using System;
 
-namespace Domain.Models
-{
+namespace Domain.Models;
     public class User : IUser
     {
         public string Id { get; set; }
@@ -13,4 +12,3 @@ namespace Domain.Models
         public Guid BookerId { get; set; }
 
     }
-}

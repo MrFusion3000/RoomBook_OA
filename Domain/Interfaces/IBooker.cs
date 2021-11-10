@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Domain.Common;
+﻿using Domain.Common;
 using Domain.Entities;
+using System.Collections.Generic;
 
-namespace Domain.Interfaces
+namespace Domain.Interfaces;
+interface IBooker : IDataEntitybase
 {
-    interface IBooker : IDataEntitybase
-    {
-        string Name { get; set; }
+    string Name { get; set; }
 
-        List<TimeSlot> TimeSlots { get; }
-
-    }
+    List<TimeSlot> TimeSlots { get; }
 }

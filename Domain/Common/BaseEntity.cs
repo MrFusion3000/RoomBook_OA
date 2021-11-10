@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Common
-{
+namespace Domain.Common;
     public abstract class BaseEntity
     {
         public Guid ID { get; set; }
         public DateTime CreatedUTC { get; set; }
     }
-}
