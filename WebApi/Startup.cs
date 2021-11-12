@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Persistance;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 
 namespace WebApi;
 public class Startup
@@ -55,7 +57,19 @@ public class Startup
             {
                 Version = "v1",
                 Title = "RoomBook_OA",
+                Description = "API for setting up a Room Booking App",
+                Contact = new OpenApiContact
+                {
+                    Name = "Nicolas Lewentorp",
+                    Email = "nico@crepro.com",
+                    Url = new System.Uri("https://www.twitter.com/mrfusion3000")
+                }
             });
+
+            c.CustomOperationIds(apiDescription =>
+            {
+                return apiDescription.TryGetMethodInfo(out MethodInfo methodInfo) ? methodInfo.Name : null;
+                });
 
         });
         #endregion
@@ -126,8 +140,20 @@ public class Startup
         app.UseAuthentication();
 
         #region Swagger
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1");
+                c.DisplayOperationId();
+            });
+        }
+        else
+        {
+            app.UseExceptionHandler("/Error");
+        }
         #endregion
 
         app.UseDeveloperExceptionPage();
