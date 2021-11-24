@@ -16,65 +16,70 @@
     <MudItem xs="12" Class="d-flex align-center justify-center mud-width-full py-8">
         <MudGrid Spacing="4" Justify="Justify.Center">
 
-        @foreach (var room in _rooms)
-        {
-            <MudItem>
-                <MudPaper Class="text-center" Style="height: 140px; width: 140px;" Justify="Justify.Center">
-                    <div class="card" style="width: 18rem;">
-                        <MudButton Variant="Variant.Filled" @onclick="@(e => GotoRoom(@room.ID))">@room.Name</MudButton>
-                        @*<img src="@Trail.Image" class="card-img-top" alt="@Trail.Name">*@
-                        @*<div class="card-body">*@
+            @foreach (var room in rooms)
+            {
+                <MudItem>
+                    <MudPaper Class="text-center" Style="height: 140px; width: 140px;" Justify="Justify.Center">
+                        <div class="card" style="width: 18rem;">
+                            <MudButton Variant="Variant.Filled" @onclick="@(e => GotoRoom(@room.ID))">@room.Name</MudButton>
+                            @*<img src="@Trail.Image" class="card-img-top" alt="@Trail.Name">*@
+                            @*<div class="card-body">*@
                             @*<h5 class="card-title"><span class="oi oi-map-marker"></span> @room.Name</h5>*@
                             @*<h6 class="card-subtitle mb-3 text-muted"> @room.ID</h6>*@
                             <div><br /></div>
-                        <div class="d-flex justify-content-between">
-                            <span class="oi oi-map-marker"></span> <span>Floor @room.Placement</span>
+                            <div class="d-flex justify-content-between">
+                                <span class="oi oi-map-marker"></span> <span>Floor @room.Placement</span>
+                            </div>
+                            @*<div class="d-flex justify-content-between">
+                                <span><span class="oi oi-clock mr-2"></span> @room.CreatedUTC.ToShortTimeString()</span>
+                                </div>*@
+                            @*</div>*@
                         </div>
-                        @*<div class="d-flex justify-content-between">
-                            <span><span class="oi oi-clock mr-2"></span> @room.CreatedUTC.ToShortTimeString()</span>
-                        </div>*@
-                        @*</div>*@
-                    </div>
-                </MudPaper>
-            </MudItem>
-        }
+                    </MudPaper>
+                </MudItem>
+            }
         </MudGrid>
     </MudItem>
 </MudGrid>
 
-
 @code
 {
-        private List<RoomDto> _rooms = new List<RoomDto>();
+    //private List<RoomDto> _rooms = new List<RoomDto>();
 
-        protected override async Task OnInitializedAsync()
-        {
-            NavigationManager.LocationChanged += HandleLocationChanged;
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    NavigationManager.LocationChanged += HandleLocationChanged;
 
-            _rooms = await _http.GetFromJsonAsync<List<RoomDto>>("https://localhost:44315/api/v1/Room/");
+    //    //_rooms = await _http.GetFromJsonAsync<List<RoomDto>>("https://localhost:44315/api/v1/Room/");
+    //    try
+    //    {
+    //        await RefreshDb();
+    //    }
+    //    catch (HttpRequestException ex)
+    //    {
+    //        Console.WriteLine($"There was a problem; {ex.Message}");
+    //    }
+    //}
 
-            //await RefreshDb();
-        }
+    //private async Task RefreshDb()
+    //{
+    //    //Get current rooms
+    //    _rooms = await _http.GetFromJsonAsync<List<RoomDto>>("https://localhost:44315/api/v1/Room/");
+    //}
 
-        private async Task RefreshDb()
-        {
-        //Get current rooms
-        _rooms = await _http.GetFromJsonAsync<List<RoomDto>>("https://localhost:44315/api/v1/Room/");
-        }
+    //private void GotoRoom(Guid roomId)
+    //{
+    //    string navUri = "/Room_Index/" + roomId;
+    //    NavigationManager.NavigateTo(navUri);
+    //}
 
-    private void GotoRoom(Guid roomId)
-    {
-        string navUri = "/Room_Index/" + roomId;
-        NavigationManager.NavigateTo(navUri);
-    }
+    //private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    //{
+    //    Logger.LogInformation("URL of new location: {Location}", e.Location);
+    //}
 
-    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
-    {
-        Logger.LogInformation("URL of new location: {Location}", e.Location);
-    }
-
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= HandleLocationChanged;
-    }
+    //public void Dispose()
+    //{
+    //    NavigationManager.LocationChanged -= HandleLocationChanged;
+    //}
 }

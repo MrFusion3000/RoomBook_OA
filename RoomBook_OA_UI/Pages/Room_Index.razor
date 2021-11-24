@@ -1,16 +1,6 @@
 ﻿@page "/Room_Index"
 @page "/Room_Index/{ThisRoomId:guid}"
 
-@*@using Application.Shared.DTO
-@using Domain.Entities
-@using System.Security.Claims
-@using System.Text.Json
-@using System.Text.Json.Serialization
-@using Domain.Interfaces
-@using Mapster
-@using Microsoft.AspNetCore.Authorization
-@using RoomBook_OA_UI.Helpers.Extensions
-@using RoomBookApiClient*@
 @using Microsoft.Extensions.Logging
 
 @inject NavigationManager NavigationManager
@@ -19,7 +9,14 @@
 
 @*@attribute [Authorize]*@
 
+@if (room == null)
+{
+    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
+}
+else
+{
 <h1>Room: @room.Name | @room.ID</h1>
+}
 
 @*<AuthorizeView Roles="Administrator">
         <Authorized>
@@ -53,11 +50,6 @@
         }
     }
 </div>
-
-@*@if (AnyVacantSlot > 0)
-{
-    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
-}*@
 
 <MudTable Items="@currentTimeSlots" Dense="true" Hover="true" Bordered="true" Striped="true" FixedHeader="true" FixedFooter="true" @bind-SelectedItem="SelectedItem" RowsPerPage="12">
     <ToolBarContent>

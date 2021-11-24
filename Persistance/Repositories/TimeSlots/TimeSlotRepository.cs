@@ -54,10 +54,8 @@ internal class TimeSlotRepository : ITimeSlotRepository
 
     public async Task<TimeSlotDto> GetTimeSlotByIdAsync(GetTimeSlotByIdQuery query, CancellationToken cancellationToken)
     {
-        // TODO dtToday should be sent in the query as a parameter instead to allow any date
-        var dtToday = DateTime.UtcNow;
-
         // TODO query should extract only necessary fields and data (Mapster?)
+        // ID is needed for the timeslot to be fetched, updated or deleted so it cannot be Ignored in the Mapster definition
         var timeSlot = Context.TimeSlots
             .FirstOrDefault(a => a.ID == query.ID);
 

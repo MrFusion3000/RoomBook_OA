@@ -27,8 +27,6 @@ namespace Application.Features.RoomFeatures.Queries
 
             public async Task<RoomDto> Handle(GetRoomByIdAndTimeslotsBySpecDateQuery query, CancellationToken cancellationToken)
             {
-                //dtToday is sent in the query as a parameter to allow any date
-
                 return await RoomRepository.GetRoomByIdAndTimeSlotsBySpecDateAsync(query, cancellationToken);
             }
         }
