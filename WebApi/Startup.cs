@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using Persistance;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApi;
 public class Startup
@@ -27,6 +28,13 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(opt =>
+            {
+                opt.Audience = Configuration["AAD:ResourceId"];
+                opt.Authority = $"{Configuration["AAD:Instance"]}{Configuration["AAD:TenantId"]}";
+            });
+
         #region AddCors
         //services.AddCors(options =>
         //{
@@ -87,10 +95,6 @@ public class Startup
         });
         #endregion
 
-        #region Identity
-        //This section is placed in Persistance/DependencyInjection.cs
-        #endregion
-
         services.AddPersistence(Configuration);
         //services.AddApplication();
 
@@ -117,9 +121,6 @@ public class Startup
 
         app.UseRouting();
 
-
-        app.UseAuthorization();
-
         #region Seed user
         //if (env.IsDevelopment())
         //{
@@ -138,6 +139,7 @@ public class Startup
         #endregion
 
         app.UseAuthentication();
+        app.UseAuthorization();
 
         #region Swagger
         if (env.IsDevelopment())

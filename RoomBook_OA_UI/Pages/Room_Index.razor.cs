@@ -25,7 +25,6 @@ public partial class Room_Index : ComponentBase
     private List<TimeSlotDto> allTimeSlotsOfToday;
     private List<TimeSlotDto> currentTimeSlots;
     readonly RoomClient roomClient = new();
-
     [Parameter] public Guid ThisRoomId { get; set; }
     [Parameter] public int? HasItems { get; set; }
     [Parameter] public TimeSlotDto FirstVacantSlot { get; set; }
@@ -60,6 +59,12 @@ public partial class Room_Index : ComponentBase
         try
         {
             await RefreshDb();
+
+            if (!room.TimeSlots.Any())
+            {
+                await InitDailySchedule();
+                await RefreshDb();            
+            }
         }
         catch (HttpRequestException ex)
         {
@@ -69,19 +74,11 @@ public partial class Room_Index : ComponentBase
 
     private async Task RefreshDb()
     {
-        //var showRoom = await _http.GetFromJsonAsync<RoomDto>("https://localhost:44315/api/v1/Room/GetByIdAndDateTime/" + ThisRoomId + "," + _dtToday);
-
         room = await roomClient.GetRoomByIdAndDateAsync(ThisRoomId, dtToday);
-
-        if (!room.TimeSlots.Any()) await InitDailySchedule();
 
         allTimeSlotsOfToday = room.TimeSlots;
         currentTimeSlots = allTimeSlotsOfToday.GetAllCurrentTimeSlots(dtToday);
-        //HasItems = currentTimeSlots.Count;
         FirstVacantSlot = allTimeSlotsOfToday.GetFirstVacant(dtToday);
-        //AnyVacantSlot = allTimeSlotsOfToday.Count(f => f.IsVacant);
-
-        StateHasChanged();
     }
 
     private async Task UpdateTimeSlot(TimeSlotDto vacantSlot, string title, Guid bookerId)
@@ -104,29 +101,29 @@ public partial class Room_Index : ComponentBase
     }
 
     // Init empty room
-    private async Task InitRoom()
-    {
-        var room = new Room
-        {
-            ID = ThisRoomId,
-            Name = "Init Room",
-            Placement = 1,
-            CreatedUTC = dtToday
-        };
+    //private async Task InitRoom()
+    //{
+    //    var room = new Room
+    //    {
+    //        ID = ThisRoomId,
+    //        Name = "Init Room",
+    //        Placement = 1,
+    //        CreatedUTC = dtToday
+    //    };
 
-        await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Room", room);
-    }
+    //    await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Room", room);
+    //}
 
-    private async Task InitBooker()
-    {
-        var booker = new Booker()
-        {
-            ID = Guid.Empty,
-            Name = "Joe Dull",
-            CreatedUTC = DateTime.Now
-        };
-        await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Booker", booker);
-    }
+    //private async Task InitBooker()
+    //{
+    //    var booker = new Booker()
+    //    {
+    //        ID = Guid.Empty,
+    //        Name = "Joe Dull",
+    //        CreatedUTC = DateTime.Now
+    //    };
+    //    await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Booker", booker);
+    //}
 
     private async Task InitDailySchedule()
     {
@@ -153,16 +150,15 @@ public partial class Room_Index : ComponentBase
         }
     }
 
-    private void GotoRoom(Guid roomId)
-    {
-        string navUri = "/Room_Index/" + roomId;
-        NavigationManager.NavigateTo(navUri);
-    }
+    //private void GotoRoom(Guid roomId)
+    //{
+    //    string navUri = "/Room_Index/" + roomId;
+    //    NavigationManager.NavigateTo(navUri);
+    //}
 
-    private void NavigateToRoomsPage(string chosenPage)
+    private void NavigateToPage(string chosenPage)
     {
         NavigationManager.NavigateTo(chosenPage);
-
     }
     private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {

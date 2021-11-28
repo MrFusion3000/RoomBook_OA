@@ -23,9 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Shared", "Appli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoomBook_OA.Tests", "RoomBook_Tests\RoomBook_OA.Tests.csproj", "{82671A6A-BD73-4473-8273-B0663355F91A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Tests", "Application.Tests\Application.Tests.csproj", "{454C129B-D4C7-4B6E-8BE2-1E37EE535D59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Tests", "Application.Tests\Application.Tests.csproj", "{454C129B-D4C7-4B6E-8BE2-1E37EE535D59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomBookApiClient", "RoomBookApiClient\RoomBookApiClient.csproj", "{D24AF49C-EF22-4F13-96B2-43C85D35F3CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoomBookApiClient", "RoomBookApiClient\RoomBookApiClient.csproj", "{D24AF49C-EF22-4F13-96B2-43C85D35F3CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

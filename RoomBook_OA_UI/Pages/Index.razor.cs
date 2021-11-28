@@ -7,6 +7,7 @@ using RoomBook_OA_UI.Helpers.Extensions;
 using RoomBookApiClient;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -16,11 +17,19 @@ namespace RoomBook_OA_UI.Pages;
 public partial class Index
 {
     private List<RoomDto> rooms = new();
-    readonly RoomClient roomClient = new();
+    public readonly RoomClient roomClient = new();
+
+    //public string path = "";
+    //public string[] fileNames;
+
+    //public AuthConfig config = AuthConfig.ReadJsonFromFile("appsettings.json");
 
     protected override async Task OnInitializedAsync()
     {
         NavigationManager.LocationChanged += HandleLocationChanged;
+
+        //path = Directory.GetCurrentDirectory();
+        //fileNames = Directory.GetFiles(path);
 
         try
         {

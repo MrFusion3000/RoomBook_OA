@@ -40,12 +40,12 @@ public static class DependencyInjection
         //    .AddDefaultTokenProviders();
         //services.AddScoped<IUserStore<APIUser>, UserStore>();
         //services.AddScoped<IRoleStore<UserRole>, RoleStore>();
-        services.ConfigureApplicationCookie(options =>
-        {
-            options.Cookie.HttpOnly = true;
-            options.LoginPath = "/Login";
-            options.LogoutPath = "/Logout";
-        });
+        //services.ConfigureApplicationCookie(options =>
+        //{
+        //    options.Cookie.HttpOnly = true;
+        //    options.LoginPath = "/Login";
+        //    options.LogoutPath = "/Logout";
+        //});
     }
 
 }

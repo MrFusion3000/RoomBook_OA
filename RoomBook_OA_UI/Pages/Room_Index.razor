@@ -11,7 +11,7 @@
 
 @if (room == null)
 {
-    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Vacant slots all day.</MudAlert>
+    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">Loading...</MudAlert>
 }
 else
 {
@@ -27,7 +27,6 @@ else
         </NotAuthorized>
     </AuthorizeView>*@
 <hr />
-@*<h2>HasItems (From present time and forward): @HasItems</h2>*@
 <br />
 
 <div align="center">
@@ -84,4 +83,4 @@ else
     </div>
 
     <hr />
-<MudButton Variant="Variant.Filled" @onclick="@(e => NavigateToRoomsPage("Index"))">RoomPicker</MudButton>
+<MudButton Variant="Variant.Filled" @onclick="@(e => NavigateToPage("Index"))">RoomPicker</MudButton>
