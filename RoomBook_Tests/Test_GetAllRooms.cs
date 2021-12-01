@@ -17,13 +17,16 @@ public class Test_GetAllRooms
         //Arrange
         using (var mock = AutoMock.GetLoose())
         {
-            mock.Mock<IRoomRepository>()
+            var RoomRepository = mock.Mock<IRoomRepository>();
+
+            RoomRepository
             .Setup(x => x.GetAllRoomsAsync)
             .Returns(GetSampleRooms);
 
+
             // Act
             //Assert
-
+            //RoomRepository.Object.GetAllRoomsAsync(1,cancellationToken);
         }
         //throw new NotImplementedException();
         return Task.CompletedTask;

@@ -1,17 +1,13 @@
 ﻿using Application.Shared.DTO;
-using Domain.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.Extensions.Logging;
-using RoomBook_OA_UI.Helpers.Extensions;
 using RoomBookApiClient;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 
 namespace RoomBook_OA_UI.Pages;
 public partial class Index
@@ -19,17 +15,11 @@ public partial class Index
     private List<RoomDto> rooms = new();
     public readonly RoomClient roomClient = new();
 
-    //public string path = "";
-    //public string[] fileNames;
-
-    //public AuthConfig config = AuthConfig.ReadJsonFromFile("appsettings.json");
-
     protected override async Task OnInitializedAsync()
     {
         NavigationManager.LocationChanged += HandleLocationChanged;
 
-        //path = Directory.GetCurrentDirectory();
-        //fileNames = Directory.GetFiles(path);
+        //AuthConfig config = AuthConfig.ReadJsonFromFile("appsettings.json");
 
         try
         {

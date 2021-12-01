@@ -54,7 +54,7 @@ public class RoomController : BaseApiController
     /// Gets all Rooms.
     /// </summary>
     /// <returns></returns>
-    //[Authorize]
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
