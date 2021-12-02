@@ -1,3 +1,5 @@
+﻿using Domain.Models.Account;
+using RoomBook_OA_UI.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,14 +9,12 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using RoomBook_OA_UI.Services;
-using Domain.Models.Account;
 
 namespace RoomBook_OA_UI.Helpers
 {
     public class FakeBackendHandler : HttpClientHandler
     {
-        private ILocalStorageService _localStorageService;
+        private readonly ILocalStorageService _localStorageService;
 
         public FakeBackendHandler(ILocalStorageService localStorageService)
         {
@@ -54,7 +54,7 @@ namespace RoomBook_OA_UI.Helpers
 
             async Task<HttpResponseMessage> authenticate()
             {
-                var bodyJson = await request.Content.ReadAsStringAsync();
+                var bodyJson = await request.Content.ReadAsStringAsync(cancellationToken);
                 var body = JsonSerializer.Deserialize<Login>(bodyJson);
                 var user = users.FirstOrDefault(x => x.Username == body.Username && x.Password == body.Password);
 
@@ -73,7 +73,7 @@ namespace RoomBook_OA_UI.Helpers
 
             async Task<HttpResponseMessage> register()
             {
-                var bodyJson = await request.Content.ReadAsStringAsync();
+                var bodyJson = await request.Content.ReadAsStringAsync(cancellationToken);
                 var body = JsonSerializer.Deserialize<AddUser>(bodyJson);
 
                 if (users.Any(x => x.Username == body.Username))
@@ -113,7 +113,7 @@ namespace RoomBook_OA_UI.Helpers
             {
                 if (!isLoggedIn()) return await unauthorized();
 
-                var bodyJson = await request.Content.ReadAsStringAsync();
+                var bodyJson = await request.Content.ReadAsStringAsync(cancellationToken);
                 var body = JsonSerializer.Deserialize<EditUser>(bodyJson);
                 var user = users.FirstOrDefault(x => x.Id == idFromPath());
 
@@ -170,7 +170,7 @@ namespace RoomBook_OA_UI.Helpers
                 };
 
                 // delay to simulate real api call
-                await Task.Delay(500);
+                await Task.Delay(500, cancellationToken);
 
                 return response;
             }

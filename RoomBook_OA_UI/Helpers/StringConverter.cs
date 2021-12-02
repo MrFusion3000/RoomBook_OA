@@ -1,3 +1,4 @@
+﻿
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -17,10 +18,10 @@ namespace RoomBook_OA_UI.Helpers
             {
                 return reader.GetString();
             }
- 
+
             throw new System.Text.Json.JsonException();
         }
- 
+
         public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
         {
             writer.WriteStringValue(value);

@@ -1,8 +1,8 @@
 ﻿@inherits LayoutComponentBase
-@*@inject IAccountService AccountService*@
+@inject IAccountService AccountService
 @inject NavigationManager NavigationManager
 
-@*@if (LoggedIn)
+@if (LoggedIn)
 {
     <!-- nav -->
     <nav class="navbar navbar-expand navbar-dark bg-dark">
@@ -17,7 +17,7 @@
 <div class="app-container @(LoggedIn ? "bg-light" : "")">
     <Alert />
     @Body
-</div>*@
+</div>
 
 <!--<div class="page">-->
 @*<div style="background-image:none; background-color:lightgray" class="sidebar">
@@ -30,16 +30,14 @@
     </div>
 
     <div class="content px-4">
-        @Body
+        @*@Body*@
     </div>
 </div>
 </div>-->
 
-@Body
-
 @code {
-    //public bool LoggedIn
-    //{
-    //    get { return AccountService.User != null; }
-    //}
+    public bool LoggedIn
+    {
+        get { return AccountService.User != null; }
+    }
 }

@@ -3,33 +3,35 @@ using System.IO;
 using System.Globalization;
 using Microsoft.Extensions.Configuration;
 
-namespace APIAuthorizeFrontend;
-public class AuthConfig
+namespace APIAuthorizeFrontend
 {
-    public string Instance { get; set; } = "http://login.microsoftonline.com/{0}";
-    public string? TenantId { get; set; }
-    public string? ClientId { get; set; }
-    public string? Authority
+    public class AuthConfig
     {
-        get
+        public string Instance { get; set; } = "http://login.microsoftonline.com/{0}";
+        public string TenantId { get; set; }
+        public string ClientId { get; set; }
+        public string Authority
         {
-            return String.Format(CultureInfo.InvariantCulture, Instance, TenantId);
+            get
+            {
+                return String.Format(CultureInfo.InvariantCulture, Instance, TenantId);
+            }
         }
-    }
-    public string? ClientSecret { get; set; }
-    public string? BaseAddress { get; set; }
-    public string? ResourceId { get; set; }
+        public string ClientSecret { get; set; }
+        public string BaseAddress { get; set; }
+        public string ResourceId { get; set; }
 
-    public static AuthConfig ReadFromJsonFile(string path)
-    {
-        IConfiguration Configuration;
+        public static AuthConfig ReadFromJsonFile(string path)
+        {
+            IConfiguration Configuration;
 
-        var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(path);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(path);
 
-        Configuration = builder.Build();
+            Configuration = builder.Build();
 
-        return Configuration.Get<AuthConfig>();
+            return Configuration.Get<AuthConfig>();
+        }
     }
 }
