@@ -1,6 +1,8 @@
 ﻿using Application;
 using Application.Interfaces;
+using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,11 +19,11 @@ public static class DependencyInjection
         //***To Use MediatR in the active layer only
         //services.AddMediatR(Assembly.GetExecutingAssembly());
 
+        //***Add layers that need to reach MediatR
         services.AddMediatR(typeof(Application.DependencyInjection), typeof(Persistance.DependencyInjection));
 
         MapsterMapster.MapsterSetter();
 
-        //***Add layers that need to reach MediatR
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection"),
@@ -34,18 +36,20 @@ public static class DependencyInjection
         services.AddTransient<IBookerRepository, BookerRepository>();
         services.AddTransient<IRoomRepository, RoomRepository>();
         services.AddTransient<ITimeSlotRepository, TimeSlotRepository>();
-
-
-        //services.AddIdentity<APIUser, UserRole>()
-        //    .AddDefaultTokenProviders();
-        //services.AddScoped<IUserStore<APIUser>, UserStore>();
-        //services.AddScoped<IRoleStore<UserRole>, RoleStore>();
-        //services.ConfigureApplicationCookie(options =>
-        //{
-        //    options.Cookie.HttpOnly = true;
-        //    options.LoginPath = "/Login";
-        //    options.LogoutPath = "/Logout";
-        //});
     }
+
+    //public static void ConfigureIdentity(this IServiceCollection services)
+    //{
+    //    var builder = services.AddIdentityCore<User>(o =>
+    //    {
+    //        o.Password.RequireDigit = true;
+    //        o.Password.RequireLowercase = false;
+    //        o.Password.RequireUppercase = false;
+    //        o.Password.RequireNonAlphanumeric = false; o.Password.RequiredLength = 10;
+    //        o.User.RequireUniqueEmail = true;
+    //    });
+    //    builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
+    //    builder.AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+    //}
 
 }

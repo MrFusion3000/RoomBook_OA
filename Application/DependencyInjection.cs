@@ -1,21 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Application.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
 public static class DependencyInjection
 {
     public static void AddApplication(this IServiceCollection services)
     {
-        //MapsterMapster.MapsterSetter();
 
-        //services.AddMediatR(Assembly.GetExecutingAssembly());
 
-        //TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetEntryAssembly());
-        //TypeAdapterConfig.GlobalSettings.Default.PreserveReference(true);
-        //TypeAdapterConfig<Room, RoomDto>.NewConfig()
-        //    //.Map(dest => dest, src => src);
-        //    .Map(dest => dest.Id, src => src.ID)
-        //    .Map(dest => dest.Name, src => src.Name);
-        //.Map(dest => dest.TimeSlots, src => src.TimeSlots);
-        //.Map(dest => dest.TimeSlots.Booker, src => src.TimeSlots.b);
     }
 }

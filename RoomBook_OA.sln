@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Tests", "Applic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoomBookApiClient", "RoomBookApiClient\RoomBookApiClient.csproj", "{D24AF49C-EF22-4F13-96B2-43C85D35F3CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAuthorizeFrontend", "APIAuthorizeFrontend\APIAuthorizeFrontend.csproj", "{53960454-D622-4E82-8334-511646CD542C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIAuthorizeFrontend", "APIAuthorizeFrontend\APIAuthorizeFrontend.csproj", "{53960454-D622-4E82-8334-511646CD542C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{A95109DA-6AB3-4014-B89F-EF601207AAEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{53960454-D622-4E82-8334-511646CD542C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53960454-D622-4E82-8334-511646CD542C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53960454-D622-4E82-8334-511646CD542C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A95109DA-6AB3-4014-B89F-EF601207AAEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A95109DA-6AB3-4014-B89F-EF601207AAEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A95109DA-6AB3-4014-B89F-EF601207AAEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A95109DA-6AB3-4014-B89F-EF601207AAEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +94,7 @@ Global
 		{276C42FA-08BB-4BDB-9D5E-1DE8F1854431} = {09C8DFC3-AB9C-41E0-B6DA-A749B3C0F8B2}
 		{D24AF49C-EF22-4F13-96B2-43C85D35F3CC} = {09C8DFC3-AB9C-41E0-B6DA-A749B3C0F8B2}
 		{53960454-D622-4E82-8334-511646CD542C} = {103DA492-51E7-4567-9873-9375EA826891}
+		{A95109DA-6AB3-4014-B89F-EF601207AAEC} = {09C8DFC3-AB9C-41E0-B6DA-A749B3C0F8B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE0C6275-DE5E-4BAB-BFC5-268CBAF1379D}

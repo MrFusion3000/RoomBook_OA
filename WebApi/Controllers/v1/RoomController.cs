@@ -27,7 +27,7 @@ public class RoomController : BaseApiController
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [Authorize]
+    //[Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
@@ -54,8 +54,8 @@ public class RoomController : BaseApiController
     /// Gets all Rooms.
     /// </summary>
     /// <returns></returns>
-    [Authorize]
-    [HttpGet]
+    //[Authorize]
+    [HttpGet, Authorize(Roles = "Manager")]
     public async Task<IActionResult> GetAll()
     {
         return Ok(await Mediator.Send(new GetAllRoomsQuery()));

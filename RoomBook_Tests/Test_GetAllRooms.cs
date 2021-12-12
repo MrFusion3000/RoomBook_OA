@@ -19,9 +19,9 @@ public class Test_GetAllRooms
         {
             var RoomRepository = mock.Mock<IRoomRepository>();
 
-            RoomRepository
-            .Setup(x => x.GetAllRoomsAsync)
-            .Returns(GetSampleRooms);
+            //RoomRepository
+            //.Setup(x => x.GetAllRoomsAsync)
+            //.Returns(GetSampleRooms);
 
 
             // Act

@@ -57,7 +57,7 @@ else
         @*<MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>*@
     </ToolBarContent>
     <HeaderContent>
-        <MudTh>Id</MudTh>
+        @*<MudTh>Id</MudTh>*@
         <MudTh>Start</MudTh>
         <MudTh>End</MudTh>
         <MudTh>Title</MudTh>
@@ -65,7 +65,7 @@ else
         <MudTh>Booking made</MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Id">@context.ID</MudTd>
+        @*<MudTd DataLabel="Id">@context.ID</MudTd>*@
         <MudTd DataLabel="Start">@context.TimeSlotStart.ToLocalTime().ToShortTimeString()</MudTd>
         <MudTd DataLabel="End">@context.TimeSlotEnd.ToLocalTime().ToShortTimeString()</MudTd>
         <MudTd DataLabel="Title">@context.Title</MudTd>

@@ -10,6 +10,12 @@ using Persistance;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using NLog;
+using System.IO;
+using Application;
+using WebApi.ActionFilters;
+using Application.Interfaces;
+using WebApi.Helpers;
 
 namespace WebApi;
 public class Startup
@@ -21,6 +27,7 @@ public class Startup
     {
         _env = env;
         Configuration = configuration;
+        //LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "nlog.config"));
     }
 
     private IConfiguration Configuration { get; }
@@ -28,30 +35,23 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(opt =>
-            {
-                opt.Audience = Configuration["AAD:ResourceId"];
-                opt.Authority = $"{Configuration["AAD:Instance"]}{Configuration["AAD:TenantId"]}";
-            });
 
-        #region AddCors
-        //services.AddCors(options =>
-        //{
-        //    options.AddPolicy(name: MyAllowSpecificOrigins,
-        //                  builder =>
-        //                  {
-        //                      builder.WithOrigins("https://localhost:44372",
-        //                                          "https://localhost:44315",
-        //                                          "https://localhost:81",
-        //                                          "https://localhost:82")
-        //                      .AllowAnyHeader()
-        //                      .AllowAnyMethod();
-        //                  });
-        //});
-        services.AddCors();
-        #endregion
+        //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //    .AddJwtBearer(opt =>
+        //    {
+        //        opt.Audience = Configuration["AAD:ResourceId"];
+        //        opt.Authority = $"{Configuration["AAD:Instance"]}{Configuration["AAD:TenantId"]}";
+        //    });
+
+        //services.AddCors();
+        services.ConfigureCors();
+        services.ConfigureIISIntegration();
+        services.ConfigureIdentity();
+        services.ConfigureJWT(Configuration);
+
+        services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+
+        services.AddScoped<ValidationFilterAttribute>();
 
         services.AddControllers(options =>
         {
@@ -97,7 +97,10 @@ public class Startup
         #endregion
 
         services.AddPersistence(Configuration);
-        //services.AddApplication();
+
+        services.AddAuthentication();
+        services.ConfigureIdentity();
+        //services.ConfigureLoggerService();
 
         services.AddHealthChecks();
     }
@@ -110,34 +113,13 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
 
-        //app.UseCors(MyAllowSpecificOrigins);
-        app.UseCors(x => x
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+        app.UseCors("CorsPolicy");
 
         app.UseBlazorFrameworkFiles();
 
         app.UseHttpsRedirection();
 
         app.UseRouting();
-
-        #region Seed user
-        //if (env.IsDevelopment())
-        //{
-        //    app.UseDeveloperExceptionPage();
-        //    app.UseBrowserLink();
-
-        //    if (s.UserManager.FindByNameAsync("dev").Result == null)
-        //    {
-        //        var result = s.UserManager.CreateAsync(new User
-        //        {
-        //            UserName = "dev",
-        //            Email = "dev@app.com"
-        //        }, "Aut94L#G-a").Result;
-        //    }
-        //}
-        #endregion
 
         app.UseAuthentication();
         app.UseAuthorization();
