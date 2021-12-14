@@ -1,6 +1,6 @@
 @inject NavigationManager NavigationManager
 
-@*<Router AppAssembly="@typeof(Program).Assembly">
+<Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         <AppRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
@@ -10,26 +10,26 @@
             NavigationManager.NavigateTo("");
         }
     </NotFound>
-</Router>*@
+</Router>
 
-<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+@*<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
     <Found Context="routeData">
 <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-@*<AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+<AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
             <Authorizing>
                 <text>Please wait, we are authorizing the user.</text>
             </Authorizing>
             <NotAuthorized>
                 <text>You are not authorized to access this page.</text>
             </NotAuthorized>
-        </AuthorizeRouteView>*@
+        </AuthorizeRouteView>
     </Found>
     <NotFound>
         <LayoutView Layout="@typeof(MainLayout)">
             <p>Sorry, there's nothing at this address.</p>
         </LayoutView>
     </NotFound>
-</Router>
+</Router>*@
 
 <MudThemeProvider />
 <MudDialogProvider />

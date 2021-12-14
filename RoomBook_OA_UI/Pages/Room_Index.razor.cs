@@ -12,10 +12,6 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-//inject NavigationManager NavigationManager;
-//inject ILogger<Room_Index> Logger;
-//inject HttpClient _http;
-
 namespace RoomBook_OA_UI.Pages;
 public partial class Room_Index : ComponentBase
 {
@@ -95,12 +91,13 @@ public partial class Room_Index : ComponentBase
             BookerId = bookerId,
             RoomId = vacantSlot.RoomId
         };
-        await _http.PutAsJsonAsync($"https://localhost:44315/api/v1/TimeSlot/Update?id={updateTimeSlot.ID}", updateTimeSlot);
+        //TODO Set BasePath
+        await _http.PutAsJsonAsync($"https://localhost:5001/api/v1/TimeSlot/Update?id={updateTimeSlot.ID}", updateTimeSlot);
 
         await RefreshDb();
     }
 
-    // Init empty room
+    //Init empty room
     //private async Task InitRoom()
     //{
     //    var room = new Room
@@ -111,7 +108,7 @@ public partial class Room_Index : ComponentBase
     //        CreatedUTC = dtToday
     //    };
 
-    //    await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Room", room);
+    //    await _http.PostAsJsonAsync("https://localhost:5001/api/v1/Room", room);
     //}
 
     //private async Task InitBooker()
@@ -122,7 +119,7 @@ public partial class Room_Index : ComponentBase
     //        Name = "Joe Dull",
     //        CreatedUTC = DateTime.Now
     //    };
-    //    await _http.PostAsJsonAsync("https://localhost:44315/api/v1/Booker", booker);
+    //    await _http.PostAsJsonAsync("https://localhost:5001/api/v1/Booker", booker);
     //}
 
     private async Task InitDailySchedule()
@@ -144,17 +141,11 @@ public partial class Room_Index : ComponentBase
                 BookerId = Guid.Empty,
             };
 
-            await _http.PostAsJsonAsync("https://localhost:44315/api/v1/TimeSlot", timeSlot);
+            await _http.PostAsJsonAsync("https://localhost:5001/api/v1/TimeSlot", timeSlot);
 
             initDate = initDate.Add(duration);
         }
     }
-
-    //private void GotoRoom(Guid roomId)
-    //{
-    //    string navUri = "/Room_Index/" + roomId;
-    //    NavigationManager.NavigateTo(navUri);
-    //}
 
     private void NavigateToPage(string chosenPage)
     {

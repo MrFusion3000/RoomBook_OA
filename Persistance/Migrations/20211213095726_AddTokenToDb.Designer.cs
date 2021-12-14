@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistance.Context;
 
@@ -11,9 +12,10 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211213095726_AddTokenToDb")]
+    partial class AddTokenToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,9 +122,6 @@ namespace Persistance.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleting")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -150,9 +149,6 @@ namespace Persistance.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Token")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -204,15 +200,15 @@ namespace Persistance.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "66a93d70-0495-4ce9-a74e-7789c4c72f09",
-                            ConcurrencyStamp = "29fe8cd0-115b-423e-8d5e-42b4ffb7ec40",
+                            Id = "52110437-75af-4b2f-8736-8c134769fed0",
+                            ConcurrencyStamp = "065f042a-bd5c-49f4-8cbc-7f4774557295",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "ab3c2865-49bc-44f8-8ef6-d55ad16b30ec",
-                            ConcurrencyStamp = "cf303153-7b94-4746-b420-48cf1c471070",
+                            Id = "9aa7f4fb-811d-4636-ab79-8f8f5f9f0527",
+                            ConcurrencyStamp = "d3a0ca20-aadf-428d-b3be-26386151f2f5",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

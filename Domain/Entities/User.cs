@@ -6,5 +6,7 @@ namespace Domain.Entities
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Token { get; set; }
+        public bool IsDeleting { get; set; }
     }
 }

@@ -1,16 +1,22 @@
 ﻿@page "/"
+@*@attribute [Authorize]*@
+@inject IAccountService AccountService
 @using Application.Shared.DTO
 @using Domain.Entities
 @using System.Security.Claims
 @using Domain.Interfaces
 @using Microsoft.Extensions.Logging
-
-
-
 @inject HttpClient _http
 @inject ILogger<Index> Logger
 @inject NavigationManager NavigationManager
 
+<div class="p-4">
+    <div class="container">
+        <h1>Hi @AccountService.User.FirstName!</h1>
+        <p>You're logged in with Blazor WebAssembly!!</p>
+        <p><NavLink href="users">Manage Users</NavLink></p>
+    </div>
+</div>
 
 <MudGrid>
     <MudItem xs="12" Class="d-flex align-center justify-center mud-width-full py-8">

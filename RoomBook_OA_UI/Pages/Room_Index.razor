@@ -2,7 +2,8 @@
 @page "/Room_Index/{ThisRoomId:guid}"
 
 @using Microsoft.Extensions.Logging
-
+@using Microsoft.AspNetCore.Authorization
+@*@inject IAuthorizationService AuthorizationService*@
 @inject NavigationManager NavigationManager
 @inject ILogger<Room_Index> Logger
 @inject HttpClient _http
@@ -25,7 +26,8 @@ else
         <NotAuthorized>
             The User is not authorized
         </NotAuthorized>
-    </AuthorizeView>*@
+ </AuthorizeView>*@
+
 <hr />
 <br />
 

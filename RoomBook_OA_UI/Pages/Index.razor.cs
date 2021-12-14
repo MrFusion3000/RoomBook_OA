@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Net.Http.Json;
 
 namespace RoomBook_OA_UI.Pages;
 public partial class Index
@@ -18,11 +20,15 @@ public partial class Index
     {
         NavigationManager.LocationChanged += HandleLocationChanged;
 
-        //AuthConfig config = AuthConfig.ReadJsonFromFile("appsettings.json");
-
         try
         {
             await RefreshDb();
+
+            bool hasElements = rooms.Any();
+            if (!hasElements)
+            {
+                await InitRoom();
+            }
         }
         catch (HttpRequestException ex)
         {
@@ -33,8 +39,20 @@ public partial class Index
     private async Task RefreshDb()
     {
         //Get current rooms
-        //rooms = await _http.GetFromJsonAsync<List<RoomDto>>("https://localhost:44315/api/v1/Room/");
         rooms = await roomClient.GetAllRoomsAsync();
+    }
+
+    private async Task InitRoom()
+    {
+        var room = new RoomDto()
+        {
+            ID = Guid.NewGuid(),
+            Name = "Init Room",
+            Placement = 1,
+            CreatedUTC = DateTime.UtcNow
+        };
+
+        await _http.PostAsJsonAsync("https://localhost:5001/api/v1/Room", room);
     }
 
     private void GotoRoom(Guid roomId)

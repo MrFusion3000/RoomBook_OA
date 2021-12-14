@@ -55,7 +55,7 @@ public class RoomController : BaseApiController
     /// </summary>
     /// <returns></returns>
     //[Authorize]
-    [HttpGet, Authorize(Roles = "Manager")]
+    [HttpGet, /*Authorize(Roles = "Manager")*/]
     public async Task<IActionResult> GetAll()
     {
         return Ok(await Mediator.Send(new GetAllRoomsQuery()));

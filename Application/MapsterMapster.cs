@@ -39,7 +39,15 @@ public class MapsterMapster
             .NewConfig()
             .PreserveReference(true);
 
+        TypeAdapterConfig<User, UserForAuthenticationDto>
+            .NewConfig()
+            .PreserveReference(true);
+
         TypeAdapterConfig<User, UserForRegistrationDto>
+            .NewConfig()
+            .PreserveReference(true);
+
+        TypeAdapterConfig<User, UserForEditDto>
             .NewConfig()
             .PreserveReference(true);
 
